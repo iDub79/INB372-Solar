@@ -1,44 +1,16 @@
-/*
- * Main function scripts
- */
+var destinations = new Array();
 
 $(function() {
 
-	$("#btnSubmit").click(function() {
-        
-        var name = $("#name").val();
-        var age = $("#age").val();
-        
-        $.ajax({
-            type : "POST",
-            url : "inb372_solar",
-            data : "name=" + name + "&age=" + age,
-            success : displayResult
-        });
-    });
+    // initialise Google Map features
+    initialiseMap();
+    initialiseSearch();
+    
+    
 
-	function displayResult(result, status) {
-		if (status == 'success') {
-			var output = "";
-	
-			$.each(result.Persons, function (i) {
-				output += "<p>Name = " + result.Persons[i].name + " & Age = " + result.Persons[i].age + "</p>";	        
-		    });
-			
-			$("#lblResult").html(output);
-		}
-		else {
-			$("#lblResult").html("<p>Error: " + result + "</p>");			
-		}
-    }
-	
-	
-	
-	/*
-	 * jQuery UI scripts
-	 */
-		
-	// Buttons
-	$( "input:submit, a, button", "body" ).button();
-	
+    // add jQuery UI styling to buttons
+    $("input:submit, input:button, a, button", ".MyTrip").button();
 });
+
+
+
