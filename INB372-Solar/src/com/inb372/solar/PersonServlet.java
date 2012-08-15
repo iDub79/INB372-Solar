@@ -10,9 +10,9 @@ import java.util.logging.Logger;
 import com.google.appengine.labs.repackaged.org.json.*;
 
 @SuppressWarnings("serial")
-public class INB372_SolarServlet extends HttpServlet {
+public class PersonServlet extends HttpServlet {
 	
-	private static final Logger log = Logger.getLogger(INB372_SolarServlet.class.getName());
+	private static final Logger log = Logger.getLogger(PersonServlet.class.getName());
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

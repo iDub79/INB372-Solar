@@ -1,10 +1,15 @@
+$(function() {
+	initialiseMap();
+    initialiseSearch();
+});    
 
-// Initialise Google Map global variables
+
+/*
+ * Initialise Google Map global variables
+ */
 var map;
 var geocoder;
 var autocomplete;
-
-var brisbane = new google.maps.LatLng(-27.4667, 153.0333);
 var infowindow;
 var myOptions = { mapTypeId: google.maps.MapTypeId.SATELLITE };
 
@@ -51,7 +56,7 @@ function initialiseSearch() {
         }
         else {
             map.setCenter(place.geometry.location);
-            map.setZoom(20);
+            map.setZoom(18);
         }
 
         // sets a marker to the searched location

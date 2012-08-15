@@ -11,7 +11,7 @@ $(function() {
         
         $.ajax({
             type : "POST",
-            url : "inb372_solar",
+            url : "personServlet",
             data : "name=" + name + "&age=" + age,
             success : displayResult
         });
