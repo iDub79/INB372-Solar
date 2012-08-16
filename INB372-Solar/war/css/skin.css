@@ -1,3 +1,8 @@
 body{ font-size: 12px; font-family: "Trebuchet MS", sans-serif; margin: 50px;}
+
+label { display: block; }
+
+.requiredMsg { color: Red; font-style: italic; }
+
 #map_canvas { width: 100%; height: 500px; }
 #searchTextField { width: 400px; }

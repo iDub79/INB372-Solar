@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html id="home" lang="en">
 <head>
+	<title>Person Example</title>
+	
 	<link rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.8.22.custom.css" />
 	<link rel="stylesheet" type="text/css" href="css/skin.css" />
 	
@@ -10,9 +12,19 @@
     <script type="text/javascript" src="js/scripts.js"></script>
 </head>
 <body>
-	<p>Name: <input type="text" id="name" size="20"></p>
-	<p>Age: <input type="text" id="age" size="20"></p>
-	<button id="btnSubmit">Submit</button>
-	<p id="lblResult"></p>
+	<form>
+		<p>
+			<label for="personName">Name:</label>
+			<input type="text" id="personName" size="20" placeholder="Enter your name" autofocus="autofocus" />
+			<span id="reqPersonName" style="display: none;" class="requiredMsg">* Required</span>
+		</p>
+		<p>
+			<label for="personAge">Age:</label>
+			<input type="number" id="personAge" size="20" placeholder="Enter your age" />
+			<span id="reqPersonAge" style="display: none;" class="requiredMsg">* Required</span>
+		</p>		
+	</form>	
+	<button id="btnSubmitPersonTest">Submit</button>
+    <p id="lblResult"></p>
 </body>
 </html>
