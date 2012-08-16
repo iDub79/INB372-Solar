@@ -4,17 +4,25 @@
 
 $(function() {
 
-	$("#btnSubmit").click(function() {
+	$("#btnSubmitPersonTest").click(function() {
         
-        var name = $("#name").val();
-        var age = $("#age").val();
+		clearValidationMessages();
+		
+		var name = $("#personName").val();
+        var age = $("#personAge").val();
         
-        $.ajax({
-            type : "POST",
-            url : "personServlet",
-            data : "name=" + name + "&age=" + age,
-            success : displayResult
-        });
+        if ((name != "") && (age != "")) {
+        	$.ajax({
+                type : "POST",
+                url : "personServlet",
+                data : "name=" + name + "&age=" + age,
+                success : displayResult
+            });
+        }
+        else {
+        	if (name == "") $("#reqPersonName").css("display", "inline");
+        	if (age == "") $("#reqPersonAge").css("display", "inline");
+        }
     });
 
 	function displayResult(result, status) {
@@ -32,3 +40,8 @@ $(function() {
 		}
 	}	
 });
+
+function clearValidationMessages() {
+	$("#reqPersonName").hide();
+	$("#reqPersonAge").hide();
+}
