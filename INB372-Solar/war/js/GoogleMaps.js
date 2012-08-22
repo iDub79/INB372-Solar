@@ -39,7 +39,7 @@ function initialiseSearch() {
     autocomplete = new google.maps.places.Autocomplete(input);
 
     autocomplete.bindTo('bounds', map);
-    infowindow = new google.maps.InfoWindow();
+    infowindow = new google.maps.InfoWindow({maxWidth: 100});
 
     var marker = new google.maps.Marker({
         map: map
@@ -47,8 +47,9 @@ function initialiseSearch() {
     
     // adds Event Listener so that when a Place is selected, it is automatically shown on the Map
     google.maps.event.addListener(autocomplete, 'place_changed', function () {
-        infowindow.close();
-
+            	
+    	infowindow.close();        
+        
         var place = autocomplete.getPlace();
 
         if (place.geometry.viewport) {
@@ -80,6 +81,7 @@ function initialiseSearch() {
         }
 
         infowindow.setContent('<div><strong>' + address + '</strong><br />');
+        infowindow.setMaxWidth(100);
         infowindow.open(map, marker);
         
         // display the latitude of the searched location
@@ -98,7 +100,7 @@ function displayCoordinates() {
     geocoder.geocode({ 'address': address }, function (results, status) {
     	if (status == google.maps.GeocoderStatus.OK) {
     		var lat = getLat(results[0].geometry.location.toString());
-            $("#lblCoordinates").html("Latitude of location is: " + lat.toString());
+            $("#lblCoordinates").html("Latitude = " + lat.toString());
         }
     	else {
         	$("#lblCoordinates").html("Geocode was not successful for the following reason: " + status);
