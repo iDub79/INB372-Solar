@@ -39,7 +39,7 @@ function initialiseSearch() {
     autocomplete = new google.maps.places.Autocomplete(input);
 
     autocomplete.bindTo('bounds', map);
-    infowindow = new google.maps.InfoWindow({maxWidth: 100});
+    infowindow = new google.maps.InfoWindow();
 
     var marker = new google.maps.Marker({
         map: map
@@ -81,7 +81,6 @@ function initialiseSearch() {
         }
 
         infowindow.setContent('<div><strong>' + address + '</strong><br />');
-        infowindow.setMaxWidth(100);
         infowindow.open(map, marker);
         
         // display the latitude of the searched location

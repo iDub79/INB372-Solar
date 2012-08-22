@@ -4,6 +4,39 @@
 
 $(function() {
 
+	$("#btnCalculate").click(function() {
+		
+		clearValidationMessages();
+		
+		var panelSize = $("#txtPanelSize").val();
+		var panelEfficiency = $("#txtPanelEfficiency").val();
+		var inverterEfficiency = $("#txtInverterEfficiency").val();
+		var address = $("#searchTextField").val();
+		
+		var validForm = true;
+		
+		if (panelSize == "") {
+			$("#grpPanelSize").addClass("error");
+			validForm = false;
+		}
+		if (panelEfficiency == "") {
+			$("#grpPanelEfficiency").addClass("error");
+			validForm = false;
+		}
+		if (inverterEfficiency == "") {
+			$("#grpInverterEfficiency").addClass("error");
+			validForm = false;
+		}
+		if (address == "") {
+			$("#grpAddress").addClass("error");
+			validForm = false;
+		}
+		
+		if (validForm) {
+			alert("valid");
+		}
+	});
+	
 	$("#btnSubmitPersonTest").click(function() {
         
 		clearValidationMessages();
@@ -42,6 +75,8 @@ $(function() {
 });
 
 function clearValidationMessages() {
-	$("#reqPersonName").hide();
-	$("#reqPersonAge").hide();
+	$("#grpPanelSize").removeClass("error");
+	$("#grpPanelEfficiency").removeClass("error");
+	$("#grpInverterEfficiency").removeClass("error");
+	$("#grpAddress").removeClass("error");
 }

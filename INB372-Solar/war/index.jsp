@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html id="home" lang="en">
 <head>
-    <title>INB372 Solar Power Calculator</title>
+    <title>Solar Power Calculator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	
-	<style type="text/css">
-       body { padding-top: 60px; }
-    </style>
+	<style type="text/css"> body { padding-top: 60px; } </style>
     	
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-	
-	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />	
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/skin.css" />
 	
 	<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
@@ -26,7 +23,6 @@
     
 </head>
 <body>
-
 	<div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
 	       <div class="container">
@@ -35,7 +31,7 @@
 	               <span class="icon-bar"></span>
 	               <span class="icon-bar"></span>
 	           </a>
-	           <a class="brand" href="#">INB372 Solar Power Calculator</a>
+	           <a class="brand" href="#">Solar Power Calculator</a>
 	           <div class="nav-collapse">
 	               <ul class="nav">
 	                   <li class="active"><a href="#">Home</a></li>
@@ -52,20 +48,26 @@
                 <div class="form-horizontal">
 				    <fieldset>
 				        <legend>Solar Panel & Inverter Specifications</legend>
-					    <div class="control-group">
+					    <div class="control-group" id="grpPanelSize">
 						    <label class="control-label" for="txtPanelSize">Total size of panels</label>
 						    <div class="controls">
 							    <input type="text" class="input-xlarge" id="txtPanelSize" placeholder="Enter size in square metres" />
 						    </div>
 					    </div>
-					    <div class="control-group">
+					    <div class="control-group" id="grpPanelEfficiency">
                             <label class="control-label" for="txtPanelEfficiency">Panel efficiency</label>
                             <div class="controls">
                                 <input type="text" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter efficiency in watts per square metre" />
                             </div>
                         </div>
+                        <div class="control-group" id="grpInverterEfficiency">
+                            <label class="control-label" for="txtInverterEfficiency">Inverter efficiency</label>
+                            <div class="controls">
+                                <input type="text" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
+                            </div>
+                        </div>
                         <legend>Property Location</legend>
-                        <div class="control-group">
+                        <div class="control-group" id="grpAddress">
                             <label class="control-label" for="searchTextField">Address</label>
                             <div class="controls">
                                 <input type="text" class="input-xlarge" id="searchTextField" placeholder="Enter address" />
