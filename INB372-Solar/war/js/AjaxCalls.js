@@ -12,6 +12,10 @@ $(function() {
 		var panelEfficiency = $("#txtPanelEfficiency").val();
 		var inverterEfficiency = $("#txtInverterEfficiency").val();
 		var address = $("#searchTextField").val();
+		var orientation = $("#txtPanelOrientation").val();
+		var angle = $("#txtPanelAngle").val();
+		var sunlight = $("#txtDailySunlight").val();
+		var consumption = $("#txtPowerConsumption").val();
 		
 		var validForm = true;
 		
@@ -29,6 +33,22 @@ $(function() {
 		}
 		if (address == "") {
 			$("#grpAddress").addClass("error");
+			validForm = false;
+		}
+		if (orientation == "") {
+			$("#grpPanelOrientation").addClass("error");
+			validForm = false;
+		}
+		if (angle == "") {
+			$("#grpPanelAngle").addClass("error");
+			validForm = false;
+		}
+		if (sunlight == "") {
+			$("#grpDailySunlight").addClass("error");
+			validForm = false;
+		}
+		if (consumption == "") {
+			$("#grpPowerConsumption").addClass("error");
 			validForm = false;
 		}
 		
@@ -79,4 +99,8 @@ function clearValidationMessages() {
 	$("#grpPanelEfficiency").removeClass("error");
 	$("#grpInverterEfficiency").removeClass("error");
 	$("#grpAddress").removeClass("error");
+	$("#grpPanelOrientation").removeClass("error");
+	$("#grpPanelAngle").removeClass("error");
+	$("#grpDailySunlight").removeClass("error");
+	$("#grpPowerConsumption").removeClass("error");
 }
