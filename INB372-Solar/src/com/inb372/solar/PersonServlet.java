@@ -23,6 +23,7 @@ public class PersonServlet extends HttpServlet {
 		Person nicole = new Person("Nicole", 29);
 		Person submitted = new Person(name, age);
 		
+		// Javascript object notation
 		JSONObject person1 = new JSONObject();
 		JSONObject person2 = new JSONObject();
 		JSONObject person3 = new JSONObject();
