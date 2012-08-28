@@ -117,6 +117,9 @@
                 <div class="alert alert-success" id="pnlResults" style="display: none;">
                     <span id="lblSavings"></span>
                 </div>
+                <div class="alert alert-error" id="pnlErrors" style="display: none;">
+				    <span id="lblErrors">Please correct the fields highlighted in red.</span>
+			    </div>
 			</div>
 		</div>
 	</div>
