@@ -1,7 +1,3 @@
-/*
- * Main function scripts
- */
-
 $(function() {
 
 	$("#btnCalculate").click(function() {
@@ -30,11 +26,7 @@ $(function() {
 		if (inverterEfficiency == "") {
 			$("#grpInverterEfficiency").addClass("error");
 			validForm = false;
-		}
-		if (address == "") {
-			$("#grpAddress").addClass("error");
-			validForm = false;
-		}
+		}		
 		if (orientation == "") {
 			$("#grpPanelOrientation").addClass("error");
 			validForm = false;
@@ -51,11 +43,49 @@ $(function() {
 			$("#grpPowerConsumption").addClass("error");
 			validForm = false;
 		}
+		if (address == "") {
+			$("#grpAddress").addClass("error");
+			validForm = false;
+		}
 		
 		if (validForm) {
-			alert("valid");
+			$.ajax({
+                type : "POST",
+                url : "solarServlet",
+                data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation +
+                			"&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
+                success : displayResult
+            });
 		}
 	});
+	
+	
+	function displayResult(result, status) {
+		if (status == 'success') {		
+			$("#lblSavings").html("Amount saved is: " + result.Savings.Amount);
+			$("#pnlResults").show();
+		}
+		else {
+			$("#lblSavings").html("<p>Error: " + result + "</p>");			
+		}
+	}
+});
+
+function clearValidationMessages() {
+	$("#grpPanelSize").removeClass("error");
+	$("#grpPanelEfficiency").removeClass("error");
+	$("#grpInverterEfficiency").removeClass("error");
+	$("#grpAddress").removeClass("error");
+	$("#grpPanelOrientation").removeClass("error");
+	$("#grpPanelAngle").removeClass("error");
+	$("#grpDailySunlight").removeClass("error");
+	$("#grpPowerConsumption").removeClass("error");
+}
+	
+/*
+ *  Below is just a test
+ */	
+$(function() {
 	
 	$("#btnSubmitPersonTest").click(function() {
         
@@ -69,7 +99,7 @@ $(function() {
                 type : "POST",
                 url : "personServlet",
                 data : "name=" + name + "&age=" + age,
-                success : displayResult
+                success : displayPersonResult
             });
         }
         else {
@@ -78,7 +108,7 @@ $(function() {
         }
     });
 
-	function displayResult(result, status) {
+	function displayPersonResult(result, status) {
 		if (status == 'success') {
 			var output = "";
 	
@@ -93,14 +123,3 @@ $(function() {
 		}
 	}	
 });
-
-function clearValidationMessages() {
-	$("#grpPanelSize").removeClass("error");
-	$("#grpPanelEfficiency").removeClass("error");
-	$("#grpInverterEfficiency").removeClass("error");
-	$("#grpAddress").removeClass("error");
-	$("#grpPanelOrientation").removeClass("error");
-	$("#grpPanelAngle").removeClass("error");
-	$("#grpDailySunlight").removeClass("error");
-	$("#grpPowerConsumption").removeClass("error");
-}

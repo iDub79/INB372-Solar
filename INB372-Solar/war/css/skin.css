@@ -1,5 +1,3 @@
-
-
 label { display: block; }
 .requiredMsg { color: Red; font-style: italic; }
-#map_canvas { max-width: 500px; height: 250px; }
+#map_canvas { height: 200px; }
