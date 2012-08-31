@@ -1,0 +1,14 @@
+<resources>
+
+    <string name="app_name">SPC</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="TestButton">Hello, I am a Button</string>
+    <string name="TextView">Hello, I am a TextView</string>
+    <string name="System">System</string>
+    <string name="Results">Results</string>
+    <string name="Power">Power</string>
+    <string name="Submit">Submit</string>
+
+</resources>
