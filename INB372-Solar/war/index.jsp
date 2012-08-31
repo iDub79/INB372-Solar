@@ -2,6 +2,7 @@
 <html id="home" lang="en">
 <head>
 <title>Solar Power Calculator</title>
+<!-- This is a comment -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style type="text/css"> body { padding-top: 60px; } </style>
