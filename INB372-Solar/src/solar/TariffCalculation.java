@@ -12,8 +12,9 @@ public class TariffCalculation {
 	//
 	public TariffCalculation(Calculator solar) throws TariffException {
 		if (solar.calcDailyExcess() < 0)
-		throw new TariffException ("This value must greater than 0");
-		this.electric= solar.calcDailyExcess();
+			throw new TariffException ("This value must greater than 0");
+		
+		this.electric = solar.calcDailyExcess();
 	}
 	
 	//Calculate the Annual Electric

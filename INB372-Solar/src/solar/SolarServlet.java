@@ -15,18 +15,28 @@ public class SolarServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(SolarServlet.class.getName());
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		
+		float panelSize = Float.parseFloat(request.getParameter("panelSize"));
+		float panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
+		float inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));			
+		float angle = Float.parseFloat(request.getParameter("angle"));			
+		float consumption = Float.parseFloat(request.getParameter("consumption"));
+		String address = request.getParameter("address");
+		String orientation = request.getParameter("orientation");
+		Integer sunlight = Integer.parseInt(request.getParameter("sunlight"));
+		double dailyPower = 0;
+		
 		boolean validInput = false;
 		
 		try {
-			float panelSize = Float.parseFloat(request.getParameter("panelSize"));
-			float panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
-			float inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));			
-			float angle = Float.parseFloat(request.getParameter("angle"));			
-			float consumption = Float.parseFloat(request.getParameter("consumption"));
-			String address = request.getParameter("address");
-			String orientation = request.getParameter("orientation");
-			Integer sunlight = Integer.parseInt(request.getParameter("sunlight"));
+			panelSize = Float.parseFloat(request.getParameter("panelSize"));
+			panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
+			inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));			
+			angle = Float.parseFloat(request.getParameter("angle"));			
+			consumption = Float.parseFloat(request.getParameter("consumption"));
+			address = request.getParameter("address");
+			orientation = request.getParameter("orientation");
+			sunlight = Integer.parseInt(request.getParameter("sunlight"));
 			
 			validInput = true;
 		}
@@ -35,22 +45,21 @@ public class SolarServlet extends HttpServlet {
 			e1.printStackTrace();
 		}
 		
-		/*
-		 * 1) Instantiate Class based on user input values above
-		 * 
-		 * 2) Perform calculations
-		 * 
-		 */
+		if (validInput) {
+			SolarSystemInfo solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);
+			
+			Calculator calc = new Calculator(solarInfo);
+			
+			dailyPower = calc.calcDailyPower();
+		}
 		
-		// create a Json object to return amountOfMoneyMade back to the client
-		Integer amountOfMoneyMade = 1450;
 		JSONObject moneyMade = new JSONObject();
 		JSONObject returnJson = new JSONObject();
 		
 		try {
 			if (validInput) {			
 				moneyMade.put("Success", true);
-				moneyMade.put("Amount", amountOfMoneyMade);
+				moneyMade.put("Amount", dailyPower);
 				returnJson.put("Savings", moneyMade);
 			}			
 			else {
