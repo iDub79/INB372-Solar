@@ -1,6 +1,11 @@
-/*
- * Main function scripts
- */
+var panelSize;
+var panelEfficiency;
+var inverterEfficiency;
+var address;
+var orientation;
+var angle;
+var sunlight;
+var consumption;
 
 $(function() {
 
@@ -8,54 +13,107 @@ $(function() {
 		
 		clearValidationMessages();
 		
-		var panelSize = $("#txtPanelSize").val();
-		var panelEfficiency = $("#txtPanelEfficiency").val();
-		var inverterEfficiency = $("#txtInverterEfficiency").val();
-		var address = $("#searchTextField").val();
-		var orientation = $("#txtPanelOrientation").val();
-		var angle = $("#txtPanelAngle").val();
-		var sunlight = $("#txtDailySunlight").val();
-		var consumption = $("#txtPowerConsumption").val();
+		panelSize = $("#txtPanelSize").val();
+		panelEfficiency = $("#txtPanelEfficiency").val();
+		inverterEfficiency = $("#txtInverterEfficiency").val();
+		address = $("#searchTextField").val();
+		orientation = $("#txtPanelOrientation").val();
+		angle = $("#txtPanelAngle").val();
+		sunlight = $("#txtDailySunlight").val();
+		consumption = $("#txtPowerConsumption").val();
 		
-		var validForm = true;
-		
-		if (panelSize == "") {
-			$("#grpPanelSize").addClass("error");
-			validForm = false;
-		}
-		if (panelEfficiency == "") {
-			$("#grpPanelEfficiency").addClass("error");
-			validForm = false;
-		}
-		if (inverterEfficiency == "") {
-			$("#grpInverterEfficiency").addClass("error");
-			validForm = false;
-		}
-		if (address == "") {
-			$("#grpAddress").addClass("error");
-			validForm = false;
-		}
-		if (orientation == "") {
-			$("#grpPanelOrientation").addClass("error");
-			validForm = false;
-		}
-		if (angle == "") {
-			$("#grpPanelAngle").addClass("error");
-			validForm = false;
-		}
-		if (sunlight == "") {
-			$("#grpDailySunlight").addClass("error");
-			validForm = false;
-		}
-		if (consumption == "") {
-			$("#grpPowerConsumption").addClass("error");
-			validForm = false;
-		}
+		var validForm = checkValidForm();
 		
 		if (validForm) {
-			alert("valid");
+			$.ajax({
+                type : "POST",
+                url : "solarServlet",
+                data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation +
+                			"&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
+                success : displayResult
+            });
+		}
+		else {
+			$("#pnlErrors").show();
 		}
 	});
+	
+	
+	function displayResult(result, status) {
+		if (status == 'success') {
+			if (result.Savings.Success == true) {
+				$("#lblSavings").html("Amount saved is: " + result.Savings.Amount);
+				$("#pnlResults").show();
+			}
+			else {
+				$("#lblSavings").html("There was an error in calculating the fields");
+				$("#pnlResults").show();
+			}				
+		}
+	}
+});
+
+function clearValidationMessages() {
+	$("#grpPanelSize").removeClass("error");
+	$("#grpPanelEfficiency").removeClass("error");
+	$("#grpInverterEfficiency").removeClass("error");
+	$("#grpAddress").removeClass("error");
+	$("#grpPanelOrientation").removeClass("error");
+	$("#grpPanelAngle").removeClass("error");
+	$("#grpDailySunlight").removeClass("error");
+	$("#grpPowerConsumption").removeClass("error");
+	$("#pnlErrors").hide();
+	$("#pnlResults").hide();
+}
+
+
+function checkValidForm() {	
+	var validForm = true;
+	
+	if ((panelSize == "") || (isNaN(panelSize)) || (typeof panelSize === "undefined")) {
+		$("#grpPanelSize").addClass("error");
+		validForm = false;
+	}
+	if ((panelEfficiency == "") || (isNaN(panelEfficiency)) || (typeof panelEfficiency === "undefined")) {
+		$("#grpPanelEfficiency").addClass("error");
+		validForm = false;
+	}
+	if ((inverterEfficiency == "") || (isNaN(inverterEfficiency)) || (typeof inverterEfficiency === "undefined")) {
+		$("#grpInverterEfficiency").addClass("error");
+		validForm = false;
+	}		
+	if ((orientation == "") || (typeof orientation === "undefined")) {
+		$("#grpPanelOrientation").addClass("error");
+		validForm = false;
+	}
+	if ((angle == "") || (isNaN(angle)) || (typeof angle === "undefined")) {
+		$("#grpPanelAngle").addClass("error");
+		validForm = false;
+	}
+	if ((sunlight == "") || (isNaN(sunlight)) || (typeof sunlight === "undefined")) {
+		$("#grpDailySunlight").addClass("error");
+		validForm = false;
+	}
+	if ((consumption == "") || (isNaN(consumption)) || (typeof consumption === "undefined")) {
+		$("#grpPowerConsumption").addClass("error");
+		validForm = false;
+	}
+	if ((address == "") || (typeof address === "undefined")) {
+		$("#grpAddress").addClass("error");
+		validForm = false;
+	}
+	
+	return validForm;
+}
+
+
+
+
+
+/*
+ *  Below is just a test
+ */	
+$(function() {
 	
 	$("#btnSubmitPersonTest").click(function() {
         
@@ -69,7 +127,7 @@ $(function() {
                 type : "POST",
                 url : "personServlet",
                 data : "name=" + name + "&age=" + age,
-                success : displayResult
+                success : displayPersonResult
             });
         }
         else {
@@ -78,7 +136,7 @@ $(function() {
         }
     });
 
-	function displayResult(result, status) {
+	function displayPersonResult(result, status) {
 		if (status == 'success') {
 			var output = "";
 	
@@ -93,14 +151,3 @@ $(function() {
 		}
 	}	
 });
-
-function clearValidationMessages() {
-	$("#grpPanelSize").removeClass("error");
-	$("#grpPanelEfficiency").removeClass("error");
-	$("#grpInverterEfficiency").removeClass("error");
-	$("#grpAddress").removeClass("error");
-	$("#grpPanelOrientation").removeClass("error");
-	$("#grpPanelAngle").removeClass("error");
-	$("#grpDailySunlight").removeClass("error");
-	$("#grpPowerConsumption").removeClass("error");
-}

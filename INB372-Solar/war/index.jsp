@@ -110,8 +110,16 @@
 			<div class="span12">
 				<div class="form-actions">
 					<button class="btn btn-large btn-primary" id="btnCalculate">Calculate</button>
-					<button class="btn btn-large" id="btnReset">Cancel</button>
+					<button class="btn btn-large" id="btnReset">Cancel</button>					
 				</div>
+			</div>
+			<div class="span12">
+                <div class="alert alert-success" id="pnlResults" style="display: none;">
+                    <span id="lblSavings"></span>
+                </div>
+                <div class="alert alert-error" id="pnlErrors" style="display: none;">
+				    <span id="lblErrors">Please correct the fields highlighted in red.</span>
+			    </div>
 			</div>
 		</div>
 	</div>
