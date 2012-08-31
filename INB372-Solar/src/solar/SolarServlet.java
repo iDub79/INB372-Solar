@@ -19,15 +19,14 @@ public class SolarServlet extends HttpServlet {
 		boolean validInput = false;
 		
 		try {
-			String name = request.getParameter("name");
-			Integer panelSize = Integer.parseInt(request.getParameter("panelSize"));
-			Integer panelEfficiency = Integer.parseInt(request.getParameter("panelEfficiency"));
-			Integer inverterEfficiency = Integer.parseInt(request.getParameter("inverterEfficiency"));
+			float panelSize = Float.parseFloat(request.getParameter("panelSize"));
+			float panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
+			float inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));			
+			float angle = Float.parseFloat(request.getParameter("angle"));			
+			float consumption = Float.parseFloat(request.getParameter("consumption"));
 			String address = request.getParameter("address");
 			String orientation = request.getParameter("orientation");
-			Integer angle = Integer.parseInt(request.getParameter("angle"));
 			Integer sunlight = Integer.parseInt(request.getParameter("sunlight"));
-			Integer consumption = Integer.parseInt(request.getParameter("consumption"));
 			
 			validInput = true;
 		}

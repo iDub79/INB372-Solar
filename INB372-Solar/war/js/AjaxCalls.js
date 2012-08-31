@@ -26,8 +26,8 @@ $(function() {
 			$.ajax({
                 type : "POST",
                 url : "solarServlet",
-                data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation +
-                			"&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
+                data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
+                	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
                 success : displayResult
             });
 		}

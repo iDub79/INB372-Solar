@@ -49,19 +49,19 @@
 						<div class="control-group" id="grpPanelSize">
 							<label class="control-label" for="txtPanelSize">Total size of panels</label>
 							<div class="controls">
-								<input type="text" class="input-xlarge" id="txtPanelSize" placeholder="Enter size in square metres" />
+								<input type="number" class="input-xlarge" id="txtPanelSize" placeholder="Enter size in square metres" />
 							</div>
 						</div>
 						<div class="control-group" id="grpPanelEfficiency">
 							<label class="control-label" for="txtPanelEfficiency">Panel efficiency</label>
 							<div class="controls">
-								<input type="text" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter efficiency in watts per square metre" />
+								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter efficiency in watts per square metre" />
 							</div>
 						</div>
 						<div class="control-group" id="grpInverterEfficiency">
 							<label class="control-label" for="txtInverterEfficiency">Inverter efficiency</label>
 							<div class="controls">
-								<input type="text" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
+								<input type="number" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
 							</div>
 						</div>
 						<div class="control-group" id="grpPanelOrientation">
@@ -73,14 +73,14 @@
 						<div class="control-group" id="grpPanelAngle">
 							<label class="control-label" for="txtPanelAngle">Panel Angle</label>
 							<div class="controls">
-								<input type="text" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle" />
+								<input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle" />
 							</div>
 						</div>
 						<legend>Power Consumption</legend>
                         <div class="control-group" id="grpPowerConsumption">
                             <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
                             <div class="controls">
-                                <input type="text" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts" />
+                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts" />
                             </div>
                         </div>
 					</fieldset>
@@ -101,7 +101,7 @@
 						<div class="control-group" id="grpDailySunlight">
 							<label class="control-label" for="txtDailySunlight">Daily Sunlight</label>
 							<div class="controls">
-								<input type="text" class="input-xlarge" id="txtDailySunlight" placeholder="Enter sunlight in kilowatts" />
+								<input type="number" class="input-xlarge" id="txtDailySunlight" placeholder="Enter sunlight in kilowatts" />
 							</div>
 						</div>						
 					</fieldset>
