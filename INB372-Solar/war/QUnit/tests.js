@@ -1,12 +1,57 @@
-var results = { total: 0, bad: 0 }
-
 QUnit.begin = function() {
 	console.log("Running Test Suite");
 };
 
-QUnit.begin = function() {
-	console.log("Running Test Suite");
-};
+
+test("Panel Size is undefined", function() {
+	panelEfficiency = 5;
+	inverterEfficiency = 5;
+	address = "1 Test Street Brisbane Queensland";
+	orientation = "N";
+	angle = 5;
+	sunlight = 5;
+	consumption = 5;
+	
+	ok(!checkValidForm(), "Fields are valid - Undefined fields checked");
+});
+
+test("Panel Size is empty", function() {
+	panelEfficiency = 5;
+	inverterEfficiency = 5;
+	address = "1 Test Street Brisbane Queensland";
+	orientation = "N";
+	angle = 5;
+	sunlight = 5;
+	consumption = 5;
+	
+	ok(!checkValidForm(), "Fields are valid - Empty fields checked");
+});
+
+
+test("Test form fields are valid", function() {
+	panelSize = 5;
+	panelEfficiency = 5;
+	inverterEfficiency = 5;
+	address = "1 Test Street Brisbane Queensland";
+	orientation = "N";
+	angle = 5;
+	sunlight = 5;
+	consumption = 5;
+	
+	ok(checkValidForm(), "Fields are valid");
+});
+
+
+function clearInputFields() {
+	panelSize = "";
+	panelEfficiency = "";
+	inverterEfficiency = "";
+	address = "";
+	orientation = "";
+	angle = "";
+	sunlight = "";
+	consumption = "";
+}
 	
 /*
 $(function() {
@@ -21,7 +66,7 @@ $(function() {
 	});
 	
 });
-*/
+
 
 test("Test form fields are not filled out", function() {
 	$("#btnSubmitPersonTest").click();
@@ -47,3 +92,4 @@ function testForEmptyFields(selector, fieldName) {
 	}	
 }
 
+*/
