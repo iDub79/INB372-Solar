@@ -11,6 +11,7 @@ public class trariffException extends Exception {
 		super(); 
 	}
 
+	
 	/**
 	 * 
 	 * Class specific constructor 
