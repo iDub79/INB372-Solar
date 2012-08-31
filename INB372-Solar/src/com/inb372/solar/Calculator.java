@@ -14,7 +14,7 @@ public class Calculator {
 	private double calcPanelEff()
 	{
 		double wKwConversion = 1000;
-		return ((userData.getWattage()/userData.getSize)/wKwConversion);
+		return ((userData.getWattage()/userData.getSize())/wKwConversion);
 	}
 
 	private double[] calcSunPerHour()
