@@ -1,4 +1,4 @@
-package com.inb372.solar;
+package solar;
 
 import java.io.*;
 import javax.servlet.*;

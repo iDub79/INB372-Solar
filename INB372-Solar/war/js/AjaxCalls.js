@@ -10,7 +10,7 @@ var consumption;
 $(function() {
 
 	$("#btnCalculate").click(function() {
-		
+
 		clearValidationMessages();
 		
 		panelSize = $("#txtPanelSize").val();
@@ -22,9 +22,7 @@ $(function() {
 		sunlight = $("#txtDailySunlight").val();
 		consumption = $("#txtPowerConsumption").val();
 		
-		var validForm = checkValidForm();
-		
-		if (validForm) {
+		if (validForm()) {
 			$.ajax({
                 type : "POST",
                 url : "solarServlet",
@@ -36,21 +34,7 @@ $(function() {
 		else {
 			$("#pnlErrors").show();
 		}
-	});
-	
-	
-	function displayResult(result, status) {
-		if (status == 'success') {
-			if (result.Savings.Success == true) {
-				$("#lblSavings").html("Amount saved is: " + result.Savings.Amount);
-				$("#pnlResults").show();
-			}
-			else {
-				$("#lblSavings").html("There was an error in calculating the fields");
-				$("#pnlResults").show();
-			}				
-		}
-	}
+	});	
 });
 
 function clearValidationMessages() {
@@ -67,38 +51,38 @@ function clearValidationMessages() {
 }
 
 
-function checkValidForm() {	
+function validForm() {	
 	var validForm = true;
 	
-	if ((panelSize == "") || (isNaN(panelSize)) || (typeof panelSize === "undefined")) {
+	if (invalidNumberField(panelSize)) {
 		$("#grpPanelSize").addClass("error");
 		validForm = false;
 	}
-	if ((panelEfficiency == "") || (isNaN(panelEfficiency)) || (typeof panelEfficiency === "undefined")) {
+	if (invalidNumberField(panelEfficiency)) {
 		$("#grpPanelEfficiency").addClass("error");
 		validForm = false;
 	}
-	if ((inverterEfficiency == "") || (isNaN(inverterEfficiency)) || (typeof inverterEfficiency === "undefined")) {
+	if (invalidNumberField(inverterEfficiency)) {
 		$("#grpInverterEfficiency").addClass("error");
 		validForm = false;
 	}		
-	if ((orientation == "") || (typeof orientation === "undefined")) {
+	if (invalidAlphaNumericField(orientation)) {
 		$("#grpPanelOrientation").addClass("error");
 		validForm = false;
 	}
-	if ((angle == "") || (isNaN(angle)) || (typeof angle === "undefined")) {
+	if (invalidNumberField(angle)) {
 		$("#grpPanelAngle").addClass("error");
 		validForm = false;
 	}
-	if ((sunlight == "") || (isNaN(sunlight)) || (typeof sunlight === "undefined")) {
+	if (invalidNumberField(sunlight)) {
 		$("#grpDailySunlight").addClass("error");
 		validForm = false;
 	}
-	if ((consumption == "") || (isNaN(consumption)) || (typeof consumption === "undefined")) {
+	if (invalidNumberField(consumption)) {
 		$("#grpPowerConsumption").addClass("error");
 		validForm = false;
 	}
-	if ((address == "") || (typeof address === "undefined")) {
+	if (invalidAlphaNumericField(address)) {
 		$("#grpAddress").addClass("error");
 		validForm = false;
 	}
@@ -107,6 +91,28 @@ function checkValidForm() {
 }
 
 
+function invalidNumberField(field) {
+	return ((field == "") || (isNaN(field)) || (typeof field === "undefined"));
+}
+
+
+function invalidAlphaNumericField(field) {
+	return ((field == "") || (typeof field === "undefined"));
+}
+
+
+function displayResult(result, status) {
+	if (status == 'success') {
+		if (result.Savings.Success == true) {
+			$("#lblSavings").html("Amount saved is: " + result.Savings.Amount);
+			$("#pnlResults").show();
+		}
+		else {
+			$("#lblSavings").html("There was an error in calculating the fields");
+			$("#pnlResults").show();
+		}				
+	}
+}
 
 
 

@@ -1,4 +1,4 @@
-package com.inb372.solar;
+package solar;
 
 public class Person {
 

@@ -3,32 +3,18 @@ QUnit.begin = function() {
 };
 
 
-test("Panel Size is undefined", function() {
-	panelEfficiency = 5;
-	inverterEfficiency = 5;
-	address = "1 Test Street Brisbane Queensland";
-	orientation = "N";
-	angle = 5;
-	sunlight = 5;
-	consumption = 5;
-	
-	ok(!checkValidForm(), "Fields are valid - Undefined fields checked");
-});
-
-test("Panel Size is empty", function() {
-	panelEfficiency = 5;
-	inverterEfficiency = 5;
-	address = "1 Test Street Brisbane Queensland";
-	orientation = "N";
-	angle = 5;
-	sunlight = 5;
-	consumption = 5;
-	
-	ok(!checkValidForm(), "Fields are valid - Empty fields checked");
-});
+testNumericInputFields("Panel Size", "panelSize")
+testNumericInputFields("Panel Efficiency", "panelEfficiency")
+testNumericInputFields("Inverter Efficiency", "inverterEfficiency")
+testAlphaNumericInputFields("Orientation", "orientation")
+testNumericInputFields("Angle", "angle")
+testNumericInputFields("Sunlight", "sunlight")
+testNumericInputFields("Consumption", "consumption")
+testAlphaNumericInputFields("Address", "address")
 
 
-test("Test form fields are valid", function() {
+module("All input fields valid");
+test("All input fields valid", function() {
 	panelSize = 5;
 	panelEfficiency = 5;
 	inverterEfficiency = 5;
@@ -38,8 +24,52 @@ test("Test form fields are valid", function() {
 	sunlight = 5;
 	consumption = 5;
 	
-	ok(checkValidForm(), "Fields are valid");
+	ok(validForm(), "All input fields are valid");
 });
+
+
+
+function testNumericInputFields(fieldName, txtFieldName) {
+	module(fieldName + " input fields");
+	test(fieldName + " is undefined", function() {
+		ok(invalidNumberField(txtFieldName), fieldName + " is undefined");
+	});
+
+	test(fieldName + " is empty", function() {
+		txtFieldName = "";
+		ok(invalidNumberField(txtFieldName), fieldName + " is empty");
+	});
+
+	test(fieldName + " is NaN", function() {
+		txtFieldName = "a";
+		ok(invalidNumberField(txtFieldName), fieldName + "  is NaN");
+	});
+
+	test(fieldName + " is valid", function() {
+		txtFieldName = "5";
+		ok(!invalidNumberField(txtFieldName), fieldName + "  is valid");
+	});
+}
+
+
+function testAlphaNumericInputFields(fieldName, txtFieldName) {
+	module(fieldName + " input fields");
+	test(fieldName + " is undefined", function() {
+		ok(!invalidAlphaNumericField(txtFieldName), fieldName + " is undefined");
+	});
+
+	test(fieldName + " is empty", function() {
+		txtFieldName = "";
+		ok(invalidAlphaNumericField(txtFieldName), fieldName + " is empty");
+	});
+
+	test(fieldName + " is valid", function() {
+		txtFieldName = "ABC12";
+		ok(!invalidAlphaNumericField(txtFieldName), fieldName + "  is valid");
+	});
+}
+
+
 
 
 function clearInputFields() {
@@ -53,43 +83,3 @@ function clearInputFields() {
 	consumption = "";
 }
 	
-/*
-$(function() {
-
-	$("#btnSubmitPersonTest").click(function() {
-		test("Submit Person Tests", 3, function() {
-			ok(testForEmptyFields("#personName", "Name"), "Person field is not empty");
-			ok(testForEmptyFields("#personAge", "Age"), "Age field is not empty");
-		});
-				
-		console.log("Of " + results.total + " tests, " + results.bad + " failed, " + (results.total - results.bad) + " passed.");
-	});
-	
-});
-
-
-test("Test form fields are not filled out", function() {
-	$("#btnSubmitPersonTest").click();
-	equal($("#personName").val(), "", "Person field is empty");
-	console.log("Of " + results.total + " tests, " + results.bad + " failed, " + (results.total - results.bad) + " passed.");
-});
-
-
-function testForEmptyFields(selector, fieldName) {
-	results.total++;
-	
-	var field = $(selector).val();
-	var result = (field == "") ?  false : true;
-	
-	if (result == false) {
-		results.bad++;
-		console.log(fieldName + " is empty");
-		return false;
-	}
-	else {
-		console.log(fieldName + " contains value: " + field);
-		return true;
-	}	
-}
-
-*/

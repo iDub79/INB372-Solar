@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<servlet>
 		<servlet-name>Solar</servlet-name>
-		<servlet-class>com.inb372.solar.SolarServlet</servlet-class>
+		<servlet-class>solar.SolarServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Solar</servlet-name>
@@ -9,7 +9,7 @@
 	</servlet-mapping>
 	<servlet>
 		<servlet-name>Person</servlet-name>
-		<servlet-class>com.inb372.solar.PersonServlet</servlet-class>
+		<servlet-class>solar.PersonServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Person</servlet-name>
