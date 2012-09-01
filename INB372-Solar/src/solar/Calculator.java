@@ -6,6 +6,7 @@ public class Calculator {
 	private SolarSystemInfo system;
 	private int noHoursInDay = 6;
 	
+	// test comment
 	public Calculator(SolarSystemInfo system) {
 		this.system = system;
 	}
