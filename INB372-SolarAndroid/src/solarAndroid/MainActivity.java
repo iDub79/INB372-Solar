@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.inb372.solarandroid.*;
+
 public class MainActivity extends Activity {
 
     @Override
