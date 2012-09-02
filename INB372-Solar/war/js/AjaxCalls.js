@@ -104,7 +104,7 @@ function invalidAlphaNumericField(field) {
 function displayResult(result, status) {
 	if (status == 'success') {
 		if (result.Savings.Success == true) {
-			$("#lblSavings").html("Amount saved is: " + result.Savings.Amount);
+			$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + result.Savings.Amount + "</strong>");
 			$("#pnlResults").show();
 		}
 		else {
