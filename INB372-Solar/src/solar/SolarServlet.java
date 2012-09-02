@@ -24,7 +24,7 @@ public class SolarServlet extends HttpServlet {
 		String address = request.getParameter("address");
 		String orientation = request.getParameter("orientation");
 		Integer sunlight = Integer.parseInt(request.getParameter("sunlight"));
-		double dailyPower = 0;
+		double annualSavings = 0;
 		
 		boolean validInput = false;
 		
@@ -48,9 +48,17 @@ public class SolarServlet extends HttpServlet {
 		if (validInput) {
 			SolarSystemInfo solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);
 			
-			Calculator calc = new Calculator(solarInfo);
+			Calculator calc = new Calculator(solarInfo);			
+			TariffCalculation tariff;
 			
-			dailyPower = calc.calcDailyPower();
+			try {
+				tariff = new TariffCalculation(calc);
+				annualSavings = tariff.calAnnualSaving();
+			}
+			catch (TariffException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		JSONObject moneyMade = new JSONObject();
@@ -59,7 +67,7 @@ public class SolarServlet extends HttpServlet {
 		try {
 			if (validInput) {			
 				moneyMade.put("Success", true);
-				moneyMade.put("Amount", dailyPower);
+				moneyMade.put("Amount", annualSavings);
 				returnJson.put("Savings", moneyMade);
 			}			
 			else {

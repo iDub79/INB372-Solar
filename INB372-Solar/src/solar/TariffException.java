@@ -19,6 +19,6 @@ public class TariffException extends Exception {
 	 * @param msg - specific error message
 	 */
 	public TariffException(String msg) {
-		super("trariffException: " + msg);
+		super("TariffException: " + msg);
 	}
 }

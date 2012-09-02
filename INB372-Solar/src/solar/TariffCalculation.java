@@ -6,7 +6,7 @@ import solar.TariffException;
 
 public class TariffCalculation {
 
-	private Calculator solar;
+	//private Calculator solar;
 	final double cost = 0.44;
 	double electric;
 	//
