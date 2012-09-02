@@ -1,6 +1,7 @@
 package com.inb372.solar;
 
 
+
 public class trariffCalculation {
 
 	private Calculator solar;

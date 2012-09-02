@@ -1,5 +1,6 @@
 package com.inb372.solar;
 
+
 public class trariffException extends Exception {
 
 	/**

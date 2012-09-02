@@ -1,4 +1,5 @@
 package com.inb372.solar;
+
 import static org.junit.Assert.*;
 
 import org.junit.Test;
