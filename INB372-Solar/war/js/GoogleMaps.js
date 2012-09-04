@@ -12,6 +12,7 @@ var geocoder;
 var autocomplete;
 var infowindow;
 var myOptions = { mapTypeId: google.maps.MapTypeId.SATELLITE };
+var center;
 
 
 /*

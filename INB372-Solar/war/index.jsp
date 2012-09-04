@@ -67,7 +67,17 @@
 						<div class="control-group" id="grpPanelOrientation">
 							<label class="control-label" for="txtPanelOrientation">Panel Orientation</label>
 							<div class="controls">
-								<input type="text" class="input-xlarge" id="txtPanelOrientation" placeholder="Enter orientation (e.g. N, NE, SW etc.)" />
+								<select id="listPanelOrientation">
+								    <option value="-1">-- Select Panel Orientation --</option>
+								    <option value="N">North</option>
+								    <option value="NE">Northeast</option>
+								    <option value="E">East</option>
+								    <option value="SE">Southeast</option>
+								    <option value="S">South</option>
+								    <option value="SW">Southwest</option>
+								    <option value="W">West</option>
+								    <option value="NW">Northwest</option>
+								</select>
 							</div>
 						</div>
 						<div class="control-group" id="grpPanelAngle">
@@ -107,11 +117,11 @@
 					</fieldset>
 				</div>
 			</div>
-			<div class="span12">
+			<div class="span12">			    
 				<div class="form-actions">
 					<button class="btn btn-large btn-primary" id="btnCalculate">Calculate</button>
 					<button class="btn btn-large" id="btnReset">Cancel</button>					
-				</div>
+				</div>				
 			</div>
 			<div class="span12">
                 <div class="alert alert-success" id="pnlResults" style="display: none;">
@@ -121,6 +131,11 @@
 				    <span id="lblErrors">Please correct the fields highlighted in red.</span>
 			    </div>
 			</div>
+			<div class="span12">
+                <div class="alert alert-info">
+                     <p style="text-align: center; font-style: italic;">Please note that this calculator is based on values for Brisbane, Australia and currently only gives an approximation.</p>
+                </div>
+            </div>
 		</div>
 	</div>
 </body>

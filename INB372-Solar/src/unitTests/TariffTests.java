@@ -1,6 +1,7 @@
 package unitTests;
 
 import solar.TariffCalculation;
+import solar.TariffException;
 
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -19,7 +20,7 @@ public class TariffTests {
 	 */
 	/*@Test (expected = TariffCalculation.class)
 	//Test for negative electric
-	public void constructor_trariffCalculation() throws TariffException {
+	public void constructor_tariffCalculation() throws TariffException {
 		// negative
 		new TariffCalculation (-1);
 	}

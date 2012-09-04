@@ -8,7 +8,7 @@ public class SolarSystemInfo {
 	private float panelAngle;
 	private float dayTimePowerConsumption;
 	
-	SolarSystemInfo(float pSize, float wRating, float iEffeciency, float pAngle, float powerConsumption) {
+	public SolarSystemInfo(float pSize, float wRating, float iEffeciency, float pAngle, float powerConsumption) {
 		sizeOfPanels = pSize;
 		wattRating = wRating;
 		inverterEffeciency = iEffeciency;
