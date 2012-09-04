@@ -109,7 +109,7 @@ function invalidAlphaNumericField(field) {
 	return ((field == "") || (typeof field === "undefined"));
 }
 
-
+// test
 function displayResult(result, status) {
 	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
 	
