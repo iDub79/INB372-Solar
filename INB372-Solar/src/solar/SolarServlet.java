@@ -48,17 +48,22 @@ public class SolarServlet extends HttpServlet {
 		if (validInput) {
 			SolarSystemInfo solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);
 			
-			Calculator calc = new Calculator(solarInfo);			
+			Calculator calc;
 			TariffCalculation tariff;
 			
 			try {
+				calc = new Calculator(solarInfo);
 				tariff = new TariffCalculation(calc);
 				annualSavings = tariff.calAnnualSaving();
+			}
+			catch (CalculatorException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 			catch (TariffException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}			
 		}
 		
 		JSONObject moneyMade = new JSONObject();
