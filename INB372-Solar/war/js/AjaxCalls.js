@@ -1,3 +1,5 @@
+// test
+
 var panelSize;
 var panelEfficiency;
 var inverterEfficiency;
