@@ -6,7 +6,6 @@ QUnit.begin = function() {
 testNumericInputFields("Panel Size", "panelSize")
 testNumericInputFields("Panel Efficiency", "panelEfficiency")
 testNumericInputFields("Inverter Efficiency", "inverterEfficiency")
-testAlphaNumericInputFields("Orientation", "orientation")
 testNumericInputFields("Angle", "angle")
 testNumericInputFields("Sunlight", "sunlight")
 testNumericInputFields("Consumption", "consumption")
@@ -15,18 +14,44 @@ testAlphaNumericInputFields("Address", "address")
 
 module("All input fields valid");
 test("All input fields valid", function() {
-	panelSize = 5;
-	panelEfficiency = 5;
-	inverterEfficiency = 5;
-	address = "1 Test Street Brisbane Queensland";
-	orientation = "N";
-	angle = 5;
-	sunlight = 5;
-	consumption = 5;
+	setupValidInputs();
 	
 	ok(validForm(), "All input fields are valid");
 });
 
+
+module("Valid ajax response");
+test("All input data submitted as valid parameters", function() {
+	setupValidInputs();
+	
+	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
+	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address;
+	
+	var options = null;
+	$.ajax = function(param) {
+		options = param;
+	};
+	calculateInput();
+	options.success();
+	equal(options.data, input);
+});
+
+/*
+test("Valid calculation response received", function() {
+	var amount = 0;
+	var expectedAmount = 321.2;
+	
+	setupValidInputs();
+
+	calculateInput("/solarServlet", function(Response) {		
+			amount = $.evalJSON(response.Savings);
+			alert(amount);
+			equal(amount, expectedAmount);
+			start();
+		}
+	);
+});
+*/
 
 
 function testNumericInputFields(fieldName, txtFieldName) {
@@ -42,9 +67,14 @@ function testNumericInputFields(fieldName, txtFieldName) {
 
 	test(fieldName + " is NaN", function() {
 		txtFieldName = "a";
-		ok(invalidNumberField(txtFieldName), fieldName + "  is NaN");
+		ok(invalidNumberField(txtFieldName), fieldName + "  is not a number");
 	});
 
+	test(fieldName + " is less than 0", function() {
+		txtFieldName = "-1";
+		ok(invalidNumberField(txtFieldName), fieldName + "  is less than 0");
+	});
+	
 	test(fieldName + " is valid", function() {
 		txtFieldName = "5";
 		ok(!invalidNumberField(txtFieldName), fieldName + "  is valid");
@@ -70,7 +100,16 @@ function testAlphaNumericInputFields(fieldName, txtFieldName) {
 }
 
 
-
+function setupValidInputs() {
+	panelSize = 5;
+	panelEfficiency = 5;
+	inverterEfficiency = 5;
+	address = "1 Test Street Brisbane Queensland";
+	orientation = "N";
+	angle = 5;
+	sunlight = 5;
+	consumption = 5;
+}
 
 function clearInputFields() {
 	panelSize = "";

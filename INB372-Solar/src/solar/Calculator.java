@@ -10,34 +10,25 @@ public class Calculator {
 	private float[] angSunPanel = new float[noHoursInDay];
 	private float[] hourlyInsolation = new float[noHoursInDay];
 	private float[] hourlySun = new float[noHoursInDay];
-
-
 	
 	public Calculator(SolarSystemInfo system) throws CalculatorException {
-		try {
-			if (system == null) {
-				throw new CalculatorException();
-			}
-			else {
-				this.system = system;
-			}
+		if (system == null) {
+			throw new CalculatorException();
 		}
-		catch (CalculatorException e) {
-			e.printStackTrace();
+		else {
+			this.system = system;
 		}
 	}
 	
-	private float calcPanelEff() {
+	private float calcPanelEff() throws CalculatorException {
 		float wKwConversion = 1000;
 		
-		try {
+		if (system.getSizeOfPanels() == 0.0f) {
 			throw new CalculatorException();
+		}	
+		else {
+			return ((system.getWattRating() / system.getSizeOfPanels()) / wKwConversion);
 		}
-		catch (CalculatorException e) {
-			e.printStackTrace();
-		}
-		
-		return ((system.getWattRating() / system.getSizeOfPanels()) / wKwConversion);
 	}
 
 	private float[] calcSunPerHour() {
@@ -71,8 +62,8 @@ public class Calculator {
 		return hourlyInsolation;
 	}
 	
-	private float calcDailySunHit(float[] hourlyInsolation, float[] hourlySun) {
-		float dailySun = 0.0f;
+	private float calcDailySunHit() {
+		float dailySun = 7;
 		hourlySun = calcSunPerHour();
 		angSunPanel = calcAngleSunPanel(angSunGround);
 		hourlyInsolation = calcHourlyInsolation(angSunPanel);
@@ -84,11 +75,11 @@ public class Calculator {
 		return dailySun;
 	}
 	
-	public float calcDailyPower() {
-		return 7.0f;
+	public float calcDailyPower() throws CalculatorException {
+		return calcPanelEff() * system.getInverterEffeciency() * calcDailySunHit();
 	}
 	
-	public float calcDailyExcess() {
+	public float calcDailyExcess() throws CalculatorException {
 		return calcDailyPower() - system.getDayTimePowerConsumption();
 	}
 }

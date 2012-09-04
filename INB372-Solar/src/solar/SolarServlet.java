@@ -1,6 +1,7 @@
 package solar;
 
 import java.io.*;
+import java.text.DecimalFormat;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -24,7 +25,7 @@ public class SolarServlet extends HttpServlet {
 		String address = request.getParameter("address");
 		String orientation = request.getParameter("orientation");
 		Integer sunlight = Integer.parseInt(request.getParameter("sunlight"));
-		double annualSavings = 0;
+		float annualSavings = 0;
 		
 		boolean validInput = false;
 		
@@ -54,7 +55,7 @@ public class SolarServlet extends HttpServlet {
 			try {
 				calc = new Calculator(solarInfo);
 				tariff = new TariffCalculation(calc);
-				annualSavings = tariff.calAnnualSaving();
+				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
 			}
 			catch (CalculatorException e1) {
 				// TODO Auto-generated catch block
@@ -66,13 +67,15 @@ public class SolarServlet extends HttpServlet {
 			}			
 		}
 		
+		DecimalFormat dec = new DecimalFormat("###.##");
+		
 		JSONObject moneyMade = new JSONObject();
 		JSONObject returnJson = new JSONObject();
 		
 		try {
 			if (validInput) {			
 				moneyMade.put("Success", true);
-				moneyMade.put("Amount", annualSavings);
+				moneyMade.put("Amount", dec.format(annualSavings));
 				returnJson.put("Savings", moneyMade);
 			}			
 			else {

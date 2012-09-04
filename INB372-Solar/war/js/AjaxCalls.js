@@ -8,6 +8,7 @@ var orientation;
 var angle;
 var sunlight;
 var consumption;
+var amountSavedNum = 0.00;
 
 $(function() {
 
@@ -19,25 +20,31 @@ $(function() {
 		panelEfficiency = $("#txtPanelEfficiency").val();
 		inverterEfficiency = $("#txtInverterEfficiency").val();
 		address = $("#searchTextField").val();
-		orientation = $("#txtPanelOrientation").val();
+		orientation = $("#listPanelOrientation").val();
 		angle = $("#txtPanelAngle").val();
 		sunlight = $("#txtDailySunlight").val();
 		consumption = $("#txtPowerConsumption").val();
 		
 		if (validForm()) {
-			$.ajax({
-                type : "POST",
-                url : "solarServlet",
-                data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-                	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
-                success : displayResult
-            });
+			calculateInput();
 		}
 		else {
 			$("#pnlErrors").show();
 		}
 	});	
 });
+
+
+function calculateInput() {
+	$.ajax({
+        type : "POST",
+        url : "solarServlet",
+        data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
+        	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
+	    async: false,
+        success : displayResult
+    });
+}
 
 function clearValidationMessages() {
 	$("#grpPanelSize").removeClass("error");
@@ -68,7 +75,7 @@ function validForm() {
 		$("#grpInverterEfficiency").addClass("error");
 		validForm = false;
 	}		
-	if (invalidAlphaNumericField(orientation)) {
+	if (orientation == -1) {
 		$("#grpPanelOrientation").addClass("error");
 		validForm = false;
 	}
@@ -94,7 +101,7 @@ function validForm() {
 
 
 function invalidNumberField(field) {
-	return ((field == "") || (isNaN(field)) || (typeof field === "undefined"));
+	return ((field == "") || (isNaN(field)) || (typeof field === "undefined") || (field < 0));
 }
 
 
@@ -104,10 +111,28 @@ function invalidAlphaNumericField(field) {
 
 
 function displayResult(result, status) {
+	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
+	
 	if (status == 'success') {
 		if (result.Savings.Success == true) {
-			$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + result.Savings.Amount + "</strong>");
-			$("#pnlResults").show();
+			var amountSaved = result.Savings.Amount;
+			
+			if (amountSaved > 0) {
+				amountSavedNum = parseFloat(amountSaved);
+				try {
+					amountSavedNum = amountSavedNum.toFixed(2);
+					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong>");
+					$("#pnlResults").show();
+				}
+				catch (Error) {
+					$("#lblSavings").html("There was an error in calculating the fields");
+					$("#pnlResults").show();
+				}
+			}
+			else {
+				$("#lblSavings").html("The values entered seem to be too low. Please check and try again.");
+				$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
+			}
 		}
 		else {
 			$("#lblSavings").html("There was an error in calculating the fields");
