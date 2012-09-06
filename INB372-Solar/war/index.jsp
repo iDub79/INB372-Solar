@@ -42,7 +42,7 @@
 	</div>
 	<div class="container">
 		<div class="row">
-			<div class="span6">
+			<div class="span12">
 				<div class="form-horizontal">
 					<fieldset>
 						<legend>Solar Panel & Inverter Specifications</legend>
@@ -65,7 +65,7 @@
 							</div>
 						</div>
 						<div class="control-group" id="grpPanelOrientation">
-							<label class="control-label" for="txtPanelOrientation">Panel Orientation</label>
+							<label class="control-label" for="listPanelOrientation">Panel Orientation</label>
 							<div class="controls">
 								<select id="listPanelOrientation">
 								    <option value="-1">-- Select Panel Orientation --</option>
@@ -93,10 +93,21 @@
                                 <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts" />
                             </div>
                         </div>
+                        <legend>Brisbane Tariff Value</legend>
+                        <div class="control-group" id="grpTariff">
+                            <label class="control-label" for="listTariff">Tariff Value</label>
+                            <div class="controls">
+                                <select id="listTariff">
+                                    <option value="-1">-- Select Tariff Value --</option>
+                                    <option value="0.44">44c (pre July 10, 2012)</option>
+                                    <option value="0.08">8c (from July 10, 2012)</option>
+                                </select>
+                            </div>
+                        </div>
 					</fieldset>
 				</div>
 			</div>
-			<div class="span6">
+			<div class="span6" style="display: none;">
 				<div class="form-horizontal">
 					<fieldset>
 						<legend>Property Location</legend>

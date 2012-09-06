@@ -48,7 +48,6 @@ public class CalculatorTest {
 		Calculator zeroCalc;
 		try {
 			zeroCalc = new Calculator(panelSizeZero);
-
 			assert (abs(zeroCalc.calcDailyPower() - 62.0f) < .01f);
 		}
 		catch (CalculatorException e) {

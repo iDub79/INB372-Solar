@@ -1,7 +1,6 @@
 package solar;
 
 import java.io.*;
-import java.text.DecimalFormat;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
@@ -17,17 +16,22 @@ public class SolarServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		float panelSize = Float.parseFloat(request.getParameter("panelSize"));
-		float panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
-		float inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));			
-		float angle = Float.parseFloat(request.getParameter("angle"));			
-		float consumption = Float.parseFloat(request.getParameter("consumption"));
-		String address = request.getParameter("address");
-		String orientation = request.getParameter("orientation");
-		Integer sunlight = Integer.parseInt(request.getParameter("sunlight"));
-		float annualSavings = 0;
+		float panelSize = 0;
+		float panelEfficiency = 0;
+		float inverterEfficiency = 0;			
+		float angle = 0;			
+		float consumption = 0;
+		String address = "";
+		String orientation = "";
+		Integer sunlight = 0;
+		float tariffAmount = 0;
 		
+		float annualSavings = 0;
 		boolean validInput = false;
+		
+		Calculator calc;
+		TariffCalculation tariff;		
+		
 		
 		try {
 			panelSize = Float.parseFloat(request.getParameter("panelSize"));
@@ -38,6 +42,7 @@ public class SolarServlet extends HttpServlet {
 			address = request.getParameter("address");
 			orientation = request.getParameter("orientation");
 			sunlight = Integer.parseInt(request.getParameter("sunlight"));
+			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
 			
 			validInput = true;
 		}
@@ -47,14 +52,11 @@ public class SolarServlet extends HttpServlet {
 		}
 		
 		if (validInput) {
-			SolarSystemInfo solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);
-			
-			Calculator calc;
-			TariffCalculation tariff;
+			SolarSystemInfo solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);			
 			
 			try {
 				calc = new Calculator(solarInfo);
-				tariff = new TariffCalculation(calc);
+				tariff = new TariffCalculation(calc, tariffAmount);
 				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
 			}
 			catch (CalculatorException e1) {
@@ -66,16 +68,14 @@ public class SolarServlet extends HttpServlet {
 				e.printStackTrace();
 			}			
 		}
-		
-		DecimalFormat dec = new DecimalFormat("###.##");
-		
+
 		JSONObject moneyMade = new JSONObject();
 		JSONObject returnJson = new JSONObject();
 		
 		try {
 			if (validInput) {			
 				moneyMade.put("Success", true);
-				moneyMade.put("Amount", dec.format(annualSavings));
+				moneyMade.put("Amount", annualSavings);
 				returnJson.put("Savings", moneyMade);
 			}			
 			else {
