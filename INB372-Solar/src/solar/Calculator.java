@@ -63,7 +63,7 @@ public class Calculator {
 	}
 	
 	private float calcDailySunHit() {
-		float dailySun = 7;
+		float dailySun = 0;
 		hourlySun = calcSunPerHour();
 		angSunPanel = calcAngleSunPanel(angSunGround);
 		hourlyInsolation = calcHourlyInsolation(angSunPanel);
