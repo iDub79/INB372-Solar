@@ -7,12 +7,6 @@ public class Calculator {
 	private SolarSystemInfo system;
 	private int noHoursInDay = 6;
 	private float[] angSunGround = new float[noHoursInDay];
-	angSunGround[0] = 10;
-	angSunGround[1] = 35;
-	angSunGround[2] = 40;
-	angSunGround[3] = 40;
-	angSunGround[4] = 35;
-	angSunGround[5] = 10;
 	private float[] angSunPanel = new float[noHoursInDay];
 	private float[] hourlyInsolation = new float[noHoursInDay];
 	private float[] hourlySun = new float[noHoursInDay];
@@ -23,6 +17,12 @@ public class Calculator {
 		}
 		else {
 			this.system = system;
+			angSunGround[0] = 10;
+			angSunGround[1] = 35;
+			angSunGround[2] = 40;
+			angSunGround[3] = 40;
+			angSunGround[4] = 35;
+			angSunGround[5] = 10;
 		}
 	}
 	
