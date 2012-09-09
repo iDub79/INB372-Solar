@@ -52,21 +52,28 @@ public class SolarServlet extends HttpServlet {
 		}
 		
 		if (validInput) {
-			SolarSystemInfo solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);			
-			
+			SolarSystemInfo solarInfo;
 			try {
-				calc = new Calculator(solarInfo);
-				tariff = new TariffCalculation(calc, tariffAmount);
-				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
+				solarInfo = new SolarSystemInfo(panelSize, panelEfficiency, inverterEfficiency, angle, consumption);
+				
+				try {
+					calc = new Calculator(solarInfo);
+					tariff = new TariffCalculation(calc, tariffAmount);
+					annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
+				}
+				catch (CalculatorException calcEx) {
+					// TODO Auto-generated catch block
+					calcEx.printStackTrace();
+				}
+				catch (TariffException tarEx) {
+					// TODO Auto-generated catch block
+					tarEx.printStackTrace();
+				}
 			}
-			catch (CalculatorException calcEx) {
+			catch (SolarSystemException e) {
 				// TODO Auto-generated catch block
-				calcEx.printStackTrace();
-			}
-			catch (TariffException tarEx) {
-				// TODO Auto-generated catch block
-				tarEx.printStackTrace();
-			}			
+				e.printStackTrace();
+			}						
 		}
 
 		JSONObject moneyMade = new JSONObject();
