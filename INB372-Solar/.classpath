@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Calin/Downloads/junit-4.11-SNAPSHOT-20120805-1225.jar"/>
+	<classpathentry kind="lib" path="C:/Users/iDub-ASUS/Downloads/Downloaded Install Files/JUnit/junit-4.10.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

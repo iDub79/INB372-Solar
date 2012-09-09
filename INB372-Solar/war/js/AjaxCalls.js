@@ -1,3 +1,6 @@
+var panelLength;
+var panelWidth;
+var panelQty;
 var panelSize;
 var panelEfficiency;
 var inverterEfficiency;
@@ -15,7 +18,9 @@ $(function() {
 
 		clearValidationMessages();
 		
-		panelSize = $("#txtPanelSize").val();
+		panelLength = $("#txtPanelLength").val();
+		panelWidth = $("#txtPanelWidth").val();
+		panelQty = $("#txtPanelQty").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();
 		inverterEfficiency = $("#txtInverterEfficiency").val();		
 		//orientation = $("#listPanelOrientation").val();
@@ -26,6 +31,7 @@ $(function() {
 		tariff = $("#listTariff").val();
 		
 		if (validForm()) {
+			calculatePanelSize();
 			calculateInput();
 		}
 		else {
@@ -33,6 +39,11 @@ $(function() {
 		}
 	});	
 });
+
+
+function calculatePanelSize() {
+	panelSize = (((panelLength / 1000) * (panelWidth / 1000)) * panelQty) ;
+}
 
 
 function calculateInput() {
@@ -48,7 +59,7 @@ function calculateInput() {
 }
 
 function clearValidationMessages() {
-	$("#grpPanelSize, #grpPanelEfficiency, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight").removeClass("error");
+	$("#grpPanelLength, #grpPanelWidth, #grpPanelQty, #grpPanelEfficiency, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight, #grpTariff").removeClass("error");
 	$("#pnlErrors, #pnlResults").hide();
 }
 
@@ -56,8 +67,16 @@ function clearValidationMessages() {
 function validForm() {	
 	var validForm = true;
 	
-	if (invalidNumberField(panelSize)) {
-		$("#grpPanelSize").addClass("error");
+	if (invalidNumberField(panelLength)) {
+		$("#grpPanelLength").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(panelWidth)) {
+		$("#grpPanelWidth").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(panelQty)) {
+		$("#grpPanelQty").addClass("error");
 		validForm = false;
 	}
 	if (invalidNumberField(panelEfficiency)) {
@@ -126,7 +145,7 @@ function displayResult(result, status) {
 				}
 			}
 			else {
-				displayError("The values entered seem to be too low. Please check and try again.");
+				displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.");
 			}
 		}
 		else {

@@ -3,7 +3,9 @@ QUnit.begin = function() {
 };
 
 
-testNumericInputFields("Panel Size", "panelSize")
+testNumericInputFields("Panel Length", "panelLength")
+testNumericInputFields("Panel Width", "panelWidth")
+testNumericInputFields("Panel Quantity", "panelQty")
 testNumericInputFields("Panel Efficiency", "panelEfficiency")
 testNumericInputFields("Inverter Efficiency", "inverterEfficiency")
 testNumericInputFields("Angle", "angle")
@@ -20,9 +22,19 @@ test("All input fields valid", function() {
 });
 
 
+module("Panel Size Calculation");
+test("Panel size is calculated correctly", function() {
+	setupValidInputs();
+	calculatePanelSize();
+	
+	equal(panelSize, 13.099656, "Panel fields calculated correctly");
+});
+
+
 module("Valid ajax response");
 test("All input data submitted as valid parameters", function() {
 	setupValidInputs();
+	calculatePanelSize();
 	
 	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
 	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
@@ -38,7 +50,8 @@ test("All input data submitted as valid parameters", function() {
 
 /*
 test("Valid calculation response received", function() {
-setupValidInputs();
+	setupValidInputs();
+	calculatePanelSize();
 	
 	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
 	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
@@ -101,7 +114,9 @@ function testAlphaNumericInputFields(fieldName, txtFieldName) {
 
 
 function setupValidInputs() {
-	panelSize = 5;
+	panelLength = 1649;
+	panelWidth = 993;
+	panelQty = 8;
 	panelEfficiency = 5;
 	inverterEfficiency = 5;
 	address = "1 Test Street Brisbane Queensland";
@@ -113,7 +128,9 @@ function setupValidInputs() {
 }
 
 function clearInputFields() {
-	panelSize = "";
+	panelLength = "";
+	panelWidth = "";
+	panelQty = "";
 	panelEfficiency = "";
 	inverterEfficiency = "";
 	address = "";
