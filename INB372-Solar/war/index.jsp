@@ -64,7 +64,7 @@
 								<input type="number" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
 							</div>
 						</div>
-						<div class="control-group" id="grpPanelOrientation">
+						<div class="control-group" id="grpPanelOrientation" style="display: none;">
 							<label class="control-label" for="listPanelOrientation">Panel Orientation</label>
 							<div class="controls">
 								<select id="listPanelOrientation">
@@ -80,7 +80,7 @@
 								</select>
 							</div>
 						</div>
-						<div class="control-group" id="grpPanelAngle">
+						<div class="control-group" id="grpPanelAngle" style="display: none;">
 							<label class="control-label" for="txtPanelAngle">Panel Angle</label>
 							<div class="controls">
 								<input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle" />
@@ -98,9 +98,9 @@
                             <label class="control-label" for="listTariff">Tariff Value</label>
                             <div class="controls">
                                 <select id="listTariff">
-                                    <option value="-1">-- Select Tariff Value --</option>
-                                    <option value="0.44">44c (pre July 10, 2012)</option>
+                                    <option value="-1">-- Select Tariff Value --</option>                                    
                                     <option value="0.08">8c (from July 10, 2012)</option>
+                                    <option value="0.44">44c (pre July 10, 2012)</option>
                                 </select>
                             </div>
                         </div>

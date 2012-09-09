@@ -1,8 +1,8 @@
 var panelSize;
 var panelEfficiency;
 var inverterEfficiency;
-var orientation;
-var angle;
+var orientation = "N";
+var angle = 45;
 var consumption;
 var address = "Dummy address";		// dummy address used until later iteration
 var sunlight = "10";				// default value based on Brisbane average
@@ -18,8 +18,8 @@ $(function() {
 		panelSize = $("#txtPanelSize").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();
 		inverterEfficiency = $("#txtInverterEfficiency").val();		
-		orientation = $("#listPanelOrientation").val();
-		angle = $("#txtPanelAngle").val();
+		//orientation = $("#listPanelOrientation").val();
+		//angle = $("#txtPanelAngle").val();
 		consumption = $("#txtPowerConsumption").val();		
 		//sunlight = $("#txtDailySunlight").val();
 		//address = $("#searchTextField").val();
