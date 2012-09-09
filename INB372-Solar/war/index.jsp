@@ -53,9 +53,9 @@
 							</div>
 						</div>
 						<div class="control-group" id="grpPanelEfficiency">
-							<label class="control-label" for="txtPanelEfficiency">Panel efficiency</label>
+							<label class="control-label" for="txtPanelEfficiency">Panel max output</label>
 							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter efficiency in watts per square metre" />
+								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter output in watts" />
 							</div>
 						</div>
 						<div class="control-group" id="grpInverterEfficiency">
@@ -90,7 +90,7 @@
                         <div class="control-group" id="grpPowerConsumption">
                             <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts" />
+                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter average daily consumption in kilowatts " />
                             </div>
                         </div>
                         <legend>Brisbane Tariff Value</legend>

@@ -59,13 +59,13 @@ public class SolarServlet extends HttpServlet {
 				tariff = new TariffCalculation(calc, tariffAmount);
 				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
 			}
-			catch (CalculatorException e1) {
+			catch (CalculatorException calcEx) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				calcEx.printStackTrace();
 			}
-			catch (TariffException e) {
+			catch (TariffException tarEx) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				tarEx.printStackTrace();
 			}			
 		}
 
