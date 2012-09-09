@@ -8,10 +8,10 @@ testNumericInputFields("Panel Width", "panelWidth")
 testNumericInputFields("Panel Quantity", "panelQty")
 testNumericInputFields("Panel Efficiency", "panelEfficiency")
 testNumericInputFields("Inverter Efficiency", "inverterEfficiency")
-testNumericInputFields("Angle", "angle")
-testNumericInputFields("Sunlight", "sunlight")
+//testNumericInputFields("Angle", "angle")
+//testNumericInputFields("Sunlight", "sunlight")
 testNumericInputFields("Consumption", "consumption")
-testAlphaNumericInputFields("Address", "address")
+//testAlphaNumericInputFields("Address", "address")
 
 
 module("All input fields valid");
@@ -47,6 +47,14 @@ test("All input data submitted as valid parameters", function() {
 	options.success();
 	equal(options.data, input);
 });
+
+/*
+testAlphaNumericInputFields("New Panel Manufacturer", "manufacturer");
+testAlphaNumericInputFields("New Panel Model", "model");
+testNumericInputFields("New Panel Power", "power")
+testNumericInputFields("New Panel Length", "newPanelLength")
+testNumericInputFields("New Panel Width", "newPanelWidth")
+*/
 
 /*
 test("Valid calculation response received", function() {
@@ -125,6 +133,11 @@ function setupValidInputs() {
 	sunlight = 5;
 	consumption = 5;
 	tariff = 0.44;
+	manufacturer = "Test manufacturer";
+	model = "Test model"; 
+	power = 200;
+	newPanelLength = 1000;
+	newPanelWidth = 400;
 }
 
 function clearInputFields() {
@@ -139,5 +152,10 @@ function clearInputFields() {
 	sunlight = "";
 	consumption = "";
 	tariff = "";
+	manufacturer = "";
+	model = ""; 
+	power = "";
+	newPanelLength = "";
+	newPanelWidth = "";
 }
 	

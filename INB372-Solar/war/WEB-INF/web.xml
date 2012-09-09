@@ -8,6 +8,14 @@
 		<url-pattern>/solarServlet</url-pattern>
 	</servlet-mapping>
 	<servlet>
+        <servlet-name>Panel</servlet-name>
+        <servlet-class>solar.PanelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Panel</servlet-name>
+        <url-pattern>/panelServlet</url-pattern>
+    </servlet-mapping>
+	<servlet>
 		<servlet-name>Person</servlet-name>
 		<servlet-class>solar.PersonServlet</servlet-class>
 	</servlet>

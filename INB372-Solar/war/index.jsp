@@ -19,27 +19,16 @@
 
 <!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
 
+<script type="text/javascript">
+	$(function() {
+	    $("#navHome").addClass("active");    
+	});
+</script>
+
 </head>
 <body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				    <span class="icon-bar"></span>
-				    <span class="icon-bar"></span>
-				    <span class="icon-bar"></span>
-				</a>
-				<a class="brand" href="#">Solar Power Calculator</a>
-				<div class="nav-collapse">
-					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file="nav.jsp" %>
+	
 	<div class="container">
 		<div class="row">
 			<div class="span6">
