@@ -1,13 +1,15 @@
-// test
-
+var panelLength;
+var panelWidth;
+var panelQty;
 var panelSize;
 var panelEfficiency;
 var inverterEfficiency;
-var address;
-var orientation;
-var angle;
-var sunlight;
+var orientation = "N";
+var angle = 45;
 var consumption;
+var address = "Dummy address";		// dummy address used until later iteration
+var sunlight = "10";				// default value based on Brisbane average
+var tariff;
 var amountSavedNum = 0.00;
 
 $(function() {
@@ -16,16 +18,20 @@ $(function() {
 
 		clearValidationMessages();
 		
-		panelSize = $("#txtPanelSize").val();
+		panelLength = $("#txtPanelLength").val();
+		panelWidth = $("#txtPanelWidth").val();
+		panelQty = $("#txtPanelQty").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();
-		inverterEfficiency = $("#txtInverterEfficiency").val();
-		address = $("#searchTextField").val();
-		orientation = $("#listPanelOrientation").val();
-		angle = $("#txtPanelAngle").val();
-		sunlight = $("#txtDailySunlight").val();
-		consumption = $("#txtPowerConsumption").val();
+		inverterEfficiency = $("#txtInverterEfficiency").val();		
+		//orientation = $("#listPanelOrientation").val();
+		//angle = $("#txtPanelAngle").val();
+		consumption = $("#txtPowerConsumption").val();		
+		//sunlight = $("#txtDailySunlight").val();
+		//address = $("#searchTextField").val();
+		tariff = $("#listTariff").val();
 		
 		if (validForm()) {
+			calculatePanelSize();
 			calculateInput();
 		}
 		else {
@@ -35,36 +41,42 @@ $(function() {
 });
 
 
+function calculatePanelSize() {
+	panelSize = (((panelLength / 1000) * (panelWidth / 1000)) * panelQty) ;
+}
+
+
 function calculateInput() {
 	$.ajax({
         type : "POST",
         url : "solarServlet",
         data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-        	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
+        	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption +
+        	   "&address=" + address + "&tariff=" + tariff,
 	    async: false,
         success : displayResult
     });
 }
 
 function clearValidationMessages() {
-	$("#grpPanelSize").removeClass("error");
-	$("#grpPanelEfficiency").removeClass("error");
-	$("#grpInverterEfficiency").removeClass("error");
-	$("#grpAddress").removeClass("error");
-	$("#grpPanelOrientation").removeClass("error");
-	$("#grpPanelAngle").removeClass("error");
-	$("#grpDailySunlight").removeClass("error");
-	$("#grpPowerConsumption").removeClass("error");
-	$("#pnlErrors").hide();
-	$("#pnlResults").hide();
+	$("#grpPanelLength, #grpPanelWidth, #grpPanelQty, #grpPanelEfficiency, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight, #grpTariff").removeClass("error");
+	$("#pnlErrors, #pnlResults").hide();
 }
 
 
 function validForm() {	
 	var validForm = true;
 	
-	if (invalidNumberField(panelSize)) {
-		$("#grpPanelSize").addClass("error");
+	if (invalidNumberField(panelLength)) {
+		$("#grpPanelLength").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(panelWidth)) {
+		$("#grpPanelWidth").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(panelQty)) {
+		$("#grpPanelQty").addClass("error");
 		validForm = false;
 	}
 	if (invalidNumberField(panelEfficiency)) {
@@ -95,6 +107,10 @@ function validForm() {
 		$("#grpAddress").addClass("error");
 		validForm = false;
 	}
+	if (tariff == -1) {
+		$("#grpTariff").addClass("error");
+		validForm = false;
+	}
 	
 	return validForm;
 }
@@ -109,7 +125,7 @@ function invalidAlphaNumericField(field) {
 	return ((field == "") || (typeof field === "undefined"));
 }
 
-// test
+
 function displayResult(result, status) {
 	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
 	
@@ -125,20 +141,23 @@ function displayResult(result, status) {
 					$("#pnlResults").show();
 				}
 				catch (Error) {
-					$("#lblSavings").html("There was an error in calculating the fields");
-					$("#pnlResults").show();
+					displayError("There was an error in calculating the fields");
 				}
 			}
 			else {
-				$("#lblSavings").html("The values entered seem to be too low. Please check and try again.");
-				$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
+				displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.");
 			}
 		}
 		else {
-			$("#lblSavings").html("There was an error in calculating the fields");
-			$("#pnlResults").show();
+			displayError("There was an error in calculating the fields");
 		}				
 	}
+}
+
+
+function displayError(message) {
+	$("#lblSavings").html(message);
+	$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
 }
 
 

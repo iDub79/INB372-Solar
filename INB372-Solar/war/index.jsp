@@ -45,58 +45,89 @@
 			<div class="span6">
 				<div class="form-horizontal">
 					<fieldset>
-						<legend>Solar Panel & Inverter Specifications</legend>
-						<div class="control-group" id="grpPanelSize">
-							<label class="control-label" for="txtPanelSize">Total size of panels</label>
+						<legend>Panel Specifications</legend>
+						<div class="control-group" id="grpPanelLength">
+							<label class="control-label" for="txtPanelLength">Length of panel</label>
 							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtPanelSize" placeholder="Enter size in square metres" />
+								<input type="number" class="input-xlarge" id="txtPanelLength" placeholder="Enter length in mm" />
 							</div>
 						</div>
+						<div class="control-group" id="grpPanelWidth">
+                            <label class="control-label" for="txtPanelWidth">Width of panel</label>
+                            <div class="controls">
+                                <input type="number" class="input-xlarge" id="txtPanelWidth" placeholder="Enter width in mm" />
+                            </div>
+                        </div>
+                        <div class="control-group" id="grpPanelQty">
+                            <label class="control-label" for="txtPanelQty">Quantity of panels</label>
+                            <div class="controls">
+                                <input type="number" class="input-xlarge" id="txtPanelQty" placeholder="Enter quantity" />
+                            </div>
+                        </div>
 						<div class="control-group" id="grpPanelEfficiency">
-							<label class="control-label" for="txtPanelEfficiency">Panel efficiency</label>
+							<label class="control-label" for="txtPanelEfficiency">Panel max output</label>
 							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter efficiency in watts per square metre" />
+								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter output in watts" />
 							</div>
 						</div>
+						<div class="control-group" id="grpPanelOrientation" style="display: none;">
+                            <label class="control-label" for="listPanelOrientation">Panel Orientation</label>
+                            <div class="controls">
+                                <select id="listPanelOrientation">
+                                    <option value="-1">-- Select Panel Orientation --</option>
+                                    <option value="N">North</option>
+                                    <option value="NE">Northeast</option>
+                                    <option value="E">East</option>
+                                    <option value="SE">Southeast</option>
+                                    <option value="S">South</option>
+                                    <option value="SW">Southwest</option>
+                                    <option value="W">West</option>
+                                    <option value="NW">Northwest</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group" id="grpPanelAngle" style="display: none;">
+                            <label class="control-label" for="txtPanelAngle">Panel Angle</label>
+                            <div class="controls">
+                                <input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle in degrees" />
+                            </div>
+                        </div>
+                        
+						<legend>Inverter Specifications</legend>
 						<div class="control-group" id="grpInverterEfficiency">
 							<label class="control-label" for="txtInverterEfficiency">Inverter efficiency</label>
 							<div class="controls">
 								<input type="number" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
 							</div>
 						</div>
-						<div class="control-group" id="grpPanelOrientation">
-							<label class="control-label" for="txtPanelOrientation">Panel Orientation</label>
-							<div class="controls">
-								<select id="listPanelOrientation">
-								    <option value="-1">-- Select Panel Orientation --</option>
-								    <option value="N">North</option>
-								    <option value="NE">Northeast</option>
-								    <option value="E">East</option>
-								    <option value="SE">Southeast</option>
-								    <option value="S">South</option>
-								    <option value="SW">Southwest</option>
-								    <option value="W">West</option>
-								    <option value="NW">Northwest</option>
-								</select>
-							</div>
-						</div>
-						<div class="control-group" id="grpPanelAngle">
-							<label class="control-label" for="txtPanelAngle">Panel Angle</label>
-							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle" />
-							</div>
-						</div>
+					</fieldset>
+				</div>
+			</div>
+			<div class="span6">
+                <div class="form-horizontal">
+                    <fieldset>
 						<legend>Power Consumption</legend>
                         <div class="control-group" id="grpPowerConsumption">
                             <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts" />
+                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter average daily consumption in kilowatts " />
+                            </div>
+                        </div>
+                        <legend>Brisbane Tariff Value</legend>
+                        <div class="control-group" id="grpTariff">
+                            <label class="control-label" for="listTariff">Tariff Value</label>
+                            <div class="controls">
+                                <select id="listTariff">
+                                    <option value="-1">-- Select Tariff Value --</option>                                    
+                                    <option value="0.08">8c (from July 10, 2012)</option>
+                                    <option value="0.44">44c (pre July 10, 2012)</option>
+                                </select>
                             </div>
                         </div>
 					</fieldset>
 				</div>
 			</div>
-			<div class="span6">
+			<div class="span6" style="display: none;">
 				<div class="form-horizontal">
 					<fieldset>
 						<legend>Property Location</legend>

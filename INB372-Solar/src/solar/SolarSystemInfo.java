@@ -8,13 +8,38 @@ public class SolarSystemInfo {
 	private float panelAngle;
 	private float dayTimePowerConsumption;
 	
-	public SolarSystemInfo(float pSize, float wRating, float iEffeciency, float pAngle, float powerConsumption) {
-		sizeOfPanels = pSize;
-		wattRating = wRating;
-		inverterEffeciency = iEffeciency;
-		panelAngle = pAngle;
-		dayTimePowerConsumption = powerConsumption;
-	}
+	public SolarSystemInfo(float pSize, float wRating, float iEffeciency, float pAngle, float powerConsumption) throws SolarSystemException {
+		if (pSize < 0) {
+			throw new SolarSystemException("Panel size must be positive.");
+		}
+		else {
+			sizeOfPanels = pSize;
+		}
+		if (wRating < 0) {
+			throw new SolarSystemException("Panels efficiency must be positive.");
+		}
+		else {
+			wattRating = wRating;
+		}
+		if (iEffeciency < 0) {
+			throw new SolarSystemException("Panel efficiency must be positive.");
+		}
+		else {
+			inverterEffeciency = iEffeciency;
+		}
+		if (pAngle < 0) {
+			throw new SolarSystemException("Panel angle must be positive.");
+		}
+		else {
+			panelAngle = pAngle;
+		}
+		if (powerConsumption < 0) {
+			throw new SolarSystemException("Panel consumption must be positive.");
+		}
+		else {
+			dayTimePowerConsumption = powerConsumption;
+		}
+	}	
 
 	public float getSizeOfPanels() {
 		return sizeOfPanels;
@@ -54,5 +79,14 @@ public class SolarSystemInfo {
 
 	public void setDayTimePowerConsumption(float dayTimePowerConsumption) {
 		this.dayTimePowerConsumption = dayTimePowerConsumption;
+	}
+	
+	private void checkInputValues(float inputValue, float classValue, String exceptionMsg) throws SolarSystemException {
+		if (inputValue < 0) {
+			throw new SolarSystemException(exceptionMsg + " must be positive.");
+		}
+		else {
+			classValue = inputValue;
+		}
 	}
 }

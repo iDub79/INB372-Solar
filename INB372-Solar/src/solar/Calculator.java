@@ -17,6 +17,12 @@ public class Calculator {
 		}
 		else {
 			this.system = system;
+			angSunGround[0] = 10;
+			angSunGround[1] = 35;
+			angSunGround[2] = 40;
+			angSunGround[3] = 40;
+			angSunGround[4] = 35;
+			angSunGround[5] = 10;
 		}
 	}
 	

@@ -1,25 +1,24 @@
 package solar;
 
-public class CalculatorException extends Exception {
+public class SolarSystemException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
-	public CalculatorException() {
+	public SolarSystemException() {
 	}
 
-	public CalculatorException(String message) {
+	public SolarSystemException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
 
-	public CalculatorException(Throwable cause) {
+	public SolarSystemException(Throwable cause) {
 		super(cause);
 		// TODO Auto-generated constructor stub
 	}
 
-	public CalculatorException(String message, Throwable cause) {
+	public SolarSystemException(String message, Throwable cause) {
 		super(message, cause);
 		// TODO Auto-generated constructor stub
 	}
-
 }
