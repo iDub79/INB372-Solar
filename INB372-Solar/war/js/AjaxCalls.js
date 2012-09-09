@@ -1,13 +1,12 @@
-// test
-
 var panelSize;
 var panelEfficiency;
 var inverterEfficiency;
-var address;
-var orientation;
-var angle;
-var sunlight;
+var orientation = "N";
+var angle = 45;
 var consumption;
+var address = "Dummy address";		// dummy address used until later iteration
+var sunlight = "10";				// default value based on Brisbane average
+var tariff;
 var amountSavedNum = 0.00;
 
 $(function() {
@@ -18,12 +17,13 @@ $(function() {
 		
 		panelSize = $("#txtPanelSize").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();
-		inverterEfficiency = $("#txtInverterEfficiency").val();
-		address = $("#searchTextField").val();
-		orientation = $("#listPanelOrientation").val();
-		angle = $("#txtPanelAngle").val();
-		sunlight = $("#txtDailySunlight").val();
-		consumption = $("#txtPowerConsumption").val();
+		inverterEfficiency = $("#txtInverterEfficiency").val();		
+		//orientation = $("#listPanelOrientation").val();
+		//angle = $("#txtPanelAngle").val();
+		consumption = $("#txtPowerConsumption").val();		
+		//sunlight = $("#txtDailySunlight").val();
+		//address = $("#searchTextField").val();
+		tariff = $("#listTariff").val();
 		
 		if (validForm()) {
 			calculateInput();
@@ -40,23 +40,16 @@ function calculateInput() {
         type : "POST",
         url : "solarServlet",
         data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-        	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address,
+        	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption +
+        	   "&address=" + address + "&tariff=" + tariff,
 	    async: false,
         success : displayResult
     });
 }
 
 function clearValidationMessages() {
-	$("#grpPanelSize").removeClass("error");
-	$("#grpPanelEfficiency").removeClass("error");
-	$("#grpInverterEfficiency").removeClass("error");
-	$("#grpAddress").removeClass("error");
-	$("#grpPanelOrientation").removeClass("error");
-	$("#grpPanelAngle").removeClass("error");
-	$("#grpDailySunlight").removeClass("error");
-	$("#grpPowerConsumption").removeClass("error");
-	$("#pnlErrors").hide();
-	$("#pnlResults").hide();
+	$("#grpPanelSize, #grpPanelEfficiency, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight").removeClass("error");
+	$("#pnlErrors, #pnlResults").hide();
 }
 
 
@@ -95,6 +88,10 @@ function validForm() {
 		$("#grpAddress").addClass("error");
 		validForm = false;
 	}
+	if (tariff == -1) {
+		$("#grpTariff").addClass("error");
+		validForm = false;
+	}
 	
 	return validForm;
 }
@@ -109,7 +106,7 @@ function invalidAlphaNumericField(field) {
 	return ((field == "") || (typeof field === "undefined"));
 }
 
-// test
+
 function displayResult(result, status) {
 	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
 	
@@ -125,20 +122,23 @@ function displayResult(result, status) {
 					$("#pnlResults").show();
 				}
 				catch (Error) {
-					$("#lblSavings").html("There was an error in calculating the fields");
-					$("#pnlResults").show();
+					displayError("There was an error in calculating the fields");
 				}
 			}
 			else {
-				$("#lblSavings").html("The values entered seem to be too low. Please check and try again.");
-				$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
+				displayError("The values entered seem to be too low. Please check and try again.");
 			}
 		}
 		else {
-			$("#lblSavings").html("There was an error in calculating the fields");
-			$("#pnlResults").show();
+			displayError("There was an error in calculating the fields");
 		}				
 	}
+}
+
+
+function displayError(message) {
+	$("#lblSavings").html(message);
+	$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
 }
 
 

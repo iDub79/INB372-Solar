@@ -25,7 +25,7 @@ test("All input data submitted as valid parameters", function() {
 	setupValidInputs();
 	
 	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address;
+	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
 	
 	var options = null;
 	$.ajax = function(param) {
@@ -38,18 +38,18 @@ test("All input data submitted as valid parameters", function() {
 
 /*
 test("Valid calculation response received", function() {
-	var amount = 0;
-	var expectedAmount = 321.2;
+setupValidInputs();
 	
-	setupValidInputs();
-
-	calculateInput("/solarServlet", function(Response) {		
-			amount = $.evalJSON(response.Savings);
-			alert(amount);
-			equal(amount, expectedAmount);
-			start();
-		}
-	);
+	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
+	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
+	
+	var options = null;
+	$.ajax = function(param) {
+		options = param;
+	};
+	calculateInput();
+	options.success();
+	equal($("#lblSavings").html(), "Based on your input, the annual savings will be <strong>$100.16</strong>");
 });
 */
 
@@ -109,6 +109,7 @@ function setupValidInputs() {
 	angle = 5;
 	sunlight = 5;
 	consumption = 5;
+	tariff = 0.44;
 }
 
 function clearInputFields() {
@@ -120,5 +121,6 @@ function clearInputFields() {
 	angle = "";
 	sunlight = "";
 	consumption = "";
+	tariff = "";
 }
 	

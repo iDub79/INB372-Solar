@@ -16,6 +16,13 @@
 </head>
 <body>
     <div id="qunit"></div>
-    <div id="qunit-fixture"></div>
+    <div id="qunit-fixture">
+        <div class="alert alert-success" id="pnlResults">
+             <span id="lblSavings">Result</span>
+         </div>
+         <div class="alert alert-error" id="pnlErrors" style="display: none;">
+             <span id="lblErrors">Please correct the fields highlighted in red.</span>
+         </div>
+    </div>
 </body>
 </html>
