@@ -140,7 +140,16 @@ function displayAddPanelResult(result, status) {
 	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
 	
 	if (status == 'success') {
-		alert(result);
+		var output = "<table><tr><th>Manufacturer</th><th>Model</th><th>Power</th></tr>";
+		
+		$.each(result.Panels, function (i) {
+			output += "<tr><td>" + result.Panels[i].manufacturer + "</td><td>" + result.Panels[i].model + "</td><td>" + result.Panels[i].power + "</td></tr>";	        
+	    });
+		
+		output += "</table>";
+		
+		$("#lblSavings").html(output);
+		$("#pnlResults").show();
 	}
 	else {
 		displayError("There was an error trying to add the new panel to the database.");
@@ -152,56 +161,4 @@ function displayError(message) {
 	$("#lblSavings").html(message);
 	$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
 }
-
-
-
-
-
-
-
-
-
-/*
- *  Below is just a test
- */	
-$(function() {
-	
-	$("#btnSubmitPersonTest").click(function() {
-        
-		clearValidationMessages();
-		
-		var name = $("#personName").val();
-        var age = $("#personAge").val();
-        
-        if ((name != "") && (age != "")) {
-        	$.ajax({
-                type : "POST",
-                url : "personServlet",
-                data : "name=" + name + "&age=" + age,
-                success : displayPersonResult
-            });
-        }
-        else {
-        	if (name == "") $("#reqPersonName").css("display", "inline");
-        	if (age == "") $("#reqPersonAge").css("display", "inline");
-        }
-    });
-
-	function displayPersonResult(result, status) {
-		if (status == 'success') {
-			var output = "";
-	
-			$.each(result.Persons, function (i) {
-				output += "<p>Name = " + result.Persons[i].name + " & Age = " + result.Persons[i].age + "</p>";	        
-		    });
-			
-			$("#lblResult").html(output);
-		}
-		else {
-			$("#lblResult").html("<p>Error: " + result + "</p>");			
-		}
-	}	
-});
-
-
 

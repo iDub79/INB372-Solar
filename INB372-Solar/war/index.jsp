@@ -99,7 +99,8 @@
                         <div class="control-group" id="grpPowerConsumption">
                             <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter average daily consumption in kilowatts " />
+                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts " />
+                                <span class="help-block">Average daily consumption during sunlight hours.</span>
                             </div>
                         </div>
                         <legend>Brisbane Tariff Value</legend>

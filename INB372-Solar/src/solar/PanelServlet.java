@@ -20,15 +20,18 @@ public class PanelServlet extends HttpServlet {
 		
 		String manufacturer = "";
 		String model = "";
-		int power = 0;
-		int length = 0;
-		int width = 0;
+		Integer power = 0;
+		Integer length = 0;
+		Integer width = 0;
+		String powerStr = "";
+		String lengthStr = "";
+		String widthStr = "";
 		
 		boolean validInput = false;
 
 		try {
 			manufacturer = request.getParameter("manufacturer");
-			model = request.getParameter("panelEfficiency");
+			model = request.getParameter("model");
 			power = Integer.parseInt(request.getParameter("power"));			
 			length = Integer.parseInt(request.getParameter("newPanelLength"));			
 			width = Integer.parseInt(request.getParameter("newPanelWidth"));
@@ -39,38 +42,62 @@ public class PanelServlet extends HttpServlet {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+
+		powerStr = power.toString();
+		lengthStr = length.toString();
+		widthStr = width.toString();
+		
+		JSONArray jsonArray = new JSONArray();
+		JSONObject returnJsonObj = new JSONObject();
 		
 		if (validInput) {
 			
-		}
-
-		JSONArray returnJson = new JSONArray();
-		
-		if (validInput) {
-			Key panelKey = KeyFactory.createKey("Panel", manufacturer);
-			Entity panel = new Entity("Panel", panelKey);
+			//Key panelKey = KeyFactory.createKey("Panel", "iDub");
+			
+			Entity panel = new Entity("Panel", model);
 			panel.setProperty("manufacturer", manufacturer);
 			panel.setProperty("model", model);
-			panel.setProperty("power", power);
-			panel.setProperty("length", length);
-			panel.setProperty("width", width);
+			panel.setProperty("power", powerStr);
+			panel.setProperty("length", lengthStr);
+			panel.setProperty("width", widthStr);
 			
 			DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 	        datastore.put(panel);
 
-	        Query query = new Query("Greeting", panelKey).addSort("manufacturer", Query.SortDirection.ASCENDING);
+	        Query query = new Query("Panel").addSort("manufacturer", Query.SortDirection.ASCENDING);
+	        //Query query = new Query("Panel");
+	        query.getKind();
 	        List<Entity> panels = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
 	        
-	        returnJson.put(panels);
+	        if (panels.size() > 0) {
+		        try {
+		        	for (Entity panelInList : panels) {
+		        		JSONObject panelObj = new JSONObject();	        	
+						panelObj.put("manufacturer", panelInList.getProperty("manufacturer"));
+						panelObj.put("model", panelInList.getProperty("model"));
+						panelObj.put("power", panelInList.getProperty("power"));
+						panelObj.put("length", panelInList.getProperty("length"));
+						panelObj.put("width", panelInList.getProperty("width"));
+						
+						jsonArray.put(panelObj);
+		        	}
+			        
+			        returnJsonObj.put("Panels", jsonArray);
+		        }
+	        	catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	        }
 		}			
 		else {
 
 		}		
 		
 		response.setContentType("application/json");
-		response.getWriter().write(returnJson.toString());
+		response.getWriter().write(returnJsonObj.toString());
 		
-		log.log(Level.WARNING, returnJson.toString());
+		log.log(Level.WARNING, returnJsonObj.toString());
 	}
 
 }
