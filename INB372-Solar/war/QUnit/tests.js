@@ -3,7 +3,9 @@ QUnit.begin = function() {
 };
 
 
-testNumericInputFields("Panel Size", "panelSize")
+testNumericInputFields("Panel Length", "panelLength")
+testNumericInputFields("Panel Width", "panelWidth")
+testNumericInputFields("Panel Quantity", "panelQty")
 testNumericInputFields("Panel Efficiency", "panelEfficiency")
 testNumericInputFields("Inverter Efficiency", "inverterEfficiency")
 testNumericInputFields("Angle", "angle")
@@ -20,12 +22,22 @@ test("All input fields valid", function() {
 });
 
 
+module("Panel Size Calculation");
+test("Panel size is calculated correctly", function() {
+	setupValidInputs();
+	calculatePanelSize();
+	
+	equal(panelSize, 13.099656, "Panel fields calculated correctly");
+});
+
+
 module("Valid ajax response");
 test("All input data submitted as valid parameters", function() {
 	setupValidInputs();
+	calculatePanelSize();
 	
 	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address;
+	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
 	
 	var options = null;
 	$.ajax = function(param) {
@@ -38,18 +50,19 @@ test("All input data submitted as valid parameters", function() {
 
 /*
 test("Valid calculation response received", function() {
-	var amount = 0;
-	var expectedAmount = 321.2;
-	
 	setupValidInputs();
-
-	calculateInput("/solarServlet", function(Response) {		
-			amount = $.evalJSON(response.Savings);
-			alert(amount);
-			equal(amount, expectedAmount);
-			start();
-		}
-	);
+	calculatePanelSize();
+	
+	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
+	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
+	
+	var options = null;
+	$.ajax = function(param) {
+		options = param;
+	};
+	calculateInput();
+	options.success();
+	equal($("#lblSavings").html(), "Based on your input, the annual savings will be <strong>$100.16</strong>");
 });
 */
 
@@ -101,7 +114,9 @@ function testAlphaNumericInputFields(fieldName, txtFieldName) {
 
 
 function setupValidInputs() {
-	panelSize = 5;
+	panelLength = 1649;
+	panelWidth = 993;
+	panelQty = 8;
 	panelEfficiency = 5;
 	inverterEfficiency = 5;
 	address = "1 Test Street Brisbane Queensland";
@@ -109,10 +124,13 @@ function setupValidInputs() {
 	angle = 5;
 	sunlight = 5;
 	consumption = 5;
+	tariff = 0.44;
 }
 
 function clearInputFields() {
-	panelSize = "";
+	panelLength = "";
+	panelWidth = "";
+	panelQty = "";
 	panelEfficiency = "";
 	inverterEfficiency = "";
 	address = "";
@@ -120,5 +138,6 @@ function clearInputFields() {
 	angle = "";
 	sunlight = "";
 	consumption = "";
+	tariff = "";
 }
 	

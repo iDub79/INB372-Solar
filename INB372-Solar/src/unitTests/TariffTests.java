@@ -18,31 +18,30 @@ public class TariffTests {
 	/*
 	 * Constructor() test
 	 */
-	/*@Test (expected = TariffCalculation.class)
+	//@Test (expected = TariffCalculation.class)
 	//Test for negative electric
 	public void constructor_tariffCalculation() throws TariffException {
 		// negative
-		new TariffCalculation (-1);
+		//new TariffCalculation (null, -1);
 	}
 
 	/*
 	 * calAnnualElectric() test
 	 */
-	/*@Test
+	@Test
 	// Test if method return correct data.
 	public void runcorrect_calAnnualElectric() throws TariffException {
-		tariff = new TariffCalculation (1.2);
+		//tariff = new TariffCalculation(1.2);
 		assertEquals(tariff.calAnnualElectric(), (double)438,2);
 	}
 	
 	/*
 	 * calAnnualSaving() test
 	 */
-	//@Test
+	@Test
 	// Test if method return correct data.
-	/*public void calAnnualSaving() throws TariffException {
-		tariff = new TariffCalculation (1.2);
-		assertEquals(trariff.calAnnualSaving(), (double)192.72,2);
+	public void calAnnualSaving() throws TariffException {
+		//tariff = new TariffCalculation (1.2);
+		assertEquals(tariff.calAnnualSaving(), (double)192.72,2);
 	}
-	*/	
 }
