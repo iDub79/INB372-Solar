@@ -12,7 +12,7 @@ import solar.SolarSystemInfo;
 import static java.lang.Math.*;
 
 public class CalculatorTest {
-
+/*
 	@Test
 	public void nullSystemInConstructor() {
 		try {
@@ -29,9 +29,9 @@ public class CalculatorTest {
 	public void zeroPanelSize() {
 		SolarSystemInfo panelSizeZero;
 		try {
-			panelSizeZero = new SolarSystemInfo(0.0f, 600, 50, 40, 7);
+			panelSizeZero = new SolarSystemInfo(0, 600, 50, 40, 7);
 			
-			if (panelSizeZero.getSizeOfPanels() != 0.0f) {
+			if (panelSizeZero.getSizeOfPanels() != 0) {
 				fail("size not zero");
 			}
 			try {
@@ -48,7 +48,7 @@ public class CalculatorTest {
 			e1.printStackTrace();
 		}		
 	}
-
+*/
 	@Test
 	public void normalInputOutput() {
 		SolarSystemInfo panelSizeZero;
