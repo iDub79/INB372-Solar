@@ -117,7 +117,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<div class="span6" style="display: none;">
+			<div class="span6">
 				<div class="form-horizontal">
 					<fieldset>
 						<legend>Property Location</legend>
