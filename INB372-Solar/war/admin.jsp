@@ -18,8 +18,9 @@
 <!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
 
 <script type="text/javascript">
-	$(function() {
-	    $("#navAdmin").addClass("active");    
+	$(document).ready(function() {
+	    $("#navAdmin").addClass("active"); 
+	    getPanelList();
 	});
 </script>
 
@@ -31,7 +32,7 @@
         <div class="row">
             <div class="span6">
                 <div class="form-horizontal">
-                    <fieldset>
+                    <fieldset style="height: 250px;">
                         <legend>Panel Specifications</legend>
                         <div class="control-group" id="grpPanelManufacturer">
                             <label class="control-label" for="txtPanelManufacturer">Panel Manufacturer</label>
@@ -64,18 +65,50 @@
                             </div>
                         </div>
                     </fieldset>
+                    <div class="form-actions">
+                        <button class="btn btn-large btn-primary" id="btnAddPanel">Add Panel</button>
+                        <button class="btn btn-large" id="btnReset">Cancel</button>                 
+                    </div>
+                    <div class="alert alert-success" id="pnlResults" style="display: none;">
+	                    <span id="lblPanel"></span>
+	                </div>
+	                
                 </div>
             </div>
-            <div class="span12">                
-                <div class="form-actions">
-                    <button class="btn btn-large btn-primary" id="btnAddPanel">Add Panel</button>
-                    <button class="btn btn-large" id="btnReset">Cancel</button>                 
-                </div>              
+            <div class="span6">
+                <div class="form-horizontal">
+                    <fieldset style="height: 250px;">
+                        <legend>Inverter Specifications</legend>
+                        <div class="control-group" id="grpInverterlManufacturer">
+                            <label class="control-label" for="txtInverterManufacturer">Inverter Manufacturer</label>
+                            <div class="controls">
+                                <input type="number" class="input-xlarge" id="txtInverterManufacturer" placeholder="Enter manufacturer" />
+                            </div>
+                        </div>
+                        <div class="control-group" id="grpInverterModel">
+                            <label class="control-label" for="txtInverterModel">Model</label>
+                            <div class="controls">
+                                <input type="number" class="input-xlarge" id="txtInverterModel" placeholder="Enter model" />
+                            </div>
+                        </div>
+                        <div class="control-group" id="grpInverterEfficiency">
+                            <label class="control-label" for="txtInverterEfficiency">Efficiency</label>
+                            <div class="controls">
+                                <input type="number" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="form-actions">
+                        <button class="btn btn-large btn-primary" id="btnAddInverter">Add Inverter</button>
+                        <button class="btn btn-large" id="btnReset">Cancel</button>                 
+                    </div>
+                    <div class="alert alert-success" id="pnlResults" style="display: none;">
+                        <span id="lblInverter"></span>
+                    </div>
+                    
+                </div>
             </div>
             <div class="span12">
-                <div class="alert alert-success" id="pnlResults" style="display: none;">
-                    <span id="lblSavings"></span>
-                </div>
                 <div class="alert alert-error" id="pnlErrors" style="display: none;">
                     <span id="lblErrors">Please correct the fields highlighted in red.</span>
                 </div>

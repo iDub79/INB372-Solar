@@ -1,6 +1,71 @@
+// index.jsp user input fields
+var panelLength;
+var panelWidth;
+var panelQty;
+var panelSize;
+var panelEfficiency;
+var inverterEfficiency;
+var orientation = "N";
+var angle = 45;
+var consumption;
+var address = "Dummy address";		// dummy address used until later iteration
+var sunlight = "10";				// default value based on Brisbane average
+var tariff;
+var amountSavedNum = 0.00;
+
+// admin.jsp user input fields
+var manufacturer;
+var model; 
+var power;
+var newPanelLength;
+var newPanelWidth;
+
+
 $(function() {
 
+	$("#btnCalculate").click(function() {
+
+		clearValidationMessages();
+		
+		panelLength = $("#txtPanelLength").val();
+		panelWidth = $("#txtPanelWidth").val();
+		panelQty = $("#txtPanelQty").val();
+		panelEfficiency = $("#txtPanelEfficiency").val();
+		inverterEfficiency = $("#txtInverterEfficiency").val();		
+		//orientation = $("#listPanelOrientation").val();
+		//angle = $("#txtPanelAngle").val();
+		consumption = $("#txtPowerConsumption").val();		
+		//sunlight = $("#txtDailySunlight").val();
+		//address = $("#searchTextField").val();
+		tariff = $("#listTariff").val();
+		
+		if (validForm()) {
+			calculatePanelSize();
+			calculateInput();
+		}
+		else {
+			$("#pnlErrors").show();
+		}
+	});	
 	
+	
+	
+	$("#btnAddPanel").click(function() {
+		clearValidationMessages();
+		
+		manufacturer = $("#txtPanelManufacturer").val();
+		model = $("#txtPanelModel").val(); 
+		power = $("#txtPanelPower").val();
+		newPanelLength = $("#txtPanelNewLength").val();
+		newPanelWidth = $("#txtPanelNewWidth").val();
+		
+		if (validAddPanel()) {
+			addNewPanel();
+		}
+		else {
+			$("#pnlErrors").show();
+		}
+	});
 });
 
 
@@ -107,58 +172,7 @@ function invalidAlphaNumericField(field) {
 }
 
 
-function displayResult(result, status) {
-	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
-	
-	if (status == 'success') {
-		if (result.Savings.Success == true) {
-			var amountSaved = result.Savings.Amount;
-			
-			if (amountSaved > 0) {
-				amountSavedNum = parseFloat(amountSaved);
-				try {
-					amountSavedNum = amountSavedNum.toFixed(2);
-					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong>");
-					$("#pnlResults").show();
-				}
-				catch (Error) {
-					displayError("There was an error in calculating the fields");
-				}
-			}
-			else {
-				displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.");
-			}
-		}
-		else {
-			displayError("There was an error in calculating the fields");
-		}				
-	}
-}
-
-
-function displayAddPanelResult(result, status) {
-	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
-	
-	if (status == 'success') {
-		var output = "<table><tr><th>Manufacturer</th><th>Model</th><th>Power</th></tr>";
-		
-		$.each(result.Panels, function (i) {
-			output += "<tr><td>" + result.Panels[i].manufacturer + "</td><td>" + result.Panels[i].model + "</td><td>" + result.Panels[i].power + "</td></tr>";	        
-	    });
-		
-		output += "</table>";
-		
-		$("#lblSavings").html(output);
-		$("#pnlResults").show();
-	}
-	else {
-		displayError("There was an error trying to add the new panel to the database.");
-	}				
-}
-
-
-function displayError(message) {
-	$("#lblSavings").html(message);
-	$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
+function toTitleCase(str) {
+	return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
