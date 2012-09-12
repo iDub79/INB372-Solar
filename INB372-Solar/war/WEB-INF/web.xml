@@ -16,12 +16,12 @@
         <url-pattern>/panelServlet</url-pattern>
     </servlet-mapping>
 	<servlet>
-		<servlet-name>Person</servlet-name>
-		<servlet-class>solar.PersonServlet</servlet-class>
+		<servlet-name>Inverter</servlet-name>
+		<servlet-class>solar.InverterServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Person</servlet-name>
-		<url-pattern>/personServlet</url-pattern>
+		<servlet-name>Inverter</servlet-name>
+		<url-pattern>/inverterServlet</url-pattern>
 	</servlet-mapping>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>

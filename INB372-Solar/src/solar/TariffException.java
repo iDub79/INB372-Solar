@@ -2,6 +2,9 @@ package solar;
 
 public class TariffException extends Exception {
 
+	private static final long serialVersionUID = 1L;
+
+
 	/**
 	 * 
 	 * Inherited constructor from superclass <code>Exception</code>

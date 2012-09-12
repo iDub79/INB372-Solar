@@ -13,10 +13,10 @@ import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.labs.repackaged.org.json.*;
 
-public class PanelServlet extends HttpServlet {
+public class InverterServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-	private static final Logger log = Logger.getLogger(PanelServlet.class.getName());
+	private static final Logger log = Logger.getLogger(InverterServlet.class.getName());
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
@@ -26,24 +26,18 @@ public class PanelServlet extends HttpServlet {
 		JSONObject returnJsonObj = new JSONObject();
 		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
-		if (reqOption.equals("addPanel")) {		
+		if (reqOption.equals("addInverter")) {		
 			String manufacturer = "";
 			String model = "";
-			Integer power = 0;
-			Integer length = 0;
-			Integer width = 0;
-			String powerStr = "";
-			String lengthStr = "";
-			String widthStr = "";
+			Integer efficiency = 0;
+			String efficiencyStr = "";
 			
 			boolean validInput = false;
 	
 			try {
 				manufacturer = request.getParameter("manufacturer");
 				model = request.getParameter("model");
-				power = Integer.parseInt(request.getParameter("power"));			
-				length = Integer.parseInt(request.getParameter("newPanelLength"));			
-				width = Integer.parseInt(request.getParameter("newPanelWidth"));
+				efficiency = Integer.parseInt(request.getParameter("efficiency"));			
 				
 				validInput = true;
 			}
@@ -52,22 +46,18 @@ public class PanelServlet extends HttpServlet {
 				e1.printStackTrace();
 			}
 	
-			powerStr = power.toString();
-			lengthStr = length.toString();
-			widthStr = width.toString();			
+			efficiencyStr = efficiency.toString();
+	
 			
 			if (validInput) {
+				Key inverterKey = KeyFactory.createKey("Inverter", model);
 				
-				Key panelKey = KeyFactory.createKey("Panel", model);
+				Entity inverter = new Entity("Inverter", inverterKey);
+				inverter.setProperty("manufacturer", manufacturer);
+				inverter.setProperty("model", model);
+				inverter.setProperty("efficiency", efficiencyStr);
 				
-				Entity panel = new Entity("Panel", panelKey);
-				panel.setProperty("manufacturer", manufacturer);
-				panel.setProperty("model", model);
-				panel.setProperty("power", powerStr);
-				panel.setProperty("length", lengthStr);
-				panel.setProperty("width", widthStr);
-				
-		        datastore.put(panel);
+		        datastore.put(inverter);
 	
 		        getJSONArray(jsonArray, returnJsonObj, datastore);
 			}			
@@ -77,12 +67,12 @@ public class PanelServlet extends HttpServlet {
 				
 			}		
 		}
-		else if (reqOption.equals("getPanels")) {
+		else if (reqOption.equals("getInverters")) {
 			getJSONArray(jsonArray, returnJsonObj, datastore);
 		}
-		else if (reqOption.equals("deletePanel")) {
+		else if (reqOption.equals("deleteInverter")) {
 			
-			deleteSpec(request, jsonArray, returnJsonObj, datastore, "Panel");
+			deleteSpec(request, jsonArray, returnJsonObj, datastore, "Inverter");
 		}
 		
 		response.setContentType("application/json");
@@ -90,8 +80,8 @@ public class PanelServlet extends HttpServlet {
 		
 		log.log(Level.WARNING, returnJsonObj.toString());
 	}
-	
-	
+
+
 	private void deleteSpec(HttpServletRequest request, JSONArray jsonArray, JSONObject returnJsonObj, DatastoreService datastore, String spec) {
 		String model = request.getParameter("model");
 		
@@ -108,25 +98,23 @@ public class PanelServlet extends HttpServlet {
 	
 	private void getJSONArray(JSONArray jsonArray, JSONObject returnJsonObj, DatastoreService datastore) {
 		
-		Query query = new Query("Panel").addSort("manufacturer", Query.SortDirection.ASCENDING);
+		Query query = new Query("Inverter").addSort("manufacturer", Query.SortDirection.ASCENDING);
 		query.getKind();
-		List<Entity> panels = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
-		
+		List<Entity> inverters = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
+
 		try {
-			if (panels.size() > 0) {
+			if (inverters.size() > 0) {
 		   
-		    	for (Entity panelInList : panels) {
-		    		JSONObject panelObj = new JSONObject();	        	
-					panelObj.put("manufacturer", panelInList.getProperty("manufacturer"));
-					panelObj.put("model", panelInList.getProperty("model"));
-					panelObj.put("power", panelInList.getProperty("power") + "W");
-					panelObj.put("length", panelInList.getProperty("length"));
-					panelObj.put("width", panelInList.getProperty("width"));
+		    	for (Entity inverterInList : inverters) {
+		    		JSONObject inverterObj = new JSONObject();	        	
+		    		inverterObj.put("manufacturer", inverterInList.getProperty("manufacturer"));
+		    		inverterObj.put("model", inverterInList.getProperty("model"));
+		    		inverterObj.put("efficiency", inverterInList.getProperty("efficiency") + "%");
 					
-					jsonArray.put(panelObj);
+					jsonArray.put(inverterObj);
 		    	}
 		        
-		        returnJsonObj.put("Panels", jsonArray);
+		        returnJsonObj.put("Inverters", jsonArray);
 		        returnJsonObj.put("Success", true);
 			}
 			else {
@@ -138,4 +126,5 @@ public class PanelServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+
 }

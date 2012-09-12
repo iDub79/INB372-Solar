@@ -15,7 +15,7 @@ function addNewPanel() {
 	$.ajax({
         type : "POST",
         url : "panelServlet",
-        data : "option=addPanel&manufacturer=" + manufacturer.toUpperCase() + "&model=" + model.toUpperCase() + "&power=" + power +
+        data : "option=addPanel&manufacturer=" + newPanelManufacturer.toUpperCase() + "&model=" + newPanelModel.toUpperCase() + "&power=" + newPanelPower +
         	   "&newPanelLength=" + newPanelLength + "&newPanelWidth=" + newPanelWidth,
 	    async: false,
         success : displayPanelResult
@@ -34,8 +34,50 @@ function getPanelList() {
 }
 
 
+function deletePanel(panelToDelete) {
+	$.ajax({
+        type : "POST",
+        url : "panelServlet",
+        data : "option=deletePanel&model=" + panelToDelete,
+	    async: false,
+        success : displayPanelResult
+    });
+}
+
+
+function addNewInverter() {
+	$.ajax({
+        type : "POST",
+        url : "inverterServlet",
+        data : "option=addInverter&manufacturer=" + newInverterManufacturer.toUpperCase() + "&model=" + newInverterModel.toUpperCase() + "&efficiency=" + newInverterEfficiency,
+	    async: false,
+        success : displayInverterResult
+    });
+}
+
+
+function getInverterList() {
+	$.ajax({
+        type : "POST",
+        url : "inverterServlet",
+        data : "option=getInverters",
+	    async: false,
+        success : displayInverterResult
+    });
+}
+
+function deleteInverter(inverterToDelete) {
+	$.ajax({
+        type : "POST",
+        url : "inverterServlet",
+        data : "option=deleteInverter&model=" + inverterToDelete,
+	    async: false,
+        success : displayInverterResult
+    });
+}
+
+
 function displayResult(result, status) {
-	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
 	
 	if (status == 'success') {
 		if (result.Savings.Success == true) {
@@ -49,52 +91,79 @@ function displayResult(result, status) {
 					$("#pnlResults").show();
 				}
 				catch (Error) {
-					displayError("There was an error in calculating the fields"), "#lblSavings";
+					displayError("There was an error in calculating the fields");
 				}
 			}
 			else {
-				displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.", "#lblSavings");
+				displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.");
 			}
 		}
 		else {
-			displayError("There was an error in calculating the fields", "#lblSavings");
+			displayError("There was an error in calculating the fields");
 		}				
 	}
 }
 
 
 function displayPanelResult(result, status) {
-	$("#pnlResults").removeClass("alert-error").addClass("alert-success");
-	
+
 	if (status == 'success') {
 		if (result.Success == true) {
-			var output = "<table class='table table-hover'><tr><th>Manufacturer</th><th>Model</th><th>Power</th></tr>";
+			var output = "<table class='table table-hover table-condensed table-bordered table-striped'><tr><th>Manufacturer</th><th>Model</th><th>Power</th><th></th></tr>";
 			
 			$.each(result.Panels, function (i) {
-				output += "<tr><td>" + result.Panels[i].manufacturer + "</td><td>" + result.Panels[i].model + "</td><td>" + result.Panels[i].power + "</td></tr>";	        
+				output += "<tr><td>" + result.Panels[i].manufacturer + "</td><td>" + result.Panels[i].model + "</td><td>" + result.Panels[i].power + "</td><td style='text-align:center;'><a class='deleteSpec' onclick='deletePanel(&quot;" + result.Panels[i].model + "&quot;); return false;'><i class='icon-remove'></a></i></td></tr>";	        
 		    });
 			
 			output += "</table>";
 			
 			$("#lblPanel").html(output);
-			$("#pnlResults").show();
+			$("#pnlPanelResults").show();
 		}
 		else if (result.Success == false) {
-			displayError("There was an error trying to add the new panel to the database.", "#lblPanel");
+			displayError("There was an error trying to add the new panel to the database.");
 		}
 		else if (result.Success == "empty") {
 			
 		}
 	}
 	else {
-		displayError("There was an error trying to add the new panel to the database.", "#lblPanel");
+		displayError("There was an error trying to add the new panel to the database.");
 	}				
 }
 
 
-function displayError(message, control) {
-	$(control).html(message);
-	$("#pnlResults").removeClass("alert-success").addClass("alert-error").show();
+function displayInverterResult(result, status) {
+
+	if (status == 'success') {
+		if (result.Success == true) {
+			var output = "<table class='table table-hover table-condensed table-bordered table-striped'><tr><th>Manufacturer</th><th>Model</th><th>Efficiency</th><th></th></tr>";
+			
+			$.each(result.Inverters, function (i) {
+				output += "<tr><td>" + result.Inverters[i].manufacturer + "</td><td>" + result.Inverters[i].model + "</td><td>" + result.Inverters[i].efficiency + "</td><td><a class='deleteSpec' onclick='deleteInverter(&quot;" + result.Inverters[i].model + "&quot;); return false;'><i class='icon-remove'></a></i></td></tr>";	        
+		    });
+			
+			output += "</table>";
+			
+			$("#lblInverter").html(output);
+			$("#pnlInverterResults").show();
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to add the new panel to the database.");
+		}
+		else if (result.Success == "empty") {
+			
+		}
+	}
+	else {
+		displayError("There was an error trying to add the new panel to the database.");
+	}				
+}
+
+
+function displayError(message) {
+	$("#lblErrors").html(message);
+	$("#pnlErrors").show();
 }
 
 

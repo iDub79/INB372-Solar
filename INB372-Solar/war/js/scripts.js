@@ -14,11 +14,14 @@ var tariff;
 var amountSavedNum = 0.00;
 
 // admin.jsp user input fields
-var manufacturer;
-var model; 
-var power;
+var newPanelManufacturer;
+var newPanelModel; 
+var newPanelPower;
 var newPanelLength;
 var newPanelWidth;
+var newInverterManufacturer;
+var newInverterModel;
+var newInverterEfficiency
 
 
 $(function() {
@@ -39,12 +42,12 @@ $(function() {
 		//address = $("#searchTextField").val();
 		tariff = $("#listTariff").val();
 		
-		if (validForm()) {
+		if (validCalculateSolarForm()) {
 			calculatePanelSize();
 			calculateInput();
 		}
 		else {
-			$("#pnlErrors").show();
+			showMissingFieldsError();
 		}
 	});	
 	
@@ -53,9 +56,9 @@ $(function() {
 	$("#btnAddPanel").click(function() {
 		clearValidationMessages();
 		
-		manufacturer = $("#txtPanelManufacturer").val();
-		model = $("#txtPanelModel").val(); 
-		power = $("#txtPanelPower").val();
+		newPanelManufacturer = $("#txtPanelManufacturer").val();
+		newPanelModel = $("#txtPanelModel").val(); 
+		newPanelPower = $("#txtPanelPower").val();
 		newPanelLength = $("#txtPanelNewLength").val();
 		newPanelWidth = $("#txtPanelNewWidth").val();
 		
@@ -63,8 +66,46 @@ $(function() {
 			addNewPanel();
 		}
 		else {
-			$("#pnlErrors").show();
+			showMissingFieldsError();
 		}
+	});
+	
+	
+	
+	$("#btnAddInverter").click(function() {
+		clearValidationMessages();
+		
+		newInverterManufacturer = $("#txtInverterManufacturer").val();
+		newInverterModel = $("#txtInverterModel").val(); 
+		newInverterEfficiency = $("#txtInverterEfficiency").val();
+		
+		if (validAddInverter()) {
+			addNewInverter();
+		}
+		else {
+			showMissingFieldsError();
+		}
+	});
+	
+	
+	$("#btnResetCalculate").click(function() {
+		$("#txtPanelLength, #txtPanelWidth, #txtPanelQty, #txtPanelEfficiency, #txtInverterEfficiency," +
+				"#txtPanelAngle, #txtPowerConsumption, #txtDailySunlight, #searchTextField").val("");
+		$("#listPanelOrientation").val("-1");
+		$("#listTariff").val("-1");
+		clearValidationMessages();
+	});
+	
+	
+	$("#btnResetPanel").click(function() {
+		$("#txtPanelManufacturer, #txtPanelModel, #txtPanelPower, #txtPanelNewLength, #txtPanelNewWidth").val("");
+		clearValidationMessages();
+	});
+	
+
+	$("#btnResetInverter").click(function() {
+		$("#txtInverterManufacturer, #txtInverterModel, #txtInverterEfficiency").val("");
+		clearValidationMessages();
 	});
 });
 
@@ -74,15 +115,22 @@ function calculatePanelSize() {
 }
 
 
+function showMissingFieldsError() {
+	$("#pnlErrors").show();
+	$("#lblErrors").html("Please correct the fields highlighted in red.");
+}
+
+
 function clearValidationMessages() {
 	$("#grpPanelLength, #grpPanelWidth, #grpPanelQty, #grpPanelEfficiency, #grpInverterEfficiency," +
 			"#grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight," +
-			"#grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower").removeClass("error");
+			"#grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower, grpInverterlManufacturer" +
+			"grpInverterModel, grpInverterEfficiency").removeClass("error");
 	$("#pnlErrors, #pnlResults").hide();
 }
 
 
-function validForm() {	
+function validCalculateSolarForm() {	
 	var validForm = true;
 	
 	if (invalidNumberField(panelLength)) {
@@ -137,15 +185,15 @@ function validForm() {
 function validAddPanel() {
 	validForm = true;
 	
-	if (invalidAlphaNumericField(manufacturer)) {
+	if (invalidAlphaNumericField(newPanelManufacturer)) {
 		$("#grpPanelManufacturer").addClass("error");
 		validForm = false;
 	}
-	if (invalidAlphaNumericField(model)) {
+	if (invalidAlphaNumericField(newPanelModel)) {
 		$("#grpPanelModel").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(power)) {
+	if (invalidNumberField(newPanelPower)) {
 		$("#grpPanelPower").addClass("error");
 		validForm = false;
 	}
@@ -155,6 +203,26 @@ function validAddPanel() {
 	}
 	if (invalidNumberField(newPanelWidth)) {
 		$("#grpPanelWidth").addClass("error");
+		validForm = false;
+	}
+	
+	return validForm;
+}
+
+
+function validAddInverter() {
+	validForm = true;
+	
+	if (invalidAlphaNumericField(newInverterManufacturer)) {
+		$("#grpInverterManufacturer").addClass("error");
+		validForm = false;
+	}
+	if (invalidAlphaNumericField(newInverterModel)) {
+		$("#grpInverterModel").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(newInverterEfficiency)) {
+		$("#grpInverterEfficiency").addClass("error");
 		validForm = false;
 	}
 	
@@ -176,3 +244,5 @@ function toTitleCase(str) {
 	return str.replace(/\w\S*/g, function (txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); });
 }
 
+
+ 

@@ -141,7 +141,7 @@
 			<div class="span12">			    
 				<div class="form-actions">
 					<button class="btn btn-large btn-primary" id="btnCalculate">Calculate</button>
-					<button class="btn btn-large" id="btnReset">Cancel</button>					
+					<button class="btn btn-large" id="btnCancelCalculate">Cancel</button>					
 				</div>				
 			</div>
 			<div class="span12">

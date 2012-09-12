@@ -80,13 +80,4 @@ public class SolarSystemInfo {
 	public void setDayTimePowerConsumption(float dayTimePowerConsumption) {
 		this.dayTimePowerConsumption = dayTimePowerConsumption;
 	}
-	
-	private void checkInputValues(float inputValue, float classValue, String exceptionMsg) throws SolarSystemException {
-		if (inputValue < 0) {
-			throw new SolarSystemException(exceptionMsg + " must be positive.");
-		}
-		else {
-			classValue = inputValue;
-		}
-	}
 }

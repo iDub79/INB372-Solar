@@ -21,6 +21,7 @@
 	$(document).ready(function() {
 	    $("#navAdmin").addClass("active"); 
 	    getPanelList();
+	    getInverterList();
 	});
 </script>
 
@@ -32,7 +33,7 @@
         <div class="row">
             <div class="span6">
                 <div class="form-horizontal">
-                    <fieldset style="height: 250px;">
+                    <fieldset style="min-height: 250px;">
                         <legend>Panel Specifications</legend>
                         <div class="control-group" id="grpPanelManufacturer">
                             <label class="control-label" for="txtPanelManufacturer">Panel Manufacturer</label>
@@ -67,19 +68,15 @@
                     </fieldset>
                     <div class="form-actions">
                         <button class="btn btn-large btn-primary" id="btnAddPanel">Add Panel</button>
-                        <button class="btn btn-large" id="btnReset">Cancel</button>                 
-                    </div>
-                    <div class="alert alert-success" id="pnlResults" style="display: none;">
-	                    <span id="lblPanel"></span>
-	                </div>
-	                
+                        <button class="btn btn-large" id="btnResetPanel">Cancel</button>                 
+                    </div>	                
                 </div>
             </div>
             <div class="span6">
                 <div class="form-horizontal">
-                    <fieldset style="height: 250px;">
+                    <fieldset style="min-height: 250px;">
                         <legend>Inverter Specifications</legend>
-                        <div class="control-group" id="grpInverterlManufacturer">
+                        <div class="control-group" id="grpInverterManufacturer">
                             <label class="control-label" for="txtInverterManufacturer">Inverter Manufacturer</label>
                             <div class="controls">
                                 <input type="number" class="input-xlarge" id="txtInverterManufacturer" placeholder="Enter manufacturer" />
@@ -100,18 +97,26 @@
                     </fieldset>
                     <div class="form-actions">
                         <button class="btn btn-large btn-primary" id="btnAddInverter">Add Inverter</button>
-                        <button class="btn btn-large" id="btnReset">Cancel</button>                 
+                        <button class="btn btn-large" id="btnResetInverter">Cancel</button>                 
                     </div>
-                    <div class="alert alert-success" id="pnlResults" style="display: none;">
-                        <span id="lblInverter"></span>
-                    </div>
-                    
                 </div>
             </div>
             <div class="span12">
                 <div class="alert alert-error" id="pnlErrors" style="display: none;">
-                    <span id="lblErrors">Please correct the fields highlighted in red.</span>
+                    <span id="lblErrors"></span>
                 </div>
+            </div>
+            <div class="span6">                
+                <div id="pnlPanelResults" style="display: none;">
+                    <h2>Solar Panels</h2>
+                    <span id="lblPanel"></span>
+                </div>
+            </div>            
+            <div class="span6">                
+	            <div id="pnlInverterResults" style="display: none;">
+	                <h2>Solar Inverters</h2>
+	                <span id="lblInverter"></span>
+	            </div>
             </div>
         </div>
     </div>
