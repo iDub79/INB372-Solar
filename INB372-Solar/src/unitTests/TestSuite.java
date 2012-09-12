@@ -9,7 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	CalculatorTest.class,
 	SolarServletTests.class,
 	SolarSystemInfoTests.class,
-	//TariffTests.class	
+	TariffTests.class	
 })
 public class TestSuite {
 
