@@ -1,5 +1,9 @@
 package unitTests;
 
+import solar.Calculator;
+import solar.CalculatorException;
+import solar.SolarSystemException;
+import solar.SolarSystemInfo;
 import solar.TariffCalculation;
 import solar.TariffException;
 
@@ -14,6 +18,12 @@ import org.junit.Test;
 public class TariffTests {
 	
 	private TariffCalculation tariff;
+	
+	SolarSystemInfo runCorrectSystemInfo;
+	Calculator runCorrectCalculator;
+	runCorrectSystemInfo = new SolarSystemInfo(400, 10, 90, 40, 4);
+	runCorrectCalculator = new Calculator(runCorrectSystemInfo);
+	runCorrectTariff = new TariffCalculation(runCorrectCalculator,0.44f);
 	
 	/*
 	 * Constructor() test
@@ -31,8 +41,7 @@ public class TariffTests {
 	@Test
 	// Test if method return correct data.
 	public void runcorrect_calAnnualElectric() throws TariffException {
-		//tariff = new TariffCalculation(1.2);
-		assertEquals(tariff.calAnnualElectric(), (double)438,2);
+		assertEquals(tariff.calAnnualElectric(), (double)339.59,2);
 	}
 	
 	/*
@@ -41,7 +50,6 @@ public class TariffTests {
 	@Test
 	// Test if method return correct data.
 	public void calAnnualSaving() throws TariffException {
-		//tariff = new TariffCalculation (1.2);
-		assertEquals(tariff.calAnnualSaving(), (double)192.72,2);
+		assertEquals(tariff.calAnnualSaving(), (double)14942.09,2);
 	}
 }
