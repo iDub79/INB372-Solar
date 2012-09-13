@@ -1,4 +1,4 @@
-package solar;
+package exceptions;
 
 public class SolarSystemException extends Exception {
 

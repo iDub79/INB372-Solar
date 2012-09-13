@@ -1,16 +1,15 @@
 package solar;
 
-import java.io.*;
+import components.Inverter;
+import components.InverterController;
+import components.PanelController;
+import exceptions.InverterException;
 
+import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.appengine.labs.repackaged.org.json.*;
 
 public class InverterServlet extends HttpServlet {
@@ -21,16 +20,12 @@ public class InverterServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String reqOption = request.getParameter("option");
-		
-		JSONArray jsonArray = new JSONArray();
 		JSONObject returnJsonObj = new JSONObject();
-		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 		
 		if (reqOption.equals("addInverter")) {		
 			String manufacturer = "";
 			String model = "";
 			Integer efficiency = 0;
-			String efficiencyStr = "";
 			
 			boolean validInput = false;
 	
@@ -42,37 +37,60 @@ public class InverterServlet extends HttpServlet {
 				validInput = true;
 			}
 			catch (NumberFormatException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-	
-			efficiencyStr = efficiency.toString();
-	
+				try {
+					returnJsonObj.put("Success", false);
+				}
+				catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}	
 			
 			if (validInput) {
-				Key inverterKey = KeyFactory.createKey("Inverter", model);
-				
-				Entity inverter = new Entity("Inverter", inverterKey);
-				inverter.setProperty("manufacturer", manufacturer);
-				inverter.setProperty("model", model);
-				inverter.setProperty("efficiency", efficiencyStr);
-				
-		        datastore.put(inverter);
-	
-		        getJSONArray(jsonArray, returnJsonObj, datastore);
+				// create new Panel
+				try {					
+					InverterController ctrl = new InverterController();
+					Inverter i = new Inverter(manufacturer, model, efficiency);
+					returnJsonObj = ctrl.addInverter(i);
+					
+				}
+				catch (InverterException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}			
 			else {
-				
-				// TODO ...................
-				
+				try {
+					returnJsonObj.put("Success", false);
+				}
+				catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}		
 		}
 		else if (reqOption.equals("getInverters")) {
-			getJSONArray(jsonArray, returnJsonObj, datastore);
+			InverterController ctrl = new InverterController();
+			returnJsonObj = ctrl.getInverters();
+		}
+		else if (reqOption.equals("getInverterManufacturers")) {
+			InverterController ctrl = new InverterController();
+			returnJsonObj = ctrl.getInverterManufacturers();
+		}
+		else if (reqOption.equals("getInverterModels")) {
+			String manufacturer = request.getParameter("manufacturer");
+			InverterController ctrl = new InverterController();
+			returnJsonObj = ctrl.getInverterModels(manufacturer);
+		}
+		else if (reqOption.equals("getInverterEfficiency")) {
+			String model = request.getParameter("model");
+			InverterController ctrl = new InverterController();
+			returnJsonObj = ctrl.getInverterEfficiency(model);
 		}
 		else if (reqOption.equals("deleteInverter")) {
-			
-			deleteSpec(request, jsonArray, returnJsonObj, datastore, "Inverter");
+			String model = request.getParameter("model");
+			InverterController ctrl = new InverterController();
+			returnJsonObj = ctrl.deleteInverter(model);
 		}
 		
 		response.setContentType("application/json");
@@ -80,51 +98,4 @@ public class InverterServlet extends HttpServlet {
 		
 		log.log(Level.WARNING, returnJsonObj.toString());
 	}
-
-
-	private void deleteSpec(HttpServletRequest request, JSONArray jsonArray, JSONObject returnJsonObj, DatastoreService datastore, String spec) {
-		String model = request.getParameter("model");
-		
-		Query query = new Query(spec);
-		Query.Filter filter = new Query.FilterPredicate("model", FilterOperator.EQUAL, model);
-		query.setFilter(filter);
-		PreparedQuery pq = datastore.prepare(query);
-		Entity e = pq.asSingleEntity();
-		datastore.delete(e.getKey());
-		
-		getJSONArray(jsonArray, returnJsonObj, datastore);
-	}
-
-	
-	private void getJSONArray(JSONArray jsonArray, JSONObject returnJsonObj, DatastoreService datastore) {
-		
-		Query query = new Query("Inverter").addSort("manufacturer", Query.SortDirection.ASCENDING);
-		query.getKind();
-		List<Entity> inverters = datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
-
-		try {
-			if (inverters.size() > 0) {
-		   
-		    	for (Entity inverterInList : inverters) {
-		    		JSONObject inverterObj = new JSONObject();	        	
-		    		inverterObj.put("manufacturer", inverterInList.getProperty("manufacturer"));
-		    		inverterObj.put("model", inverterInList.getProperty("model"));
-		    		inverterObj.put("efficiency", inverterInList.getProperty("efficiency") + "%");
-					
-					jsonArray.put(inverterObj);
-		    	}
-		        
-		        returnJsonObj.put("Inverters", jsonArray);
-		        returnJsonObj.put("Success", true);
-			}
-			else {
-				returnJsonObj.put("Success", "empty");
-			}
-		}
-		catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }

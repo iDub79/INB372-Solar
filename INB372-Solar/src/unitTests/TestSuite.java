@@ -6,8 +6,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	CalculatorTest.class,	
-	SolarSystemInfoTests.class,
+	PanelTests.class,
+	InverterTests.class,
+	CalculatorTests.class,	
+	//SolarSystemInfoTests.class,
 	TariffTests.class,
 	SolarServletTests.class,
 	PanelServletTests.class,

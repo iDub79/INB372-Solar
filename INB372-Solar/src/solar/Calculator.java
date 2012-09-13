@@ -1,6 +1,6 @@
 package solar;
 import static java.lang.Math.*;
-import solar.CalculatorException;
+import exceptions.CalculatorException;
 
 public class Calculator {
 

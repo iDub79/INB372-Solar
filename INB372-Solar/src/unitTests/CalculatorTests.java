@@ -4,14 +4,15 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import exceptions.CalculatorException;
+import exceptions.SolarSystemException;
+
 import solar.Calculator;
-import solar.CalculatorException;
-import solar.SolarSystemException;
 import solar.SolarSystemInfo;
 
 import static java.lang.Math.*;
 
-public class CalculatorTest {
+public class CalculatorTests {
 /*
 	@Test
 	public void nullSystemInConstructor() {

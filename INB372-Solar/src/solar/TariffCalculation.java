@@ -1,7 +1,8 @@
 package solar;
 
+import exceptions.CalculatorException;
+import exceptions.TariffException;
 import solar.Calculator;
-import solar.TariffException;
 
 
 public class TariffCalculation {

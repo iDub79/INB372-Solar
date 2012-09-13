@@ -107,6 +107,28 @@ $(function() {
 		$("#txtInverterManufacturer, #txtInverterModel, #txtInverterEfficiency").val("");
 		clearValidationMessages();
 	});
+	
+	
+	$("#ddlPanelManufacturer").change(function() {
+		$("#ddlPanelModel").find("option").remove().end().append("<option value='-1'>-- Select Panel Model --</option>");
+		getPanelModels($("#ddlPanelManufacturer").val());
+	});
+	
+	
+	$("#ddlPanelModel").change(function() {
+		getPanelPower($("#ddlPanelModel").val())
+	});
+	
+	
+	$("#ddlInverterManufacturer").change(function() {
+		$("#ddlInverterModel").find("option").remove().end().append("<option value='-1'>-- Select Inverter Model --</option>");
+		getInverterModels($("#ddlInverterManufacturer").val());
+	});
+	
+	
+	$("#ddlInverterModel").change(function() {
+		getInverterEfficiency($("#ddlInverterModel").val())
+	});
 });
 
 
@@ -124,8 +146,8 @@ function showMissingFieldsError() {
 function clearValidationMessages() {
 	$("#grpPanelLength, #grpPanelWidth, #grpPanelQty, #grpPanelEfficiency, #grpInverterEfficiency," +
 			"#grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight," +
-			"#grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower, grpInverterlManufacturer" +
-			"grpInverterModel, grpInverterEfficiency").removeClass("error");
+			"#grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower, #grpInverterNewManufacturer," +
+			"#grpInverterNewModel, #grpInverterNewEfficiency").removeClass("error");
 	$("#pnlErrors, #pnlResults").hide();
 }
 
@@ -214,15 +236,15 @@ function validAddInverter() {
 	validForm = true;
 	
 	if (invalidAlphaNumericField(newInverterManufacturer)) {
-		$("#grpInverterManufacturer").addClass("error");
+		$("#grpInverterNewManufacturer").addClass("error");
 		validForm = false;
 	}
 	if (invalidAlphaNumericField(newInverterModel)) {
-		$("#grpInverterModel").addClass("error");
+		$("#grpInverterNewModel").addClass("error");
 		validForm = false;
 	}
 	if (invalidNumberField(newInverterEfficiency)) {
-		$("#grpInverterEfficiency").addClass("error");
+		$("#grpInverterNewEfficiency").addClass("error");
 		validForm = false;
 	}
 	

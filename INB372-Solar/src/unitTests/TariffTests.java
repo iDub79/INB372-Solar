@@ -6,12 +6,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import exceptions.CalculatorException;
+import exceptions.SolarSystemException;
+import exceptions.TariffException;
+
 import solar.Calculator;
-import solar.CalculatorException;
-import solar.SolarSystemException;
 import solar.SolarSystemInfo;
 import solar.TariffCalculation;
-import solar.TariffException;
 
 public class TariffTests {
 	

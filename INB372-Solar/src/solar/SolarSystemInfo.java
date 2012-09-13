@@ -1,5 +1,7 @@
 package solar;
 
+import exceptions.SolarSystemException;
+
 public class SolarSystemInfo {
 	
 	private float sizeOfPanels;

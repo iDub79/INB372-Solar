@@ -76,19 +76,19 @@
                 <div class="form-horizontal">
                     <fieldset style="min-height: 250px;">
                         <legend>Inverter Specifications</legend>
-                        <div class="control-group" id="grpInverterManufacturer">
+                        <div class="control-group" id="grpInverterNewManufacturer">
                             <label class="control-label" for="txtInverterManufacturer">Inverter Manufacturer</label>
                             <div class="controls">
                                 <input type="number" class="input-xlarge" id="txtInverterManufacturer" placeholder="Enter manufacturer" />
                             </div>
                         </div>
-                        <div class="control-group" id="grpInverterModel">
+                        <div class="control-group" id="grpInverterNewModel">
                             <label class="control-label" for="txtInverterModel">Model</label>
                             <div class="controls">
                                 <input type="number" class="input-xlarge" id="txtInverterModel" placeholder="Enter model" />
                             </div>
                         </div>
-                        <div class="control-group" id="grpInverterEfficiency">
+                        <div class="control-group" id="grpInverterNewEfficiency">
                             <label class="control-label" for="txtInverterEfficiency">Efficiency</label>
                             <div class="controls">
                                 <input type="number" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />

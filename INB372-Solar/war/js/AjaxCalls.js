@@ -34,6 +34,38 @@ function getPanelList() {
 }
 
 
+function getPanelManufacturers() {
+	$.ajax({
+        type : "POST",
+        url : "panelServlet",
+        data : "option=getPanelManufacturers",
+	    async: false,
+        success : buildPanelManufacturerDropDownList
+    });
+}
+
+
+function getPanelModels(manufacturer) {
+	$.ajax({
+        type : "POST",
+        url : "panelServlet",
+        data : "option=getPanelModels&manufacturer=" + manufacturer,
+	    async: false,
+        success : buildPanelModelDropDownList
+    });
+}
+
+function getPanelPower(model) {
+	$.ajax({
+        type : "POST",
+        url : "panelServlet",
+        data : "option=getPanelPower&model=" + model,
+	    async: false,
+        success : addPanelPower
+    });
+}
+
+
 function deletePanel(panelToDelete) {
 	$.ajax({
         type : "POST",
@@ -73,6 +105,37 @@ function deleteInverter(inverterToDelete) {
         data : "option=deleteInverter&model=" + inverterToDelete,
 	    async: false,
         success : displayInverterResult
+    });
+}
+
+function getInverterManufacturers() {
+	$.ajax({
+        type : "POST",
+        url : "inverterServlet",
+        data : "option=getInverterManufacturers",
+	    async: false,
+        success : buildInverterManufacturerDropDownList
+    });
+}
+
+
+function getInverterModels(manufacturer) {
+	$.ajax({
+        type : "POST",
+        url : "inverterServlet",
+        data : "option=getInverterModels&manufacturer=" + manufacturer,
+	    async: false,
+        success : buildInverterModelDropDownList
+    });
+}
+
+function getInverterEfficiency(model) {
+	$.ajax({
+        type : "POST",
+        url : "inverterServlet",
+        data : "option=getInverterEfficiency&model=" + model,
+	    async: false,
+        success : addInverterEfficiency
     });
 }
 
@@ -133,6 +196,72 @@ function displayPanelResult(result, status) {
 }
 
 
+function buildPanelManufacturerDropDownList(result, status) {
+	if (status == 'success') {
+		if (result.Success == true) {
+			var output = "";
+			
+			$.each(result.Panels, function (i) {
+				output += "<option val='" + result.Panels[i].manufacturer + "'>" + result.Panels[i].manufacturer + "</option>";	        
+		    });
+			
+			$("#ddlPanelManufacturer").append(output);
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+		else if (result.Success == "empty") {
+			displayError("No data");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}				
+}
+
+
+function buildPanelModelDropDownList(result, status) {
+	if (status == 'success') {
+		if (result.Success == true) {
+			var output = "";
+			
+			$.each(result.Panels, function (i) {
+				output += "<option val='" + result.Panels[i].model + "'>" + result.Panels[i].model + "</option>";	        
+		    });
+			
+			$("#ddlPanelModel").append(output);
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+		else if (result.Success == "empty") {
+			displayError("No data");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}
+}
+
+
+function addPanelPower(result, status) {
+	if (status == 'success') {
+		if (result.Success == true) {			
+			$("#txtPanelEfficiency").val(result.Panels[0].power);
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+		else if (result.Success == "empty") {
+			displayError("No data");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}
+}
+
+
 function displayInverterResult(result, status) {
 
 	if (status == 'success') {
@@ -158,6 +287,72 @@ function displayInverterResult(result, status) {
 	else {
 		displayError("There was an error trying to add the new panel to the database.");
 	}				
+}
+
+
+function buildInverterManufacturerDropDownList(result, status) {
+	if (status == 'success') {
+		if (result.Success == true) {
+			var output = "";
+			
+			$.each(result.Inverters, function (i) {
+				output += "<option val='" + result.Inverters[i].manufacturer + "'>" + result.Inverters[i].manufacturer + "</option>";	        
+		    });
+			
+			$("#ddlInverterManufacturer").append(output);
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+		else if (result.Success == "empty") {
+			displayError("No data");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}				
+}
+
+
+function buildInverterModelDropDownList(result, status) {
+	if (status == 'success') {
+		if (result.Success == true) {
+			var output = "";
+			
+			$.each(result.Inverters, function (i) {
+				output += "<option val='" + result.Inverters[i].model + "'>" + result.Inverters[i].model + "</option>";	        
+		    });
+			
+			$("#ddlInverterModel").append(output);
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+		else if (result.Success == "empty") {
+			displayError("No data");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}
+}
+
+
+function addInverterEfficiency(result, status) {
+	if (status == 'success') {
+		if (result.Success == true) {			
+			$("#txtInverterEfficiency").val(result.Inverters[0].efficiency);
+		}
+		else if (result.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+		else if (result.Success == "empty") {
+			displayError("No data");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}
 }
 
 

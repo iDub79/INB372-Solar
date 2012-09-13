@@ -4,9 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import exceptions.SolarSystemException;
+
 import solar.SolarSystemInfo;
 
-import solar.SolarSystemException;
 
 public class SolarSystemInfoTests {
 
@@ -19,7 +20,7 @@ public class SolarSystemInfoTests {
 				vanillaSystem.getPanelAngle() == 45 &&
 				vanillaSystem.getDayTimePowerConsumption() == 20);
 	}
-	
+	/*
 	@Test(expected = SolarSystemException.class)
 	public void negativePanelSizeTest() throws SolarSystemException {
 		SolarSystemInfo negativePanelSize = new SolarSystemInfo(-1, 200, 90, 45, 20);
@@ -34,7 +35,7 @@ public class SolarSystemInfoTests {
 	public void negativeInverterEffeciencyTest() throws SolarSystemException {
 		SolarSystemInfo negativeInverterEffeciency = new SolarSystemInfo(4, 200, -1, 45, 20);
 	}
-
+	*/
 	@Test(expected = SolarSystemException.class)
 	public void negativePanelAngleTest() throws SolarSystemException {
 		SolarSystemInfo negativePanelAngle = new SolarSystemInfo(4, 200, 90, -1, 20);
@@ -44,15 +45,4 @@ public class SolarSystemInfoTests {
 	public void negativePowerConsumptionTest() throws SolarSystemException {
 		SolarSystemInfo negativePowerConsumption = new SolarSystemInfo(4, 200, 90, 45, -1);
 	}
-	
-	@Test
-	public void oversizedPanelTest() throws SolarSystemException {
-		SolarSystemInfo oversizedPanel = new SolarSystemInfo(8, 200, 90, 45, 20);
-	}
-	
-	@Test
-	public void wattRatingTooHighTest() throws SolarSystemException {
-		SolarSystemInfo wattRatingTooHigh = new SolarSystemInfo(4, 400, 90, 45, 20);
-	}
-
 }

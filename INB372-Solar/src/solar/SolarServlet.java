@@ -9,6 +9,10 @@ import java.util.logging.Logger;
 
 import com.google.appengine.labs.repackaged.org.json.*;
 
+import exceptions.CalculatorException;
+import exceptions.SolarSystemException;
+import exceptions.TariffException;
+
 
 public class SolarServlet extends HttpServlet {
 	
@@ -16,6 +20,8 @@ public class SolarServlet extends HttpServlet {
 	private static final Logger log = Logger.getLogger(SolarServlet.class.getName());
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String reqOption = request.getParameter("option");
 		
 		float panelSize = 0;
 		float panelEfficiency = 0;
@@ -37,13 +43,14 @@ public class SolarServlet extends HttpServlet {
 		try {
 			panelSize = Float.parseFloat(request.getParameter("panelSize"));
 			panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
-			inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));			
-			angle = Float.parseFloat(request.getParameter("angle"));			
-			consumption = Float.parseFloat(request.getParameter("consumption"));
+			inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));						
+			consumption = Float.parseFloat(request.getParameter("consumption"));			
+			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
+			
+			angle = Float.parseFloat(request.getParameter("angle"));
 			address = request.getParameter("address");
 			orientation = request.getParameter("orientation");
 			sunlight = Integer.parseInt(request.getParameter("sunlight"));
-			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
 			
 			validInput = true;
 		}
