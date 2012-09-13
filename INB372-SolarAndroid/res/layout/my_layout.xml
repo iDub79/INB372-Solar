@@ -1,134 +1,289 @@
 <?xml version="1.0" encoding="utf-8"?>
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <TableRow
-            android:id="@+id/tableRow1"
+        android:layout_height="fill_parent" 
+        android:background="@color/black" >
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <EditText
-                android:id="@+id/PanelSize"
+
+            <Button
+                android:id="@+id/System"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="systemTab"
+                android:text="System" />
+
+            <Button
+                android:id="@+id/Location"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:onClick="locationTab"
+                android:text="Location" />
+
+            <Button
+                android:id="@+id/Results"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:enabled="false"
+                android:onClick="resultsTab"
+                android:text="Results" />
+
+        </LinearLayout>
+
+        <TableRow
+            android:id="@+id/rowPanelSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tvPanelSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="Panel Size"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/PanelSize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal" >
+                android:height="@dimen/editBoxHeight"
+                android:inputType="number|numberDecimal"
+                android:text="@string/defaultPanelSize"
+                android:width="@dimen/page1EditText" >
 
                 <requestFocus />
             </EditText>
-
         </TableRow>
-
+
         <TableRow
-            android:id="@+id/tableRow2"
+            android:id="@+id/rowPanelEfficiency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
+            <TextView
+                android:id="@+id/tvPanelEfficiency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Panel Max Power"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
             <EditText
                 android:id="@+id/PanelEfficiency"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="number" />
-
+                android:inputType="number"
+                android:text="@string/defaultPanelEfficiency"
+                android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
-            android:id="@+id/tableRow3"
+            android:id="@+id/rowInverterEfficiency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
+            <TextView
+                android:id="@+id/tvInverterEfficiency"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inverter Efficiency"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
             <EditText
                 android:id="@+id/InverterEfficiency"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="number" />
-
+                android:inputType="number"
+                android:text="@string/defaultInverterEfficiency"
+                android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
-            android:id="@+id/tableRow4"
+            android:id="@+id/rowPanelAngle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
+            <TextView
+                android:id="@+id/tvPanelAngle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Angle"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
             <EditText
                 android:id="@+id/PanelAngle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="numberDecimal" />
-
+                android:inputType="numberDecimal"
+                android:text="@string/defaultPanelAngle"
+                android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
-            android:id="@+id/tableRow5"
+            android:id="@+id/rowPowerConsumption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
+            <TextView
+                android:id="@+id/tvPowerConsumption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consumption"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
             <EditText
                 android:id="@+id/PowerConsumption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:text="@string/defaultConsumption"
+                android:width="@dimen/page1EditText" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowSunlightHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tvSunlightHours"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number" />
+                android:text="Sunlight Hours"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
             <EditText
                 android:id="@+id/SunlightHours"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:text="@string/defaultSunlightHours"
+                android:width="@dimen/page1EditText" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/tvAddress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="number" />
+                android:text="Address"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
 
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/tableRow7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
             <EditText
                 android:id="@+id/Address"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPostalAddress" />
-
+                android:inputType="textPostalAddress"
+                android:text="@string/defaultAddress"
+                android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
-            android:id="@+id/tableRow8"
+            android:id="@+id/rowPanelOrientation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
+            <TextView
+                android:id="@+id/tvPanelOrientation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orientation"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
             <EditText
                 android:id="@+id/PanelOrientation"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:ems="10" />
-
+                android:layout_weight="1"
+                android:ems="10"
+                android:text="@string/defaultOrientation"
+                android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
-            android:id="@+id/tableRow9"
+            android:id="@+id/rowTariffValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/Submit"
+
+            <TextView
+                android:id="@+id/tvTariffValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="submitDetails"
-                android:text="@string/Submit" />
+                android:text="Tariff Value (c/kWh)"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/TariffRate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:inputType="number"
+                android:text="44" />
 
         </TableRow>
+
+        <Button
+            android:id="@+id/Submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="submitDetails"
+            android:text="@string/Submit"
+            android:width="@dimen/page1EditText" />
+
+        <TextView
+            android:id="@+id/tvSavings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Savings"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/Savings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$0"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white"
+            android:visibility="gone" />
 
     </TableLayout>
