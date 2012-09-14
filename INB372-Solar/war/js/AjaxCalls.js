@@ -2,9 +2,10 @@ function calculateInput() {
 	$.ajax({
         type : "POST",
         url : "solarServlet",
-        data : "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-        	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption +
-        	   "&address=" + address + "&tariff=" + tariff,
+        data : "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
+        		"&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel + "&inverterEfficiency=" + inverterEfficiency +
+        		"&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption +
+        		"&address=" + address + "&tariff=" + tariff,
 	    async: false,
         success : displayResult
     });

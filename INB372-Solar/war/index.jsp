@@ -56,50 +56,14 @@
 						<div class="control-group" id="grpPanelEfficiency">
 							<label class="control-label" for="txtPanelEfficiency">Panel max output</label>
 							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter output in watts" />
+								<input type="number" class="input-large" id="txtPanelEfficiency" placeholder="Enter output in watts" />
 							</div>
 						</div>
 						<div class="control-group" id="grpPanelQty">
                             <label class="control-label" for="txtPanelQty">Quantity of panels</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPanelQty" placeholder="Enter quantity" />
+                                <input type="number" class="input-large" id="txtPanelQty" placeholder="Enter quantity" />
                             </div>
-                        </div>
-						<div style="display: none;">
-							<div class="control-group" id="grpPanelOrientation" style="display: none;">
-	                            <label class="control-label" for="listPanelOrientation">Panel Orientation</label>
-	                            <div class="controls">
-	                                <select id="listPanelOrientation">
-	                                    <option value="-1">-- Select Panel Orientation --</option>
-	                                    <option value="N">North</option>
-	                                    <option value="NE">Northeast</option>
-	                                    <option value="E">East</option>
-	                                    <option value="SE">Southeast</option>
-	                                    <option value="S">South</option>
-	                                    <option value="SW">Southwest</option>
-	                                    <option value="W">West</option>
-	                                    <option value="NW">Northwest</option>
-	                                </select>
-	                            </div>
-	                        </div>
-	                        <div class="control-group" id="grpPanelAngle" style="display: none;">
-	                            <label class="control-label" for="txtPanelAngle">Panel Angle</label>
-	                            <div class="controls">
-	                                <input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle in degrees" />
-	                            </div>
-	                        </div>
-	                        <div class="control-group" id="grpPanelLength">
-	                            <label class="control-label" for="txtPanelLength">Length of panel</label>
-	                            <div class="controls">
-	                                <input type="number" class="input-xlarge" id="txtPanelLength" placeholder="Enter length in mm" />
-	                            </div>
-	                        </div>
-	                        <div class="control-group" id="grpPanelWidth">
-	                            <label class="control-label" for="txtPanelWidth">Width of panel</label>
-	                            <div class="controls">
-	                                <input type="number" class="input-xlarge" id="txtPanelWidth" placeholder="Enter width in mm" />
-	                            </div>
-	                        </div>
                         </div>
                         
 						<legend>Inverter Specifications</legend>
@@ -122,23 +86,57 @@
 						<div class="control-group" id="grpInverterEfficiency">
 							<label class="control-label" for="txtInverterEfficiency">Inverter efficiency</label>
 							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
+								<input type="number" class="input-large" id="txtInverterEfficiency" placeholder="Enter efficiency as %" />
 							</div>
 						</div>
+                        <legend>Power Consumption</legend>
+                        <div class="control-group" id="grpPowerConsumption">
+                            <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
+                            <div class="controls">
+                                <input type="number" class="input-large" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts " />
+                                <span class="help-block">Average daily consumption during sunlight hours.</span>
+                            </div>
+                        </div>
+					</fieldset>
+				</div>
+			</div>			
+			<div class="span6">
+				<div class="form-horizontal">
+					<fieldset>
+						<legend>Property Location</legend>
+						<div class="form-actions">
+                            <button class="btn btn-info" id="btnSearchAddress">Get Address Co-ordinates</button>
+						</div>
+						<div class="control-group" id="grpLatitude">						    
+							<label class="control-label" for="txtLatitude">Latitude</label>
+							<div class="controls">
+                                <input type="number" class="input-large" id="txtLatitude" disabled="disabled" />																
+							</div>
+						</div>
+                        <div class="control-group" id="grpLongitude">
+							<label class="control-label" for="txtLongitude">Longitude</label>
+                            <div class="controls">
+                                <input type="number" class="input-large" id="txtLongitude" disabled="disabled" />                                                                
+                            </div>
+						</div>
+						<div class="control-group" id="grpDailySunlight">
+							<label class="control-label" for="txtDailySunlight">Daily Sunlight</label>
+							<div class="controls">
+								<input type="number" class="input-large" id="txtDailySunlight" placeholder="Enter sunlight in kilowatts" />
+							</div>
+						</div>						
+                        <div class="control-group" id="grpPanelAngle">
+                            <label class="control-label" for="txtPanelAngle">Panel Angle</label>
+                            <div class="controls">
+                                <input type="number" class="input-large" id="txtPanelAngle" placeholder="Enter angle in degrees" />
+                            </div>
+                        </div>
 					</fieldset>
 				</div>
 			</div>
 			<div class="span6">
                 <div class="form-horizontal">
                     <fieldset>
-						<legend>Power Consumption</legend>
-                        <div class="control-group" id="grpPowerConsumption">
-                            <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
-                            <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts " />
-                                <span class="help-block">Average daily consumption during sunlight hours.</span>
-                            </div>
-                        </div>
                         <legend>Brisbane Tariff Value</legend>
                         <div class="control-group" id="grpTariff">
                             <label class="control-label" for="listTariff">Tariff Value</label>
@@ -150,34 +148,13 @@
                                 </select>
                             </div>
                         </div>
-					</fieldset>
-				</div>
-			</div>
-			<div class="span6">
-				<div class="form-horizontal">
-					<fieldset>
-						<legend>Property Location</legend>
-						<div class="control-group" id="grpAddress">
-							<label class="control-label" for="searchTextField">Address</label>
-							<div class="controls">
-								<input type="text" class="input-xlarge" id="searchTextField" placeholder="Enter address" />
-								<p id="lblCoordinates" class="help-block"></p>
-								<div id="map_canvas"></div>
-							</div>
-						</div>
-						<div class="control-group" id="grpDailySunlight">
-							<label class="control-label" for="txtDailySunlight">Daily Sunlight</label>
-							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtDailySunlight" placeholder="Enter sunlight in kilowatts" />
-							</div>
-						</div>						
-					</fieldset>
-				</div>
-			</div>
+                    </fieldset>
+                </div>
+            </div>
 			<div class="span12">			    
 				<div class="form-actions">
 					<button class="btn btn-large btn-primary" id="btnCalculate">Calculate</button>
-					<button class="btn btn-large" id="btnCancelCalculate">Cancel</button>					
+					<button class="btn btn-large" id="btnCancelCalculate">Cancel</button>									
 				</div>				
 			</div>
 			<div class="span12">
@@ -195,5 +172,39 @@
             </div>
 		</div>
 	</div>
+	
+	<!-- Address Modal -->
+	<div id="addressModal" class="modal hide fade">
+	    <div class="modal-header">
+	       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	       <h3>Property Search and Panel Orientation</h3>
+	    </div>
+	    <div class="modal-body">
+            <input type="text" class="input-large" id="searchTextField" placeholder="Enter address" />                             
+            <div id="map_canvas"></div>
+            <div class="control-group" id="grpPanelOrientation">
+	            <label class="control-label" for="ddlPanelOrientation">Panel Orientation</label>
+	            <div class="controls">
+	                <select id="ddlPanelOrientation">
+	                    <option value="-1">-- Select Panel Orientation --</option>
+	                    <option value="N">North</option>
+	                    <option value="NE">Northeast</option>
+	                    <option value="E">East</option>
+	                    <option value="SE">Southeast</option>
+	                    <option value="S">South</option>
+	                    <option value="SW">Southwest</option>
+	                    <option value="W">West</option>
+	                    <option value="NW">Northwest</option>
+	                </select>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal-footer">
+	       <a href="#" data-dismiss="modal" class="btn">Close</a>
+	    </div>
+    </div>
+	<!-- End Addres Modal -->
+	
+	
 </body>
 </html>
