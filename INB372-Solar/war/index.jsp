@@ -20,81 +20,106 @@
 
 <!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
 
+<script type="text/javascript">
+	$(function() {
+	    $("#navHome").addClass("active");
+	    getPanelManufacturers();
+	    getInverterManufacturers();
+	});
+</script>
+
 </head>
 <body>
-	<div class="navbar navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-				    <span class="icon-bar"></span>
-				    <span class="icon-bar"></span>
-				    <span class="icon-bar"></span>
-				</a>
-				<a class="brand" href="#">Solar Power Calculator</a>
-				<div class="nav-collapse">
-					<ul class="nav">
-						<li class="active"><a href="#">Home</a></li>
-						<li><a href="#about">About</a></li>
-						<li><a href="#contact">Contact</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file="nav.jsp" %>
+	
 	<div class="container">
 		<div class="row">
 			<div class="span6">
 				<div class="form-horizontal">
 					<fieldset>
 						<legend>Panel Specifications</legend>
-						<div class="control-group" id="grpPanelLength">
-							<label class="control-label" for="txtPanelLength">Length of panel</label>
-							<div class="controls">
-								<input type="number" class="input-xlarge" id="txtPanelLength" placeholder="Enter length in mm" />
-							</div>
-						</div>
-						<div class="control-group" id="grpPanelWidth">
-                            <label class="control-label" for="txtPanelWidth">Width of panel</label>
+						<div class="control-group" id="grpPanelManufacturer">
+                            <label class="control-label" for="ddlPanelManufacturer">Manufacturer</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPanelWidth" placeholder="Enter width in mm" />
+                                <select id="ddlPanelManufacturer">
+                                    <option val="-1">-- Select Panel Manufacturer --</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="control-group" id="grpPanelQty">
-                            <label class="control-label" for="txtPanelQty">Quantity of panels</label>
+                        <div class="control-group" id="grpPanelModel">
+                            <label class="control-label" for="ddlPanelModel">Model</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPanelQty" placeholder="Enter quantity" />
+                                <select id="ddlPanelModel">
+                                    <option val="-1">-- Select Panel Model --</option>
+                                </select>
                             </div>
-                        </div>
+                        </div>                        
 						<div class="control-group" id="grpPanelEfficiency">
 							<label class="control-label" for="txtPanelEfficiency">Panel max output</label>
 							<div class="controls">
 								<input type="number" class="input-xlarge" id="txtPanelEfficiency" placeholder="Enter output in watts" />
 							</div>
 						</div>
-						<div class="control-group" id="grpPanelOrientation" style="display: none;">
-                            <label class="control-label" for="listPanelOrientation">Panel Orientation</label>
+						<div class="control-group" id="grpPanelQty">
+                            <label class="control-label" for="txtPanelQty">Quantity of panels</label>
                             <div class="controls">
-                                <select id="listPanelOrientation">
-                                    <option value="-1">-- Select Panel Orientation --</option>
-                                    <option value="N">North</option>
-                                    <option value="NE">Northeast</option>
-                                    <option value="E">East</option>
-                                    <option value="SE">Southeast</option>
-                                    <option value="S">South</option>
-                                    <option value="SW">Southwest</option>
-                                    <option value="W">West</option>
-                                    <option value="NW">Northwest</option>
-                                </select>
+                                <input type="number" class="input-xlarge" id="txtPanelQty" placeholder="Enter quantity" />
                             </div>
                         </div>
-                        <div class="control-group" id="grpPanelAngle" style="display: none;">
-                            <label class="control-label" for="txtPanelAngle">Panel Angle</label>
-                            <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle in degrees" />
-                            </div>
+						<div style="display: none;">
+							<div class="control-group" id="grpPanelOrientation" style="display: none;">
+	                            <label class="control-label" for="listPanelOrientation">Panel Orientation</label>
+	                            <div class="controls">
+	                                <select id="listPanelOrientation">
+	                                    <option value="-1">-- Select Panel Orientation --</option>
+	                                    <option value="N">North</option>
+	                                    <option value="NE">Northeast</option>
+	                                    <option value="E">East</option>
+	                                    <option value="SE">Southeast</option>
+	                                    <option value="S">South</option>
+	                                    <option value="SW">Southwest</option>
+	                                    <option value="W">West</option>
+	                                    <option value="NW">Northwest</option>
+	                                </select>
+	                            </div>
+	                        </div>
+	                        <div class="control-group" id="grpPanelAngle" style="display: none;">
+	                            <label class="control-label" for="txtPanelAngle">Panel Angle</label>
+	                            <div class="controls">
+	                                <input type="number" class="input-xlarge" id="txtPanelAngle" placeholder="Enter angle in degrees" />
+	                            </div>
+	                        </div>
+	                        <div class="control-group" id="grpPanelLength">
+	                            <label class="control-label" for="txtPanelLength">Length of panel</label>
+	                            <div class="controls">
+	                                <input type="number" class="input-xlarge" id="txtPanelLength" placeholder="Enter length in mm" />
+	                            </div>
+	                        </div>
+	                        <div class="control-group" id="grpPanelWidth">
+	                            <label class="control-label" for="txtPanelWidth">Width of panel</label>
+	                            <div class="controls">
+	                                <input type="number" class="input-xlarge" id="txtPanelWidth" placeholder="Enter width in mm" />
+	                            </div>
+	                        </div>
                         </div>
                         
 						<legend>Inverter Specifications</legend>
+						<div class="control-group" id="grpInverterManufacturer">
+                            <label class="control-label" for="ddlInverterManufacturer">Manufacturer</label>
+                            <div class="controls">
+                                <select id="ddlInverterManufacturer">
+                                    <option val="-1">-- Select Inverter Manufacturer --</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="control-group" id="grpInverterModel">
+                            <label class="control-label" for="ddlInverterModel">Model</label>
+                            <div class="controls">
+                                <select id="ddlInverterModel">
+                                    <option val="-1">-- Select Inverter Model --</option>
+                                </select>
+                            </div>
+                        </div>
 						<div class="control-group" id="grpInverterEfficiency">
 							<label class="control-label" for="txtInverterEfficiency">Inverter efficiency</label>
 							<div class="controls">
@@ -111,7 +136,8 @@
                         <div class="control-group" id="grpPowerConsumption">
                             <label class="control-label" for="txtPowerConsumption">Power Consumption</label>
                             <div class="controls">
-                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter average daily consumption in kilowatts " />
+                                <input type="number" class="input-xlarge" id="txtPowerConsumption" placeholder="Enter consumption in kilowatts " />
+                                <span class="help-block">Average daily consumption during sunlight hours.</span>
                             </div>
                         </div>
                         <legend>Brisbane Tariff Value</legend>
@@ -128,7 +154,7 @@
 					</fieldset>
 				</div>
 			</div>
-			<div class="span6" style="display: none;">
+			<div class="span6">
 				<div class="form-horizontal">
 					<fieldset>
 						<legend>Property Location</legend>
@@ -152,7 +178,7 @@
 			<div class="span12">			    
 				<div class="form-actions">
 					<button class="btn btn-large btn-primary" id="btnCalculate">Calculate</button>
-					<button class="btn btn-large" id="btnReset">Cancel</button>					
+					<button class="btn btn-large" id="btnCancelCalculate">Cancel</button>					
 				</div>				
 			</div>
 			<div class="span12">

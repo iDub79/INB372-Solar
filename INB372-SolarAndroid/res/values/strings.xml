@@ -1,14 +1,22 @@
 <resources>
 
-    <string name="app_name">SPC</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Solar Power Calculator</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="TestButton">Hello, I am a Button</string>
     <string name="TextView">Hello, I am a TextView</string>
     <string name="System">System</string>
     <string name="Results">Results</string>
     <string name="Power">Power</string>
     <string name="Submit">Submit</string>
+    <string name="defaultPanelSize">4</string>
+    <string name="defaultPanelEfficiency">300</string>
+    <string name="defaultInverterEfficiency">93</string>
+    <string name="defaultPanelAngle">27</string>
+    <string name="defaultConsumption">3</string>
+    <string name="defaultSunlightHours">6</string>
+    <string name="defaultOrientation">North</string>
+    <string name="defaultAddress">26 Zenith Avenue, Chermside</string>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
 </resources>

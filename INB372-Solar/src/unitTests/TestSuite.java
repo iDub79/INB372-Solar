@@ -6,11 +6,17 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	CalculatorTest.class,
+	PanelTests.class,
+	InverterTests.class,
+	CalculatorTests.class,	
+	//SolarSystemInfoTests.class,
+	TariffTests.class,
 	SolarServletTests.class,
-	SolarSystemInfoTests.class,
-	TariffTests.class	
+	PanelServletTests.class,
+	InverterServletTests.class
 })
+
+
 public class TestSuite {
 
 }

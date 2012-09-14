@@ -1,28 +1,29 @@
 package solar;
 
+import exceptions.CalculatorException;
+import exceptions.TariffException;
 import solar.Calculator;
-import solar.TariffException;
 
 
 public class TariffCalculation {
 
 	float tariffAmount;
-	float annualElectricity;
+	float dailyElectricity;
 	
 	// Constructor
 	public TariffCalculation(Calculator calc, float tariffAmount) throws TariffException, CalculatorException {
 		if (calc.calcDailyExcess() < 0) {
-			throw new TariffException ("This value must greater than 0");
+			throw new TariffException ("This value must be greater than 0.");
 		}
 		else {
-			this.annualElectricity = calc.calcDailyExcess();
+			this.dailyElectricity = calc.calcDailyExcess();
 			this.tariffAmount = tariffAmount;
 		}
 	}
 	
 	// Calculate the Annual Electric
 	public float calAnnualElectric() {	
-		return annualElectricity * 365;
+		return dailyElectricity * 365;
 	}
 	
 	// Calculate the Annual Saving

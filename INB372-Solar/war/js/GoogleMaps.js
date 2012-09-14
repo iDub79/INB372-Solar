@@ -100,7 +100,8 @@ function displayCoordinates() {
     geocoder.geocode({ 'address': address }, function (results, status) {
     	if (status == google.maps.GeocoderStatus.OK) {
     		var lat = getLat(results[0].geometry.location.toString());
-            $("#lblCoordinates").html("Latitude = " + lat.toString());
+    		var long = getLong(results[0].geometry.location.toString());
+            $("#lblCoordinates").html("Latitude = " + lat.toString() + ", Longitude = " + long.toString());
         }
     	else {
         	$("#lblCoordinates").html("Geocode was not successful for the following reason: " + status);
@@ -110,9 +111,17 @@ function displayCoordinates() {
 
 
 /*
- * splits the location string into lat and long values then returns the lat value
+ * splits the location string into lat and long values then returns the latitude value
  */
 function getLat(latLong) {	
 	var latlngStr = latLong.split(",", 2);
 	return latlngStr[0].substr(1, latlngStr[0].length);    	
+}
+
+/*
+ * splits the location string into lat and long values then returns the longitude value
+ */
+function getLong(latLong) {	
+	var latlngStr = latLong.split(",", 2);
+	return latlngStr[1].substr(1, latlngStr[1].length);    	
 }
