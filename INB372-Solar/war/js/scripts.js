@@ -1,15 +1,17 @@
 // index.jsp user input fields
-var panelLength;
-var panelWidth;
-var panelQty;
-var panelSize;
+var panelManufacturer;
+var panelModel;
 var panelEfficiency;
+var panelQty;
+var inverterManufacturer;
+var inverterModel;
 var inverterEfficiency;
-var orientation = "N";
+
+var orientation;
 var angle = 45;
 var consumption;
-var address = "Dummy address";		// dummy address used until later iteration
-var sunlight = "10";				// default value based on Brisbane average
+var address;
+var sunlight;
 var tariff;
 var amountSavedNum = 0.00;
 
@@ -17,8 +19,6 @@ var amountSavedNum = 0.00;
 var newPanelManufacturer;
 var newPanelModel; 
 var newPanelPower;
-var newPanelLength;
-var newPanelWidth;
 var newInverterManufacturer;
 var newInverterModel;
 var newInverterEfficiency
@@ -30,20 +30,23 @@ $(function() {
 
 		clearValidationMessages();
 		
-		panelLength = $("#txtPanelLength").val();
-		panelWidth = $("#txtPanelWidth").val();
-		panelQty = $("#txtPanelQty").val();
+		panelManufacturer = $("txtPanelManufacturer").val();
+		panelModel = $("txtPanelModel").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();
+		panelQty = $("#txtPanelQty").val();
+		
+		inverterManufacturer = $("ddlInverterManufacturer").val();
+		inverterModel = $("ddlInverterModel").val();
 		inverterEfficiency = $("#txtInverterEfficiency").val();		
-		//orientation = $("#listPanelOrientation").val();
-		//angle = $("#txtPanelAngle").val();
-		consumption = $("#txtPowerConsumption").val();		
-		//sunlight = $("#txtDailySunlight").val();
-		//address = $("#searchTextField").val();
+		
+		angle = $("#txtPanelAngle").val();
+		consumption = $("#txtPowerConsumption").val();
+		orientation = $("#ddlPanelOrientation").val();				
+		sunlight = $("#txtDailySunlight").val();
+		address = $("#searchTextField").val();
 		tariff = $("#listTariff").val();
 		
 		if (validCalculateSolarForm()) {
-			calculatePanelSize();
 			calculateInput();
 		}
 		else {
@@ -89,10 +92,9 @@ $(function() {
 	
 	
 	$("#btnResetCalculate").click(function() {
-		$("#txtPanelLength, #txtPanelWidth, #txtPanelQty, #txtPanelEfficiency, #txtInverterEfficiency," +
+		$("#txtPanelEfficiency, #txtInverterEfficiency," +
 				"#txtPanelAngle, #txtPowerConsumption, #txtDailySunlight, #searchTextField").val("");
-		$("#listPanelOrientation").val("-1");
-		$("#listTariff").val("-1");
+		$("#ddlPanelManufacturer, #ddlPanelModel, #ddlInverterManufacturer, #ddlInverterModel, #listPanelOrientation, #listTariff").val("-1");
 		clearValidationMessages();
 	});
 	
@@ -129,12 +131,17 @@ $(function() {
 	$("#ddlInverterModel").change(function() {
 		getInverterEfficiency($("#ddlInverterModel").val())
 	});
+	
+	
+	$("#btnSearchAddress").click(function(){
+		$("#addressModal").modal();
+		$("#addressModal").on("shown", function () {
+			google.maps.event.trigger(map, "resize");
+		});
+	});
+
 });
 
-
-function calculatePanelSize() {
-	panelSize = (((panelLength / 1000) * (panelWidth / 1000)) * panelQty) ;
-}
 
 
 function showMissingFieldsError() {
@@ -144,17 +151,18 @@ function showMissingFieldsError() {
 
 
 function clearValidationMessages() {
-	$("#grpPanelLength, #grpPanelWidth, #grpPanelQty, #grpPanelEfficiency, #grpInverterEfficiency," +
-			"#grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption, #grpAddress, #grpDailySunlight," +
-			"#grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower, #grpInverterNewManufacturer," +
-			"#grpInverterNewModel, #grpInverterNewEfficiency").removeClass("error");
+	$("#grpPanelManufacturer, #grpPanelModel, #grpPanelQty, #grpPanelEfficiency, #grpInverterManufacturer," +
+			"#grpInverterModel, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption," +
+			"#grpAddress, #grpDailySunlight, #grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower," +
+			"#grpInverterNewManufacturer, #grpInverterNewModel, #grpInverterNewEfficiency")
+		.removeClass("error");
 	$("#pnlErrors, #pnlResults").hide();
 }
 
 
 function validCalculateSolarForm() {	
 	var validForm = true;
-	
+	/*
 	if (invalidNumberField(panelLength)) {
 		$("#grpPanelLength").addClass("error");
 		validForm = false;
@@ -163,6 +171,7 @@ function validCalculateSolarForm() {
 		$("#grpPanelWidth").addClass("error");
 		validForm = false;
 	}
+	*/
 	if (invalidNumberField(panelQty)) {
 		$("#grpPanelQty").addClass("error");
 		validForm = false;

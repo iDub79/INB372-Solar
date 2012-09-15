@@ -1,32 +1,51 @@
 package solar;
 import static java.lang.Math.*;
+
+import components.Inverter;
+import components.Panel;
+
 import exceptions.CalculatorException;
 
 public class Calculator {
 
-	private SolarSystemInfo system;
-	private int noHoursInDay = 6;
-	private float[] angSunGround = new float[noHoursInDay];
-	private float[] angSunPanel = new float[noHoursInDay];
-	private float[] hourlyInsolation = new float[noHoursInDay];
-	private float[] hourlySun = new float[noHoursInDay];
+	private Panel panel;
+	private Inverter inverter;
+	private float consumption;
+	private float panelAngle;
 	
-	public Calculator(SolarSystemInfo system) throws CalculatorException {
-		if (system == null) {
+	private final int HOURSINDAY = 6;
+	private final float AVGDAYSUN = 6.7f;
+	
+	private float[] angSunGround = new float[HOURSINDAY];
+	private float[] angSunPanel = new float[HOURSINDAY];
+	private float[] hourlyInsolation = new float[HOURSINDAY];
+	private float[] hourlySun = new float[HOURSINDAY];
+	
+	public Calculator(Panel panel, Inverter inverter, float consumption, float panelAngle) throws CalculatorException {
+		if ((panel == null) || (inverter == null)) {
 			throw new CalculatorException();
 		}
 		else {
-			this.system = system;
-			angSunGround[0] = 10;
-			angSunGround[1] = 35;
-			angSunGround[2] = 40;
-			angSunGround[3] = 40;
-			angSunGround[4] = 35;
-			angSunGround[5] = 10;
+			this.panel = panel;
+			this.inverter = inverter;
+			this.consumption = consumption;
+			this.panelAngle = panelAngle;
+			
+			initialiseAngSunGround();
 		}
+	}
+
+	private void initialiseAngSunGround() {
+		angSunGround[0] = 10;
+		angSunGround[1] = 35;
+		angSunGround[2] = 40;
+		angSunGround[3] = 40;
+		angSunGround[4] = 35;
+		angSunGround[5] = 10;
 	}
 	
 	private float calcPanelEff() throws CalculatorException {
+		/*
 		float wKwConversion = 1000;
 		
 		if (system.getSizeOfPanels() == 0.0f) {
@@ -35,33 +54,34 @@ public class Calculator {
 		else {
 			return ((system.getWattRating() / system.getSizeOfPanels()) / wKwConversion);
 		}
+		*/
+		return panel.getPower();
 	}
 
-	private float[] calcSunPerHour() {
-		float avgDaySun = 6.7f;
-		float[] hrSun = new float[noHoursInDay];
+	private float[] calcSunPerHour() {		
+		float[] hrSun = new float[HOURSINDAY];
 		
-		for (int i = 0; i < noHoursInDay; i++) {
-			hrSun[i] = avgDaySun / noHoursInDay;
+		for (int i = 0; i < HOURSINDAY; i++) {
+			hrSun[i] = AVGDAYSUN / HOURSINDAY;
 		}
 		
 		return hrSun;
 	}
 	
 	private float[] calcAngleSunPanel(float[] angSunGround) {
-		float[] angSunPanel = new float[noHoursInDay];
-		float angPanelGround = system.getPanelAngle();
-		
-		for (int i = 0; i < noHoursInDay; i++) {
-			angSunPanel[i] = angSunGround[i] - angPanelGround;
+		float[] angSunPanel = new float[HOURSINDAY];
+
+		for (int i = 0; i < HOURSINDAY; i++) {
+			angSunPanel[i] = angSunGround[i] - panelAngle;
 		}
 		
 		return angSunPanel;
 	}
 	
 	private float[] calcHourlyInsolation(float[] angSunPanel) {
-		float[] hourlyInsolation = new float[noHoursInDay];
-		for (int i = 0; i < noHoursInDay; i++) {
+		float[] hourlyInsolation = new float[HOURSINDAY];
+		
+		for (int i = 0; i < HOURSINDAY; i++) {
 			hourlyInsolation[i] = (float) sin(angSunPanel[i]);
 		}
 		
@@ -74,7 +94,7 @@ public class Calculator {
 		angSunPanel = calcAngleSunPanel(angSunGround);
 		hourlyInsolation = calcHourlyInsolation(angSunPanel);
 		
-		for (int i = 0; i < noHoursInDay; i++) {
+		for (int i = 0; i < HOURSINDAY; i++) {
 			dailySun += hourlyInsolation[i] * hourlySun[i];
 		}
 		
@@ -82,11 +102,11 @@ public class Calculator {
 	}
 	
 	public float calcDailyPower() throws CalculatorException {
-		return calcPanelEff() * system.getInverterEffeciency() * calcDailySunHit();
+		return calcPanelEff() * inverter.getEfficiency() * calcDailySunHit();
 	}
 	
 	public float calcDailyExcess() throws CalculatorException {
-		return calcDailyPower() - system.getDayTimePowerConsumption();
+		return calcDailyPower() - consumption;
 	}
 }
 

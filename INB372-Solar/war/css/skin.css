@@ -1,4 +1,10 @@
 .requiredMsg { color: Red; font-style: italic; }
-#map_canvas { height: 200px; }
+#map_canvas { width: 100%; height: 300px; }
 #pnlPanelResults h2, pnlInverterResults h2 { font-style: italic; }
 a.deleteSpec { cursor: pointer; }
+
+/* Fix for adding Google Map Autocomplete to Bootstrap modal */
+.pac-container { background-color: #FFF; z-index: 20; position: fixed; display: inline-block; float: left; }
+.modal{ z-index: 20; }
+.modal-backdrop{ z-index: 10; }
+/* End fix for adding Google Map Autocomplete to Bootstrap modal */

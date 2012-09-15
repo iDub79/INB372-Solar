@@ -72,16 +72,6 @@ function initialiseSearch() {
         marker.setIcon(image);
         marker.setPosition(place.geometry.location);
 
-        var address = '';
-
-        if (place.address_components) {
-            address = [(place.address_components[0] && place.address_components[0].short_name || ''),
-                       (place.address_components[1] && place.address_components[1].short_name || ''),
-                       (place.address_components[2] && place.address_components[2].short_name || '')
-                      ].join(' ');
-        }
-
-        infowindow.setContent('<div><strong>' + address + '</strong><br />');
         infowindow.open(map, marker);
         
         // display the latitude of the searched location
@@ -101,7 +91,8 @@ function displayCoordinates() {
     	if (status == google.maps.GeocoderStatus.OK) {
     		var lat = getLat(results[0].geometry.location.toString());
     		var long = getLong(results[0].geometry.location.toString());
-            $("#lblCoordinates").html("Latitude = " + lat.toString() + ", Longitude = " + long.toString());
+    		$("#txtLatitude").val(lat.toString());
+    		$("#txtLongitude").val(long.toString());
         }
     	else {
         	$("#lblCoordinates").html("Geocode was not successful for the following reason: " + status);
@@ -123,5 +114,5 @@ function getLat(latLong) {
  */
 function getLong(latLong) {	
 	var latlngStr = latLong.split(",", 2);
-	return latlngStr[1].substr(1, latlngStr[1].length);    	
+	return latlngStr[1].substr(1, latlngStr[1].length - 2);    	
 }
