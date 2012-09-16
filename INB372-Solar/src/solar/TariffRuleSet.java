@@ -19,7 +19,8 @@ public class TariffRuleSet {
 			this.rateAppliesAfter[0] = 0;
 			for (int i = 0; i < rateAppliesAfter.length; i++)
 				this.rateAppliesAfter[i + 1] = rateAppliesAfter[i];
-		} else {
+		}
+		else {
 			this.rateAppliesAfter = rateAppliesAfter;
 		}
 	}
@@ -42,7 +43,8 @@ public class TariffRuleSet {
 				rate[i] = appliesAfterAndRate[i * 2 + 1];
 				rateAppliesAfter[i] = appliesAfterAndRate[i * 2];
 			}
-		} else {
+		}
+		else {
 			// if odd, then the first argument is the rate
 			rateAppliesAfter = new double[count / 2 + 1];
 			rate = new double[count / 2 + 1];

@@ -12,6 +12,7 @@ public class Calculator {
 	private Inverter inverter;
 	private float consumption;
 	private float panelAngle;
+	private Integer panelQty;
 	
 	private final int HOURSINDAY = 6;
 	private final float AVGDAYSUN = 6.7f;
@@ -21,7 +22,7 @@ public class Calculator {
 	private float[] hourlyInsolation = new float[HOURSINDAY];
 	private float[] hourlySun = new float[HOURSINDAY];
 	
-	public Calculator(Panel panel, Inverter inverter, float consumption, float panelAngle) throws CalculatorException {
+	public Calculator(Panel panel, Inverter inverter, Integer panelQty, float consumption, float panelAngle) throws CalculatorException {
 		if ((panel == null) || (inverter == null)) {
 			throw new CalculatorException();
 		}
@@ -30,6 +31,7 @@ public class Calculator {
 			this.inverter = inverter;
 			this.consumption = consumption;
 			this.panelAngle = panelAngle;
+			this.panelQty = panelQty;
 			
 			initialiseAngSunGround();
 		}
@@ -45,17 +47,7 @@ public class Calculator {
 	}
 	
 	private float calcPanelEff() throws CalculatorException {
-		/*
-		float wKwConversion = 1000;
-		
-		if (system.getSizeOfPanels() == 0.0f) {
-			throw new CalculatorException();
-		}	
-		else {
-			return ((system.getWattRating() / system.getSizeOfPanels()) / wKwConversion);
-		}
-		*/
-		return panel.getPower();
+		return panel.getPower() / 1000;
 	}
 
 	private float[] calcSunPerHour() {		

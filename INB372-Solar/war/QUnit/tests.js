@@ -3,15 +3,15 @@ QUnit.begin = function() {
 };
 
 
-testNumericInputFields("Panel Length", "panelLength")
-testNumericInputFields("Panel Width", "panelWidth")
-testNumericInputFields("Panel Quantity", "panelQty")
-testNumericInputFields("Panel Efficiency", "panelEfficiency")
-testNumericInputFields("Inverter Efficiency", "inverterEfficiency")
-//testNumericInputFields("Angle", "angle")
-//testNumericInputFields("Sunlight", "sunlight")
-testNumericInputFields("Consumption", "consumption")
-//testAlphaNumericInputFields("Address", "address")
+testPositiveNumericInputFields("Panel Quantity", "panelQty");
+testPositiveNumericInputFields("Panel Efficiency", "panelEfficiency");
+testPositiveNumericInputFields("Inverter Efficiency", "inverterEfficiency");
+testPositiveNumericInputFields("Angle", "angle");
+testPositiveNumericInputFields("Sunlight", "sunlight");
+testPositiveNumericInputFields("Consumption", "consumption");
+testAlphaNumericInputFields("Address", "address");
+testNumericInputFields("Latitude", "latitude");
+testNumericInputFields("Longitude", "longitude");
 
 
 module("All input fields valid");
@@ -51,9 +51,9 @@ test("All input data submitted as valid parameters", function() {
 /*
 testAlphaNumericInputFields("New Panel Manufacturer", "manufacturer");
 testAlphaNumericInputFields("New Panel Model", "model");
-testNumericInputFields("New Panel Power", "power")
-testNumericInputFields("New Panel Length", "newPanelLength")
-testNumericInputFields("New Panel Width", "newPanelWidth")
+testPositiveNumericInputFields("New Panel Power", "power")
+testPositiveNumericInputFields("New Panel Length", "newPanelLength")
+testPositiveNumericInputFields("New Panel Width", "newPanelWidth")
 */
 
 /*
@@ -75,6 +75,34 @@ test("Valid calculation response received", function() {
 */
 
 
+function testPositiveNumericInputFields(fieldName, txtFieldName) {
+	module(fieldName + " input fields");
+	test(fieldName + " is undefined", function() {
+		ok(invalidPostiveNumberField(txtFieldName), fieldName + " is undefined");
+	});
+
+	test(fieldName + " is empty", function() {
+		txtFieldName = "";
+		ok(invalidPostiveNumberField(txtFieldName), fieldName + " is empty");
+	});
+
+	test(fieldName + " is NaN", function() {
+		txtFieldName = "a";
+		ok(invalidPostiveNumberField(txtFieldName), fieldName + "  is not a number");
+	});
+
+	test(fieldName + " is less than 0", function() {
+		txtFieldName = "-1";
+		ok(invalidPostiveNumberField(txtFieldName), fieldName + "  is less than 0");
+	});
+	
+	test(fieldName + " is valid", function() {
+		txtFieldName = "5";
+		ok(!invalidPostiveNumberField(txtFieldName), fieldName + "  is valid");
+	});
+}
+
+
 function testNumericInputFields(fieldName, txtFieldName) {
 	module(fieldName + " input fields");
 	test(fieldName + " is undefined", function() {
@@ -89,11 +117,6 @@ function testNumericInputFields(fieldName, txtFieldName) {
 	test(fieldName + " is NaN", function() {
 		txtFieldName = "a";
 		ok(invalidNumberField(txtFieldName), fieldName + "  is not a number");
-	});
-
-	test(fieldName + " is less than 0", function() {
-		txtFieldName = "-1";
-		ok(invalidNumberField(txtFieldName), fieldName + "  is less than 0");
 	});
 	
 	test(fieldName + " is valid", function() {
@@ -122,12 +145,12 @@ function testAlphaNumericInputFields(fieldName, txtFieldName) {
 
 
 function setupValidInputs() {
-	panelLength = 1649;
-	panelWidth = 993;
 	panelQty = 8;
 	panelEfficiency = 5;
 	inverterEfficiency = 5;
 	address = "1 Test Street Brisbane Queensland";
+	latitdue = 146.34;
+	longitude = -28.67;
 	orientation = "N";
 	angle = 5;
 	sunlight = 5;
@@ -141,12 +164,12 @@ function setupValidInputs() {
 }
 
 function clearInputFields() {
-	panelLength = "";
-	panelWidth = "";
 	panelQty = "";
 	panelEfficiency = "";
 	inverterEfficiency = "";
 	address = "";
+	latitude = "";
+	longitude = "";
 	orientation = "";
 	angle = "";
 	sunlight = "";

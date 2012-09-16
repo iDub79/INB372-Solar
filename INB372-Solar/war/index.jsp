@@ -158,7 +158,7 @@
 				</div>				
 			</div>
 			<div class="span12">
-                <div class="alert alert-success" id="pnlResults" style="display: none;">
+                <div class="alert alert-successs" id="pnlResults" style="display: none;">
                     <span id="lblSavings"></span>
                 </div>
                 <div class="alert alert-error" id="pnlErrors" style="display: none;">

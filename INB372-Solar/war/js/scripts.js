@@ -11,6 +11,8 @@ var orientation;
 var angle = 45;
 var consumption;
 var address;
+var latitude;
+var longitude;
 var sunlight;
 var tariff;
 var amountSavedNum = 0.00;
@@ -25,6 +27,8 @@ var newInverterEfficiency
 
 
 $(function() {
+	
+	$("#ddlPanelManufacturer").focus();
 
 	$("#btnCalculate").click(function() {
 
@@ -44,6 +48,8 @@ $(function() {
 		orientation = $("#ddlPanelOrientation").val();				
 		sunlight = $("#txtDailySunlight").val();
 		address = $("#searchTextField").val();
+		latitude = $("#txtLatitude").val();
+		longitude = $("#txtLongitude").val();
 		tariff = $("#listTariff").val();
 		
 		if (validCalculateSolarForm()) {
@@ -138,8 +144,9 @@ $(function() {
 		$("#addressModal").on("shown", function () {
 			google.maps.event.trigger(map, "resize");
 		});
+		$("#searchTextField").focus();
 	});
-
+	
 });
 
 
@@ -154,7 +161,7 @@ function clearValidationMessages() {
 	$("#grpPanelManufacturer, #grpPanelModel, #grpPanelQty, #grpPanelEfficiency, #grpInverterManufacturer," +
 			"#grpInverterModel, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption," +
 			"#grpAddress, #grpDailySunlight, #grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower," +
-			"#grpInverterNewManufacturer, #grpInverterNewModel, #grpInverterNewEfficiency")
+			"#grpInverterNewManufacturer, #grpInverterNewModel, #grpInverterNewEfficiency, #grpLatitude, #grpLongitude")
 		.removeClass("error");
 	$("#pnlErrors, #pnlResults").hide();
 }
@@ -162,25 +169,16 @@ function clearValidationMessages() {
 
 function validCalculateSolarForm() {	
 	var validForm = true;
-	/*
-	if (invalidNumberField(panelLength)) {
-		$("#grpPanelLength").addClass("error");
-		validForm = false;
-	}
-	if (invalidNumberField(panelWidth)) {
-		$("#grpPanelWidth").addClass("error");
-		validForm = false;
-	}
-	*/
-	if (invalidNumberField(panelQty)) {
+
+	if (invalidPostiveNumberField(panelQty)) {
 		$("#grpPanelQty").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(panelEfficiency)) {
+	if (invalidPostiveNumberField(panelEfficiency)) {
 		$("#grpPanelEfficiency").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(inverterEfficiency)) {
+	if (invalidPostiveNumberField(inverterEfficiency)) {
 		$("#grpInverterEfficiency").addClass("error");
 		validForm = false;
 	}		
@@ -188,20 +186,28 @@ function validCalculateSolarForm() {
 		$("#grpPanelOrientation").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(angle)) {
+	if (invalidPostiveNumberField(angle)) {
 		$("#grpPanelAngle").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(sunlight)) {
+	if (invalidPostiveNumberField(sunlight)) {
 		$("#grpDailySunlight").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(consumption)) {
+	if (invalidPostiveNumberField(consumption)) {
 		$("#grpPowerConsumption").addClass("error");
 		validForm = false;
 	}
 	if (invalidAlphaNumericField(address)) {
 		$("#grpAddress").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(latitude)) {
+		$("#grpLatitude").addClass("error");
+		validForm = false;
+	}
+	if (invalidNumberField(longitude)) {
+		$("#grpLongitude").addClass("error");
 		validForm = false;
 	}
 	if (tariff == -1) {
@@ -224,15 +230,15 @@ function validAddPanel() {
 		$("#grpPanelModel").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(newPanelPower)) {
+	if (invalidPostiveNumberField(newPanelPower)) {
 		$("#grpPanelPower").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(newPanelLength)) {
+	if (invalidPostiveNumberField(newPanelLength)) {
 		$("#grpPanelLength").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(newPanelWidth)) {
+	if (invalidPostiveNumberField(newPanelWidth)) {
 		$("#grpPanelWidth").addClass("error");
 		validForm = false;
 	}
@@ -252,7 +258,7 @@ function validAddInverter() {
 		$("#grpInverterNewModel").addClass("error");
 		validForm = false;
 	}
-	if (invalidNumberField(newInverterEfficiency)) {
+	if (invalidPostiveNumberField(newInverterEfficiency)) {
 		$("#grpInverterNewEfficiency").addClass("error");
 		validForm = false;
 	}
@@ -262,6 +268,10 @@ function validAddInverter() {
 
 
 function invalidNumberField(field) {
+	return ((field == "") || (isNaN(field)) || (typeof field === "undefined"));
+}
+
+function invalidPostiveNumberField(field) {
 	return ((field == "") || (isNaN(field)) || (typeof field === "undefined") || (field < 0));
 }
 
