@@ -128,7 +128,7 @@
                         <div class="control-group" id="grpPanelAngle">
                             <label class="control-label" for="txtPanelAngle">Panel Angle</label>
                             <div class="controls">
-                                <input type="number" class="input-large" id="txtPanelAngle" placeholder="Enter angle in degrees" />
+                                <input type="number" class="input-large" id="txtPanelAngle" placeholder="Enter angle (0 - 90) in degrees" />
                             </div>
                         </div>
 					</fieldset>
@@ -158,7 +158,7 @@
 				</div>				
 			</div>
 			<div class="span12">
-                <div class="alert alert-successs" id="pnlResults" style="display: none;">
+                <div class="alert alert-success" id="pnlResults" style="display: none;">
                     <span id="lblSavings"></span>
                 </div>
                 <div class="alert alert-error" id="pnlErrors" style="display: none;">
@@ -200,7 +200,7 @@
 	        </div>
 	    </div>
 	    <div class="modal-footer">
-	       <a href="#" data-dismiss="modal" class="btn">Close</a>
+	       <a href="#" data-dismiss="modal" class="btn btn-large btn-primary">Close</a>
 	    </div>
     </div>
 	<!-- End Addres Modal -->

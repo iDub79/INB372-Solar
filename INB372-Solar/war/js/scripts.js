@@ -186,7 +186,7 @@ function validCalculateSolarForm() {
 		$("#grpPanelOrientation").addClass("error");
 		validForm = false;
 	}
-	if (invalidPostiveNumberField(angle)) {
+	if ((invalidPostiveNumberField(angle)) || (angle > 90)) {
 		$("#grpPanelAngle").addClass("error");
 		validForm = false;
 	}
