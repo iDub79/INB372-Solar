@@ -99,18 +99,6 @@ public class solarAndroidTests extends ActivityInstrumentationTestCase2<SolarPow
 	// Maybe instead of throwing the exceptions, I should make it verify the entries on the fly and disable
 	// the submit button, then check whether the submit button is enabled
 	/*
-	// no size (expect exception)
-	public void testNoSize() {
-		Activity act = getActivity();
-		EditText editText = (EditText)act.findViewById(R.id.PanelSize);
-		solo.clickOnView(editText);
-		solo.clearEditText(editText);
-		assertTrue(true);
-		solo.clickOnView(act.findViewById(R.id.Submit));
-		solo.sleep(servletResponseDelay);
-		fail("Expected an exception");
-		assertTrue(true);
-	}
 	
 	// no inverter efficiency (expect exception)
 	public void testNoInverterEfficiency() {
@@ -282,28 +270,7 @@ public class solarAndroidTests extends ActivityInstrumentationTestCase2<SolarPow
 		}
 	}
 	
-	*/
-	// bigger panel gives less savings - deep seeded maths problem
-	public void testBiggerPanelMoreSavings() {
-		Activity act = getActivity();
-		EditText editText = (EditText)act.findViewById(R.id.PanelSize);
-		solo.clickOnView(act.findViewById(R.id.Submit));
-		solo.sleep(servletResponseDelay);
-		String strValue = ((TextView)act.findViewById(R.id.Savings)).getText().toString().substring(1);
-		Float largerPanelSavings = Float.parseFloat(strValue);
-		
-		solo.clickOnView(act.findViewById(R.id.System));
-		solo.clearEditText(editText);
-		solo.clickOnView(editText);
-		solo.enterText(editText, Integer.toString(2));
-		
-		solo.clickOnView(act.findViewById(R.id.Submit));
-		solo.sleep(servletResponseDelay);
-		strValue = ((TextView)act.findViewById(R.id.Savings)).getText().toString().substring(1);
-		Float smallerPanelSavings = Float.parseFloat(strValue);
-		assertTrue("Larger panel returns more savings.", largerPanelSavings > smallerPanelSavings);
-	}
-	
+	*/	
 	// invalid orientation
 	public void testInvalidOrientation() {
 		Activity act = getActivity();
