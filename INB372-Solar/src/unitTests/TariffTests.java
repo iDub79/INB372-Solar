@@ -21,7 +21,7 @@ public class TariffTests {
 	private Panel panel;
 	private final String PMANUFACTURER = "ABC";
 	private final String PMODEL = "CBA";
-	private final int PANELRATING = 200;
+	private final int PANELRATING = 500;
 	
 	private Inverter inverter;
 	private final String IMANUFACTURER = "DEF";

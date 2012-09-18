@@ -126,15 +126,15 @@ public class SolarServlet extends HttpServlet {
 		log.log(Level.WARNING, returnJson.toString());
 	}
 
-	private void createTariff() throws TariffException, CalculatorException {
+	public void createTariff() throws TariffException, CalculatorException {
 		tariff = new TariffCalculation(calc, tariffAmount);
 	}
 
-	private void createCalculator() throws CalculatorException {
+	public void createCalculator() throws CalculatorException {
 		calc = new Calculator(panel, inverter, panelQty, consumption, angle);
 	}
 
-	private void createInverter() throws InverterException {
+	public void createInverter() throws InverterException {
 		inverter = new Inverter(inverterManufacturer, inverterModel, inverterEfficiency);
 	}
 

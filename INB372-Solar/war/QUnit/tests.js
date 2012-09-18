@@ -13,31 +13,29 @@ testAlphaNumericInputFields("Address", "address");
 testNumericInputFields("Latitude", "latitude");
 testNumericInputFields("Longitude", "longitude");
 
+testAlphaNumericInputFields("Panel Manufacturer", "panelManufacturer");
+testAlphaNumericInputFields("Panel Model", "panelModel");
+testAlphaNumericInputFields("Inverter Manufacturer", "inverterManufacturer");
+testAlphaNumericInputFields("Inverter Model", "inverterModel");
+
 
 module("All input fields valid");
 test("All input fields valid", function() {
 	setupValidInputs();
 	
-	ok(validForm(), "All input fields are valid");
+	ok(validCalculateSolarForm(), "All input fields are valid");
 });
 
-
-module("Panel Size Calculation");
-test("Panel size is calculated correctly", function() {
-	setupValidInputs();
-	calculatePanelSize();
-	
-	equal(panelSize, 13.099656, "Panel fields calculated correctly");
-});
 
 
 module("Valid ajax response");
 test("All input data submitted as valid parameters", function() {
 	setupValidInputs();
-	calculatePanelSize();
-	
-	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
+
+	var input = "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
+        		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel +
+        		"&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation + "&angle=" + angle +
+        		"&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
 	
 	var options = null;
 	$.ajax = function(param) {
@@ -48,31 +46,6 @@ test("All input data submitted as valid parameters", function() {
 	equal(options.data, input);
 });
 
-/*
-testAlphaNumericInputFields("New Panel Manufacturer", "manufacturer");
-testAlphaNumericInputFields("New Panel Model", "model");
-testPositiveNumericInputFields("New Panel Power", "power")
-testPositiveNumericInputFields("New Panel Length", "newPanelLength")
-testPositiveNumericInputFields("New Panel Width", "newPanelWidth")
-*/
-
-/*
-test("Valid calculation response received", function() {
-	setupValidInputs();
-	calculatePanelSize();
-	
-	var input = "panelSize=" + panelSize + "&panelEfficiency=" + panelEfficiency + "&inverterEfficiency=" + inverterEfficiency +
-	   "&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
-	
-	var options = null;
-	$.ajax = function(param) {
-		options = param;
-	};
-	calculateInput();
-	options.success();
-	equal($("#lblSavings").html(), "Based on your input, the annual savings will be <strong>$100.16</strong>");
-});
-*/
 
 
 function testPositiveNumericInputFields(fieldName, txtFieldName) {
@@ -145,11 +118,15 @@ function testAlphaNumericInputFields(fieldName, txtFieldName) {
 
 
 function setupValidInputs() {
+	panelManufacturer = "ABC";
+	panelModel = "CBA";
 	panelQty = 8;
 	panelEfficiency = 5;
+	inverterManufacturer = "DEF";
+	inverterModel = "FED";
 	inverterEfficiency = 5;
 	address = "1 Test Street Brisbane Queensland";
-	latitdue = 146.34;
+	latitude = 146.34;
 	longitude = -28.67;
 	orientation = "N";
 	angle = 5;
@@ -159,13 +136,15 @@ function setupValidInputs() {
 	manufacturer = "Test manufacturer";
 	model = "Test model"; 
 	power = 200;
-	newPanelLength = 1000;
-	newPanelWidth = 400;
 }
 
 function clearInputFields() {
+	panelManufacturer = "";
+	panelModel = "";
 	panelQty = "";
 	panelEfficiency = "";
+	inverterManufacturer = "";
+	inverterModel = "";
 	inverterEfficiency = "";
 	address = "";
 	latitude = "";
@@ -178,7 +157,5 @@ function clearInputFields() {
 	manufacturer = "";
 	model = ""; 
 	power = "";
-	newPanelLength = "";
-	newPanelWidth = "";
 }
 	

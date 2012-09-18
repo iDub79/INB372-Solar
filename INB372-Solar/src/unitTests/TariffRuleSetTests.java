@@ -11,10 +11,6 @@ import org.junit.Test;
 
 import solar.TariffRuleSet;
 
-/**
- * @author Ellaria
- *
- */
 public class TariffRuleSetTests {
 
 	TariffRuleSet defaultRule;
