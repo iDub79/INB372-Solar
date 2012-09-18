@@ -93,6 +93,7 @@ function displayCoordinates() {
     		var long = getLong(results[0].geometry.location.toString());
     		$("#txtLatitude").val(lat.toString());
     		$("#txtLongitude").val(long.toString());
+    		$("#txtDailySunlight").focus();
         }
     	else {
         	$("#lblCoordinates").html("Geocode was not successful for the following reason: " + status);

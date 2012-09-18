@@ -12,11 +12,7 @@ import com.google.appengine.labs.repackaged.org.json.*;
 import components.Inverter;
 import components.Panel;
 
-import exceptions.CalculatorException;
-import exceptions.InverterException;
-import exceptions.PanelException;
-import exceptions.SolarSystemException;
-import exceptions.TariffException;
+import exceptions.*;
 
 
 public class SolarServlet extends HttpServlet {
@@ -28,6 +24,7 @@ public class SolarServlet extends HttpServlet {
 	private String panelManufacturer = "";
 	private String panelModel = "";
 	private float panelEfficiency = 0;
+	private Integer panelQty = 0;
 	
 	private Inverter inverter;
 	private String inverterManufacturer = "";
@@ -37,6 +34,8 @@ public class SolarServlet extends HttpServlet {
 	private float angle = 0;			
 	private float consumption = 0;
 	private String address = "";
+	private String latitude = "";
+	private String longitude = "";
 	private String orientation = "";
 	private Integer sunlight = 0;
 	private float tariffAmount = 0;
@@ -55,6 +54,7 @@ public class SolarServlet extends HttpServlet {
 			panelManufacturer = request.getParameter("panelManufacturer");
 			panelModel = request.getParameter("panelModel");
 			panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
+			panelQty = Integer.parseInt(request.getParameter("panelQty"));
 			inverterManufacturer = request.getParameter("inverterManufacturer");
 			inverterModel = request.getParameter("inverterModel");
 			inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));
@@ -62,6 +62,8 @@ public class SolarServlet extends HttpServlet {
 			angle = Float.parseFloat(request.getParameter("angle"));						
 			consumption = Float.parseFloat(request.getParameter("consumption"));			
 			address = request.getParameter("address");
+			latitude = request.getParameter("latitude");
+			longitude = request.getParameter("longitude");
 			orientation = request.getParameter("orientation");
 			sunlight = Integer.parseInt(request.getParameter("sunlight"));
 			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
@@ -129,7 +131,7 @@ public class SolarServlet extends HttpServlet {
 	}
 
 	private void createCalculator() throws CalculatorException {
-		calc = new Calculator(panel, inverter, consumption, angle);
+		calc = new Calculator(panel, inverter, panelQty, consumption, angle);
 	}
 
 	private void createInverter() throws InverterException {

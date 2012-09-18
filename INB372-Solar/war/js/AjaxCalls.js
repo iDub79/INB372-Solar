@@ -3,7 +3,7 @@ function calculateInput() {
         type : "POST",
         url : "solarServlet",
         data : "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
-        		"&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel + "&inverterEfficiency=" + inverterEfficiency +
+        		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel + "&inverterEfficiency=" + inverterEfficiency +
         		"&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption +
         		"&address=" + address + "&tariff=" + tariff,
 	    async: false,
@@ -153,6 +153,9 @@ function displayResult(result, status) {
 					amountSavedNum = amountSavedNum.toFixed(2);
 					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong>");
 					$("#pnlResults").show();
+					
+					$("html, body").animate({scrollTop: "+=" + $("#lblSavings").offset().top + "px"}, "fast");
+
 				}
 				catch (Error) {
 					displayError("There was an error in calculating the fields");
