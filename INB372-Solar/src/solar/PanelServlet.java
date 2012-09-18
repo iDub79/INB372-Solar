@@ -24,18 +24,14 @@ public class PanelServlet extends HttpServlet {
 		if (reqOption.equals("addPanel")) {		
 			String manufacturer = "";
 			String model = "";
-			Integer power = 0;
-			Integer length = 0;
-			Integer width = 0;
+			float power = 0;
 			
 			boolean validInput = false;
 	
 			try {
 				manufacturer = request.getParameter("manufacturer");
 				model = request.getParameter("model");
-				power = Integer.parseInt(request.getParameter("power"));			
-				length = Integer.parseInt(request.getParameter("newPanelLength"));			
-				width = Integer.parseInt(request.getParameter("newPanelWidth"));
+				power = Float.parseFloat(request.getParameter("power"));			
 				
 				validInput = true;
 			}

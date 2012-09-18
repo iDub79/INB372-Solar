@@ -1,6 +1,5 @@
 package components;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import com.google.appengine.api.datastore.*;
@@ -398,11 +397,11 @@ public class DataProvider {
 	}
 	
 	public JSONObject addInverter(Inverter inverter) {		
-		Key inverterKey = KeyFactory.createKey("Panel", inverter.getModel());		
-		Entity e = new Entity("Panel", inverterKey);
+		Key inverterKey = KeyFactory.createKey("Inverter", inverter.getModel());		
+		Entity e = new Entity("Inverter", inverterKey);
 		e.setProperty("manufacturer", inverter.getManufacturer());
 		e.setProperty("model", inverter.getModel());
-		e.setProperty("power", inverter.getEfficiency());
+		e.setProperty("efficiency", inverter.getEfficiency());
 		
         datastore.put(e);
         
@@ -420,7 +419,5 @@ public class DataProvider {
 		return getInverters();
 	}
 	
-	private HashSet<String> toSet(ArrayList<String> manufacturers) {
-		return new HashSet<String>(manufacturers);
-	}
+
 }

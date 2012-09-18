@@ -16,10 +16,9 @@ function addNewPanel() {
 	$.ajax({
         type : "POST",
         url : "panelServlet",
-        data : "option=addPanel&manufacturer=" + newPanelManufacturer.toUpperCase() + "&model=" + newPanelModel.toUpperCase() + "&power=" + newPanelPower +
-        	   "&newPanelLength=" + newPanelLength + "&newPanelWidth=" + newPanelWidth,
+        data : "option=addPanel&manufacturer=" + newPanelManufacturer.toUpperCase() + "&model=" + newPanelModel.toUpperCase() + "&power=" + newPanelPower,
 	    async: false,
-        success : displayPanelResult
+        success : reloadPage
     });
 }
 
@@ -73,7 +72,7 @@ function deletePanel(panelToDelete) {
         url : "panelServlet",
         data : "option=deletePanel&model=" + panelToDelete,
 	    async: false,
-        success : displayPanelResult
+        success : reloadPage
     });
 }
 
@@ -84,7 +83,7 @@ function addNewInverter() {
         url : "inverterServlet",
         data : "option=addInverter&manufacturer=" + newInverterManufacturer.toUpperCase() + "&model=" + newInverterModel.toUpperCase() + "&efficiency=" + newInverterEfficiency,
 	    async: false,
-        success : displayInverterResult
+        success : reloadPage
     });
 }
 
@@ -105,7 +104,7 @@ function deleteInverter(inverterToDelete) {
         url : "inverterServlet",
         data : "option=deleteInverter&model=" + inverterToDelete,
 	    async: false,
-        success : displayInverterResult
+        success : reloadPage
     });
 }
 
@@ -185,7 +184,7 @@ function displayPanelResult(result, status) {
 			output += "</table>";
 			
 			$("#lblPanel").html(output);
-			$("#pnlPanelResults").show();
+			$("#pnlPanelResults").show();			
 		}
 		else if (result.Success == false) {
 			displayError("There was an error trying to add the new panel to the database.");
@@ -279,7 +278,7 @@ function displayInverterResult(result, status) {
 			output += "</table>";
 			
 			$("#lblInverter").html(output);
-			$("#pnlInverterResults").show();
+			$("#pnlInverterResults").show();			
 		}
 		else if (result.Success == false) {
 			displayError("There was an error trying to add the new panel to the database.");

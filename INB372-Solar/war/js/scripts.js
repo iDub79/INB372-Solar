@@ -68,8 +68,6 @@ $(function() {
 		newPanelManufacturer = $("#txtPanelManufacturer").val();
 		newPanelModel = $("#txtPanelModel").val(); 
 		newPanelPower = $("#txtPanelPower").val();
-		newPanelLength = $("#txtPanelNewLength").val();
-		newPanelWidth = $("#txtPanelNewWidth").val();
 		
 		if (validAddPanel()) {
 			addNewPanel();
@@ -234,14 +232,6 @@ function validAddPanel() {
 		$("#grpPanelPower").addClass("error");
 		validForm = false;
 	}
-	if (invalidPostiveNumberField(newPanelLength)) {
-		$("#grpPanelLength").addClass("error");
-		validForm = false;
-	}
-	if (invalidPostiveNumberField(newPanelWidth)) {
-		$("#grpPanelWidth").addClass("error");
-		validForm = false;
-	}
 	
 	return validForm;
 }
@@ -286,4 +276,7 @@ function toTitleCase(str) {
 }
 
 
+function reloadPage() {
+	location.reload();
+}
  
