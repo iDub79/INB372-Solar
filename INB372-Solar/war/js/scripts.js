@@ -1,4 +1,4 @@
-// index.jsp user input fields
+// index.jsp user input fields.
 var panelManufacturer;
 var panelModel;
 var panelEfficiency;
