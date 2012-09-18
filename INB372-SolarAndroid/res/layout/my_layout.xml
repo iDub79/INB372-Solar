@@ -25,7 +25,7 @@
                 android:layout_weight="1"
                 android:onClick="inverterTab"
                 android:text="Inverter" />
-
+
             <Button
                 android:id="@+id/Location"
                 style="?android:attr/buttonStyleSmall"
@@ -47,6 +47,15 @@
                 android:text="Results" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/CurrentTab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Panel Settings"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/white" />
 
 		<TableRow
 		    android:id="@+id/rowPanelManufacturer"
@@ -87,30 +96,57 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1" />
 		</TableRow>
-
-        <TableRow
-            android:id="@+id/rowPanelEfficiency"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/tvPanelEfficiency"
+
+		<TableRow
+		    android:id="@+id/rowPanelEfficiency"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" >
+
+		    <TextView
+		        android:id="@+id/tvPanelEfficiency"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Power"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textColor="@color/white" />
+
+		    <EditText
+		        android:id="@+id/PanelEfficiency"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:ems="10"
+		        android:inputType="number"
+		        android:text="@string/defaultPanelEfficiency"
+		        android:width="@dimen/page1EditText" >
+
+		        <requestFocus />
+		    </EditText>
+		</TableRow>
+
+		<TableRow
+		    android:id="@+id/rowPanelQuantity"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" >
+		    
+		    <TextView
+                android:id="@+id/tvPanelQuantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total Power"
+                android:text="Quantity"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
 
             <EditText
-                android:id="@+id/PanelEfficiency"
+                android:id="@+id/PanelQuantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="number"
-                android:text="@string/defaultPanelEfficiency"
+                android:text="5"
                 android:width="@dimen/page1EditText" />
-        </TableRow>
+		</TableRow>
 
 		<TableRow
 		    android:id="@+id/rowInverterManufacturer"
@@ -251,7 +287,7 @@
                 android:text="@string/defaultSunlightHours"
                 android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowAddress"
             android:layout_width="wrap_content"
@@ -270,11 +306,7 @@
                 android:id="@+id/Address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="textPostalAddress"
-                android:text="@string/defaultAddress"
-                android:width="@dimen/page1EditText" />
+                android:layout_weight="1" />
         </TableRow>
 
         <TableRow
@@ -324,11 +356,12 @@
                 android:text="44" />
 
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowCoordinates"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/tvLocation"
@@ -350,11 +383,12 @@
                 android:width="@dimen/page1EditText" />
 
         </TableRow>
-
+
         <Button
             android:id="@+id/Submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:enabled="false"
             android:onClick="submitDetails"
             android:text="@string/Submit"
             android:width="@dimen/page1EditText" />

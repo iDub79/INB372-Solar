@@ -18,5 +18,7 @@
     <string name="defaultAddress">26 Zenith Avenue, Chermside</string>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="ActiveTab">#D0D0D0</color>
+    <color name="InactiveTab">#909090</color>
 
 </resources>

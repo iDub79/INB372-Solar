@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -26,6 +28,8 @@ import org.json.JSONTokener;
 
 import solar.solarAndroid.*;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -41,6 +45,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -91,6 +96,19 @@ public class SolarPowerCalculator extends Activity {
         	locationAsString += "°E";
         
         ((EditText)findViewById(R.id.Coordinates)).setText(locationAsString);
+        Geocoder geocoder = new Geocoder(this);
+        try {
+			List<Address> addresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
+			Address address = addresses.get(0);
+			String addressText = String.format("%s, %s, %s",
+                    address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
+                    address.getLocality(),
+                    address.getCountryName());
+			((TextView)findViewById(R.id.CurrentTab)).setText("Panel Settings");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void SetLocation() {
@@ -141,7 +159,10 @@ public class SolarPowerCalculator extends Activity {
 		RequestLocation();
         SetLocation();
         
-        
+        // this stuff will be used somehow later
+        /*AutoCompleteTextView addressView = (AutoCompleteTextView)findViewById(R.id.Address);
+        ArrayAdapter<Address> adapter = new ArrayAdapter<Address>(this, android.R.layout.simple_dropdown_item_1line);
+        addressView.setAdapter(adapter);*/
     }
     
     public void panelTab(View view) {
@@ -149,6 +170,7 @@ public class SolarPowerCalculator extends Activity {
     	findViewById(R.id.rowPanelManufacturer).setVisibility(View.VISIBLE);
     	findViewById(R.id.rowPanelModel).setVisibility(View.VISIBLE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.VISIBLE);
+    	findViewById(R.id.rowPanelQuantity).setVisibility(View.VISIBLE);
     	findViewById(R.id.rowPanelAngle).setVisibility(View.VISIBLE);
     	findViewById(R.id.rowPanelOrientation).setVisibility(View.VISIBLE);
     	
@@ -160,6 +182,7 @@ public class SolarPowerCalculator extends Activity {
 		
 		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
+		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
 		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
@@ -168,6 +191,8 @@ public class SolarPowerCalculator extends Activity {
 		
 		findViewById(R.id.Savings).setVisibility(View.GONE);
 		findViewById(R.id.tvSavings).setVisibility(View.GONE);
+		
+		((TextView)findViewById(R.id.CurrentTab)).setText("Panel Settings");
     }
     
     public void inverterTab(View view) {
@@ -175,6 +200,7 @@ public class SolarPowerCalculator extends Activity {
     	findViewById(R.id.rowPanelManufacturer).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelModel).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelQuantity).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
     	
@@ -185,6 +211,7 @@ public class SolarPowerCalculator extends Activity {
 		
 		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
+		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
 		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
@@ -193,6 +220,10 @@ public class SolarPowerCalculator extends Activity {
 		
 		findViewById(R.id.Savings).setVisibility(View.GONE);
 		findViewById(R.id.tvSavings).setVisibility(View.GONE);
+		
+		((TextView)findViewById(R.id.CurrentTab)).setText("Inverter Settings");
+		findViewById(R.id.Submit).setEnabled(true);
+		findViewById(R.id.Location).setEnabled(true);
     }
     
 	public void locationTab(View view) {
@@ -200,6 +231,7 @@ public class SolarPowerCalculator extends Activity {
     	findViewById(R.id.rowPanelManufacturer).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelModel).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelQuantity).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
     	
@@ -210,6 +242,7 @@ public class SolarPowerCalculator extends Activity {
 		
 		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.VISIBLE);
+		findViewById(R.id.rowCoordinates).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowSunlightHours).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.VISIBLE);
@@ -218,23 +251,37 @@ public class SolarPowerCalculator extends Activity {
 		
 		findViewById(R.id.Savings).setVisibility(View.GONE);
 		findViewById(R.id.tvSavings).setVisibility(View.GONE);
+		
+		((TextView)findViewById(R.id.CurrentTab)).setText("Other Settings");
 	}
 
 	public void resultsTab(View view) {
+		// panel page
+		findViewById(R.id.rowPanelManufacturer).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelModel).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelQuantity).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
+    	
+    	// inverter page
+    	findViewById(R.id.rowInverterManufacturer).setVisibility(View.GONE);
+    	findViewById(R.id.rowInverterModel).setVisibility(View.GONE);
 		findViewById(R.id.rowInverterEfficiency).setVisibility(View.GONE);
+		
+		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
-		findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
-		findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
+		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
 		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
+		
 		findViewById(R.id.Submit).setVisibility(View.GONE);
 		
 		findViewById(R.id.Savings).setVisibility(View.VISIBLE);
 		findViewById(R.id.tvSavings).setVisibility(View.VISIBLE);
 		
-		
+		((TextView)findViewById(R.id.CurrentTab)).setText("Results");
 	}
 	
 	//Panel efficiency is not a percentage but the maximum power output of the panel in watts
@@ -366,13 +413,28 @@ public class SolarPowerCalculator extends Activity {
 	// Later will probably return latitude/longitude as some sort of struct and address will just be one
 	// of the ways this information will be obtained
 	private String getAddress() throws InvalidInputException {
-		String addressText = ((EditText)findViewById(R.id.Address)).getText().toString();
-		if (addressText.length() == 0) {
-			throw new InvalidInputException("Require address to be input.");
-		}
+		String addressText = ((TextView)findViewById(R.id.Address)).getText().toString();
+		//if (addressText.length() == 0) {
+		//	throw new InvalidInputException("Require address to be input.");
+		//}
 		
 		if (true) {		// replace with thing that filters the input and converts to consistent thing
 			return addressText;
+		} else {
+			throw new InvalidInputException("Address is somehow invalid.");		// fix message
+		}
+	}
+	
+	private Integer getPanelQuantity() throws InvalidInputException {
+		String panelQuantityText = ((EditText)findViewById(R.id.PanelQuantity)).getText().toString();
+		if (panelQuantityText.length() == 0) {
+			throw new InvalidInputException("Require quantity to be input.");
+		}
+		
+		Integer panelQuantity = Integer.parseInt(panelQuantityText); 
+		
+		if (panelQuantity > 0) {		// replace with thing that filters the input and converts to consistent thing
+			return panelQuantity;
 		} else {
 			throw new InvalidInputException("Address is somehow invalid.");		// fix message
 		}
@@ -388,40 +450,46 @@ public class SolarPowerCalculator extends Activity {
     		Integer sunlight = getSunlight();
     		Float consumption = getConsumption();
     		Float tariff = getTariff();
+    		Integer  panelQuantity = getPanelQuantity();
+    		String panelManufacturer = ((Spinner)findViewById(R.id.PanelManufacturer)).getSelectedItem().toString();
+    		String panelModel = ((Spinner)findViewById(R.id.PanelModel)).getSelectedItem().toString();
+    		String inverterManufacturer = ((Spinner)findViewById(R.id.InverterManufacturer)).getSelectedItem().toString();
+    		String inverterModel = ((Spinner)findViewById(R.id.InverterModel)).getSelectedItem().toString();
 		
 			// Create a new HttpClient and Post Header
 			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-			((EditText)findViewById(R.id.PanelOrientation)).setText("a");
+			//((EditText)findViewById(R.id.PanelOrientation)).setText("a");
 			if (connec.getActiveNetworkInfo().isAvailable()) {
-				((EditText)findViewById(R.id.PanelOrientation)).setText("b");
+				//((EditText)findViewById(R.id.PanelOrientation)).setText("b");
 			    HttpClient httpclient = new DefaultHttpClient();
 			    HttpPost httppost = new HttpPost(baseServletAddress + "solarServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
 		
 		        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		        nameValuePairs.add(new BasicNameValuePair("panelManufacturer", "abc"));
-		        nameValuePairs.add(new BasicNameValuePair("panelModel", "def"));
+		        nameValuePairs.add(new BasicNameValuePair("panelManufacturer", panelManufacturer));
+		        nameValuePairs.add(new BasicNameValuePair("panelModel", panelModel));
 		        nameValuePairs.add(new BasicNameValuePair("panelEfficiency", panelEfficiency.toString()));
+		        nameValuePairs.add(new BasicNameValuePair("panelQty", panelQuantity.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("orientation", orientation.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("angle", angle.toString()));
 		        
-		        nameValuePairs.add(new BasicNameValuePair("inverterManufacturer", "abc"));
-		        nameValuePairs.add(new BasicNameValuePair("inverterModel", "def"));
+		        nameValuePairs.add(new BasicNameValuePair("inverterManufacturer", inverterManufacturer));
+		        nameValuePairs.add(new BasicNameValuePair("inverterModel", inverterModel));
 		        nameValuePairs.add(new BasicNameValuePair("inverterEfficiency", inverterEfficiency.toString()));
 		        
 		        
 		        nameValuePairs.add(new BasicNameValuePair("sunlight", sunlight.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("consumption", consumption.toString()));
+		        nameValuePairs.add(new BasicNameValuePair("latitude", Double.toString(lastKnownLocation.getLatitude())));
+		        nameValuePairs.add(new BasicNameValuePair("longitude", Double.toString(lastKnownLocation.getLongitude())));
 		        nameValuePairs.add(new BasicNameValuePair("address", address.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("tariff", tariff.toString()));
-		        ((EditText)findViewById(R.id.PanelOrientation)).setText("c");
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		        ((EditText)findViewById(R.id.PanelOrientation)).setText("d");
 		        // Execute HTTP Post Request
 		        HttpResponse response = httpclient.execute(httppost);
-		        ((EditText)findViewById(R.id.PanelOrientation)).setText("e");
+		        //((EditText)findViewById(R.id.PanelOrientation)).setText("e");
 		        JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
 		        JSONObject savingsJSONObject = jObject.getJSONObject("Savings");
-		        ((EditText)findViewById(R.id.PanelOrientation)).setText("f");
+		        //((EditText)findViewById(R.id.PanelOrientation)).setText("f");
 		        if (savingsJSONObject.getBoolean("Success")) {
 		        	Double savings = savingsJSONObject.getDouble("Amount");
 		        	savings = Math.round(savings * 100.0) / 100.0;
@@ -429,7 +497,7 @@ public class SolarPowerCalculator extends Activity {
 		        	((TextView)findViewById(R.id.Savings)).setText("$" + f.format(savings));
 		        	resultsTab(view);
 		        	findViewById(R.id.Results).setEnabled(true);
-		        	((EditText)findViewById(R.id.PanelOrientation)).setText("g");
+		        	//((EditText)findViewById(R.id.PanelOrientation)).setText("g");
 		        }
 		        //((EditText)findViewById(R.id.PanelOrientation)).setText("h");
 			}
@@ -437,7 +505,7 @@ public class SolarPowerCalculator extends Activity {
     		// do stuffs
     		e.printStackTrace();
     	} catch (Exception e) {
-	    	Log.e(e.getClass().toString(), e.getStackTrace().toString());
+	    	e.printStackTrace();
 	    }
 	}
 	
