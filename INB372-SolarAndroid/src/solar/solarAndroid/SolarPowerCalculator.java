@@ -1,13 +1,17 @@
 package solar.solarAndroid;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.ParseException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -16,11 +20,16 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import solar.solarAndroid.*;
 
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.app.Activity;
@@ -29,29 +38,157 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 
 public class SolarPowerCalculator extends Activity {
-
+	String baseServletAddress = "http://inb372-solar.appspot.com/";
+	//String baseServletAddress = "http://10.0.2.2:8888/";
+	Location lastKnownLocation;
+	LocationManager locationManager;
+	LocationListener locationListener;
+	
+	private void RequestLocation() {
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		
+		// Setting lastKnownLocation to the finest lastKnownLocation I have, otherwise setting to default
+		if (lastKnownLocation == null) {
+			Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if (loc == null) {
+				loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+			}
+			if (loc != null) {
+				lastKnownLocation = loc;
+			} else {
+				lastKnownLocation = new Location("Default");
+				lastKnownLocation.setLatitude(-27);
+				lastKnownLocation.setLongitude(153);
+			}
+				
+		}
+	}
+	
+	public void SetLocation(View view) {
+		Double roundedLatitude = Math.round(lastKnownLocation.getLatitude() * 100.0) / 100.0;
+        Double roundedLongitude = Math.round(lastKnownLocation.getLongitude() * 100.0) / 100.0;
+        String locationAsString = Double.toString(Math.abs(roundedLatitude));
+        if (roundedLatitude < 0)
+        	locationAsString += "°S, ";
+        else
+        	locationAsString += "°N, ";
+        
+        locationAsString += Double.toString(Math.abs(roundedLongitude));
+        
+        if (roundedLongitude < 0)
+        	locationAsString += "°W";
+        else
+        	locationAsString += "°E";
+        
+        ((EditText)findViewById(R.id.Coordinates)).setText(locationAsString);
+	}
+	
+	public void SetLocation() {
+		SetLocation(this.findViewById(R.id.Location));
+	}
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
         
+        locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+			@Override
+			public void onLocationChanged(Location location) {
+				//((EditText)findViewById(R.id.PanelOrientation)).setText("abc");
+				lastKnownLocation = location;
+				// soon as a GPS or network provider says the location changed, stop updating until it's clicked again
+				// not sure whether GPS works yet, since it's raining now and I can't stand out in the rain waiting for it to work
+				// network does work though, however network requires credit
+				locationManager.removeUpdates(locationListener);
+				
+				// Insert check if location is visible (don't want to change it if someone is looking at it)
+				SetLocation();
+				//output.
+			}
+
+			@Override
+			public void onProviderDisabled(String provider) {
+				//((EditText)findViewById(R.id.PanelOrientation)).append(provider + "di");
+				
+			}
+
+			@Override
+			public void onProviderEnabled(String provider) {
+				//((EditText)findViewById(R.id.PanelOrientation)).append(provider + "en");
+				
+			}
+
+			@Override
+			public void onStatusChanged(String provider, int status,
+					Bundle extras) {
+				//((EditText)findViewById(R.id.PanelOrientation)).setText(provider);
+				
+			}
+		};
+		
+		RequestLocation();
+        SetLocation();
+        
+        
     }
     
-    public void systemTab(View view) {
-    	findViewById(R.id.rowPanelSize).setVisibility(View.VISIBLE);
+    public void panelTab(View view) {
+    	// show panel stuff
+    	findViewById(R.id.rowPanelManufacturer).setVisibility(View.VISIBLE);
+    	findViewById(R.id.rowPanelModel).setVisibility(View.VISIBLE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.VISIBLE);
-		findViewById(R.id.rowInverterEfficiency).setVisibility(View.VISIBLE);
+    	findViewById(R.id.rowPanelAngle).setVisibility(View.VISIBLE);
+    	findViewById(R.id.rowPanelOrientation).setVisibility(View.VISIBLE);
+    	
+    	// hide everything else
+    	// inverter page
+    	findViewById(R.id.rowInverterManufacturer).setVisibility(View.GONE);
+    	findViewById(R.id.rowInverterModel).setVisibility(View.GONE);
+		findViewById(R.id.rowInverterEfficiency).setVisibility(View.GONE);
+		
+		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
-		findViewById(R.id.rowPanelOrientation).setVisibility(View.VISIBLE);
-		findViewById(R.id.rowPanelAngle).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
-		findViewById(R.id.rowTariffValue).setVisibility(View.VISIBLE);
+		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
+		
+		findViewById(R.id.Submit).setVisibility(View.VISIBLE);
+		
+		findViewById(R.id.Savings).setVisibility(View.GONE);
+		findViewById(R.id.tvSavings).setVisibility(View.GONE);
+    }
+    
+    public void inverterTab(View view) {
+    	// show panel stuff
+    	findViewById(R.id.rowPanelManufacturer).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelModel).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelEfficiency).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
+    	
+    	// inverter page
+    	findViewById(R.id.rowInverterManufacturer).setVisibility(View.VISIBLE);
+    	findViewById(R.id.rowInverterModel).setVisibility(View.VISIBLE);
+		findViewById(R.id.rowInverterEfficiency).setVisibility(View.VISIBLE);
+		
+		// other page
+		findViewById(R.id.rowAddress).setVisibility(View.GONE);
+		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
+		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
+		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
+		
 		findViewById(R.id.Submit).setVisibility(View.VISIBLE);
 		
 		findViewById(R.id.Savings).setVisibility(View.GONE);
@@ -59,15 +196,24 @@ public class SolarPowerCalculator extends Activity {
     }
     
 	public void locationTab(View view) {
-		findViewById(R.id.rowPanelSize).setVisibility(View.GONE);
+		// show panel stuff
+    	findViewById(R.id.rowPanelManufacturer).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelModel).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
+    	findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
+    	
+    	// inverter page
+    	findViewById(R.id.rowInverterManufacturer).setVisibility(View.GONE);
+    	findViewById(R.id.rowInverterModel).setVisibility(View.GONE);
 		findViewById(R.id.rowInverterEfficiency).setVisibility(View.GONE);
+		
+		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.VISIBLE);
-		findViewById(R.id.rowPanelOrientation).setVisibility(View.GONE);
-		findViewById(R.id.rowPanelAngle).setVisibility(View.GONE);
 		findViewById(R.id.rowSunlightHours).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.VISIBLE);
-		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
+		findViewById(R.id.rowTariffValue).setVisibility(View.VISIBLE);
+		
 		findViewById(R.id.Submit).setVisibility(View.VISIBLE);
 		
 		findViewById(R.id.Savings).setVisibility(View.GONE);
@@ -75,7 +221,6 @@ public class SolarPowerCalculator extends Activity {
 	}
 
 	public void resultsTab(View view) {
-		findViewById(R.id.rowPanelSize).setVisibility(View.GONE);
     	findViewById(R.id.rowPanelEfficiency).setVisibility(View.GONE);
 		findViewById(R.id.rowInverterEfficiency).setVisibility(View.GONE);
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
@@ -91,26 +236,8 @@ public class SolarPowerCalculator extends Activity {
 		
 		
 	}
-    
-	// As more different methods of inputting panel size are added, this method will become more complex
-	private Float getPanelSize() throws InvalidInputException {
-		String panelSizeText = ((EditText)findViewById(R.id.PanelSize)).getText().toString();
-		if (panelSizeText.length() == 0) {
-			throw new InvalidInputException("Require panel size to be input.");
-		}
-		
-		Float panelSize = Float.parseFloat(panelSizeText);
-		if (panelSize > 0 && panelSize <= 100) {		// 100 is arbitrary maximum panel size
-			return panelSize;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Panel size must be positive and less than 100.");
-			//return null;
-		}
-	}
 	
 	//Panel efficiency is not a percentage but the maximum power output of the panel in watts
-	// As more different methods of inputting panel size are added, this method will become more complex
 	private Float getPanelEfficiency() throws InvalidInputException {
 		String panelEfficiencyText = ((EditText)findViewById(R.id.PanelEfficiency)).getText().toString();
 		if (panelEfficiencyText.length() == 0) {
@@ -127,7 +254,6 @@ public class SolarPowerCalculator extends Activity {
 		}
 	}
 	
-	// As more different methods of inputting panel size are added, this method will become more complex
 	private Float getInverterEfficiency() throws InvalidInputException {
 		String inverterEfficiencyText = ((EditText)findViewById(R.id.InverterEfficiency)).getText().toString();
 		if (inverterEfficiencyText.length() == 0) {
@@ -254,7 +380,6 @@ public class SolarPowerCalculator extends Activity {
 	
 	private void originalSubmit(View view) throws InvalidInputException {		
     	try {
-    		Float panelSize = getPanelSize();
     		Float panelEfficiency = getPanelEfficiency();
     		Float inverterEfficiency = getInverterEfficiency();
     		String address = getAddress();
@@ -266,29 +391,37 @@ public class SolarPowerCalculator extends Activity {
 		
 			// Create a new HttpClient and Post Header
 			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+			((EditText)findViewById(R.id.PanelOrientation)).setText("a");
 			if (connec.getActiveNetworkInfo().isAvailable()) {
+				((EditText)findViewById(R.id.PanelOrientation)).setText("b");
 			    HttpClient httpclient = new DefaultHttpClient();
-			    HttpPost httppost = new HttpPost("http://10.0.2.2:8888/solarServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+			    HttpPost httppost = new HttpPost(baseServletAddress + "solarServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
 		
 		        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		        nameValuePairs.add(new BasicNameValuePair("panelSize", panelSize.toString()));
+		        nameValuePairs.add(new BasicNameValuePair("panelManufacturer", "abc"));
+		        nameValuePairs.add(new BasicNameValuePair("panelModel", "def"));
 		        nameValuePairs.add(new BasicNameValuePair("panelEfficiency", panelEfficiency.toString()));
-		        nameValuePairs.add(new BasicNameValuePair("inverterEfficiency", inverterEfficiency.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("orientation", orientation.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("angle", angle.toString()));
+		        
+		        nameValuePairs.add(new BasicNameValuePair("inverterManufacturer", "abc"));
+		        nameValuePairs.add(new BasicNameValuePair("inverterModel", "def"));
+		        nameValuePairs.add(new BasicNameValuePair("inverterEfficiency", inverterEfficiency.toString()));
+		        
+		        
 		        nameValuePairs.add(new BasicNameValuePair("sunlight", sunlight.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("consumption", consumption.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("address", address.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("tariff", tariff.toString()));
-		        
+		        ((EditText)findViewById(R.id.PanelOrientation)).setText("c");
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-	
+		        ((EditText)findViewById(R.id.PanelOrientation)).setText("d");
 		        // Execute HTTP Post Request
 		        HttpResponse response = httpclient.execute(httppost);
-
+		        ((EditText)findViewById(R.id.PanelOrientation)).setText("e");
 		        JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
 		        JSONObject savingsJSONObject = jObject.getJSONObject("Savings");
-		        
+		        ((EditText)findViewById(R.id.PanelOrientation)).setText("f");
 		        if (savingsJSONObject.getBoolean("Success")) {
 		        	Double savings = savingsJSONObject.getDouble("Amount");
 		        	savings = Math.round(savings * 100.0) / 100.0;
@@ -296,19 +429,381 @@ public class SolarPowerCalculator extends Activity {
 		        	((TextView)findViewById(R.id.Savings)).setText("$" + f.format(savings));
 		        	resultsTab(view);
 		        	findViewById(R.id.Results).setEnabled(true);
+		        	((EditText)findViewById(R.id.PanelOrientation)).setText("g");
 		        }
+		        //((EditText)findViewById(R.id.PanelOrientation)).setText("h");
 			}
     	} catch(InvalidInputException e) {
     		// do stuffs
-    		throw e;
+    		e.printStackTrace();
     	} catch (Exception e) {
 	    	Log.e(e.getClass().toString(), e.getStackTrace().toString());
 	    }
 	}
-
+	
 	public void submitDetails(View view) throws InvalidInputException {
+		
     	originalSubmit(view);
     }
+	
+	
+	// Called when the application "starts", populates the panelManufacturer spinner
+	private void PopulatePanelManufacturer() {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("option", "getPanelManufacturers"));
+		ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connec.getActiveNetworkInfo().isAvailable()) {
+		    HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost(baseServletAddress + "panelServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+		    try {
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
+			
+				// Execute HTTP Post Request
+				HttpResponse response;
+				
+				response = httpclient.execute(httppost);
+				
+				JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+				
+				JSONArray jArray = jObject.getJSONArray("Panels");
+				String[] manufacturers = new String[jArray.length()];
+				for (int i = 0; i < jArray.length(); i++) {
+					JSONObject manu = (JSONObject)jArray.get(i);
+					manufacturers[i] = manu.getString("manufacturer");
+				}
+				
+				Spinner spinner = (Spinner)findViewById(R.id.PanelManufacturer);
+				
+				ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, manufacturers);
+				spinner.setAdapter(adapter);
+				
+		    } catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+		
+	private void populatePanelModels(String manufacturer) {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("option", "getPanelModels"));
+		nameValuePairs.add(new BasicNameValuePair("manufacturer", manufacturer));
+		ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connec.getActiveNetworkInfo().isAvailable()) {
+		    HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost(baseServletAddress + "panelServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+		    try {
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
+			
+				// Execute HTTP Post Request
+				HttpResponse response;
+				
+				response = httpclient.execute(httppost);
+				
+				JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+				
+				JSONArray jArray = jObject.getJSONArray("Panels");
+				String[] models = new String[jArray.length()];
+				for (int i = 0; i < jArray.length(); i++) {
+					JSONObject model = (JSONObject)jArray.get(i);
+					models[i] = model.getString("model");
+				}
+				
+				Spinner spinner = (Spinner)findViewById(R.id.PanelModel);
+				
+				ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, models);
+				spinner.setAdapter(adapter);
+				
+		    } catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void setPanelPowerOnModelSelected(String model) {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("option", "getPanelPower"));
+		nameValuePairs.add(new BasicNameValuePair("model", model));
+		nameValuePairs.add(new BasicNameValuePair("manufacturer", ((Spinner)findViewById(R.id.PanelManufacturer)).getSelectedItem().toString()));		// needs checking, not used atm at all I don't think
+		ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connec.getActiveNetworkInfo().isAvailable()) {
+		    HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost(baseServletAddress + "panelServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+		    try {
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
+			
+				// Execute HTTP Post Request
+				HttpResponse response;
+				
+				response = httpclient.execute(httppost);
+				
+				JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+				
+				JSONArray jArray = jObject.getJSONArray("Panels");		// this will probably not be an array later
+				String[] powers = new String[jArray.length()];
+				for (int i = 0; i < jArray.length(); i++) {	
+					JSONObject power = (JSONObject)jArray.get(i);
+					powers[i] = power.getString("power");
+				}
+				
+				((EditText)findViewById(R.id.PanelEfficiency)).setText(powers[0]);
+				
+		    } catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	@Override
+    public void onStart() {
+		super.onStart();
+		PopulatePanelManufacturer();
+		Spinner panelManufacturerSpinner = (Spinner)findViewById(R.id.PanelManufacturer);
+		panelManufacturerSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				String selected = parentView.getItemAtPosition(position).toString();
+				populatePanelModels(selected);
+			}
+			
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				
+			}
+		});
+		
+		Spinner panelModelSpinner = (Spinner)findViewById(R.id.PanelModel);
+		panelModelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				String selected = parentView.getItemAtPosition(position).toString();
+				setPanelPowerOnModelSelected(selected);
+			}
+			
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				
+			}
+		});
+		
+		PopulateInverterManufacturer();
+		Spinner invManufacturerSpinner = (Spinner)findViewById(R.id.InverterManufacturer);
+		invManufacturerSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				String selected = parentView.getItemAtPosition(position).toString();
+				populateInverterModels(selected);
+			}
+			
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				
+			}
+		});
+		
+		Spinner invModelSpinner = (Spinner)findViewById(R.id.InverterModel);
+		invModelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				String selected = parentView.getItemAtPosition(position).toString();
+				setInverterEfficiencyOnModelSelected(selected);
+			}
+			
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				
+			}
+		});
+    }
+	
+	// Called when the application "starts", populates the InverterManufacturer spinner
+		private void PopulateInverterManufacturer() {
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("option", "getInverterManufacturers"));
+			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+			if (connec.getActiveNetworkInfo().isAvailable()) {
+			    HttpClient httpclient = new DefaultHttpClient();
+			    HttpPost httppost = new HttpPost(baseServletAddress + "inverterServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+			    try {
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				
+					// Execute HTTP Post Request
+					HttpResponse response;
+					
+					response = httpclient.execute(httppost);
+					
+					JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+					
+					JSONArray jArray = jObject.getJSONArray("Inverters");
+					String[] manufacturers = new String[jArray.length()];
+					for (int i = 0; i < jArray.length(); i++) {
+						JSONObject manu = (JSONObject)jArray.get(i);
+						manufacturers[i] = manu.getString("manufacturer");
+					}
+					
+					Spinner spinner = (Spinner)findViewById(R.id.InverterManufacturer);
+					
+					ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, manufacturers);
+					spinner.setAdapter(adapter);
+					
+			    } catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+			
+		private void populateInverterModels(String manufacturer) {
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("option", "getInverterModels"));
+			nameValuePairs.add(new BasicNameValuePair("manufacturer", manufacturer));
+			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+			if (connec.getActiveNetworkInfo().isAvailable()) {
+			    HttpClient httpclient = new DefaultHttpClient();
+			    HttpPost httppost = new HttpPost(baseServletAddress + "inverterServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+			    try {
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				
+					// Execute HTTP Post Request
+					HttpResponse response;
+					
+					response = httpclient.execute(httppost);
+					
+					JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+					
+					JSONArray jArray = jObject.getJSONArray("Inverters");
+					String[] models = new String[jArray.length()];
+					for (int i = 0; i < jArray.length(); i++) {
+						JSONObject model = (JSONObject)jArray.get(i);
+						models[i] = model.getString("model");
+					}
+					
+					Spinner spinner = (Spinner)findViewById(R.id.InverterModel);
+					
+					ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, models);
+					spinner.setAdapter(adapter);
+					
+			    } catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		
+		private void setInverterEfficiencyOnModelSelected(String model) {
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+			nameValuePairs.add(new BasicNameValuePair("option", "getInverterEfficiency"));
+			nameValuePairs.add(new BasicNameValuePair("model", model));
+			nameValuePairs.add(new BasicNameValuePair("manufacturer", ((Spinner)findViewById(R.id.InverterManufacturer)).getSelectedItem().toString()));		// needs checking, not used atm at all I don't think
+			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+			if (connec.getActiveNetworkInfo().isAvailable()) {
+			    HttpClient httpclient = new DefaultHttpClient();
+			    HttpPost httppost = new HttpPost(baseServletAddress + "inverterServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+			    try {
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				
+					// Execute HTTP Post Request
+					HttpResponse response;
+					
+					response = httpclient.execute(httppost);
+					
+					JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+					
+					JSONArray jArray = jObject.getJSONArray("Inverters");		// this will probably not be an array later
+					String[] efficiencies = new String[jArray.length()];
+					for (int i = 0; i < jArray.length(); i++) {	
+						JSONObject efficiency = (JSONObject)jArray.get(i);
+						efficiencies[i] = efficiency.getString("efficiency");
+					}
+					
+					((EditText)findViewById(R.id.InverterEfficiency)).setText(efficiencies[0]);
+					
+			    } catch (UnsupportedEncodingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 
     
 }

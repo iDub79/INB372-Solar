@@ -7,16 +7,25 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <Button
-                android:id="@+id/System"
+                android:id="@+id/Panel"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="systemTab"
-                android:text="System" />
-
+                android:onClick="panelTab"
+                android:text="Panel" />
+
+            <Button
+                android:id="@+id/Inverter"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="inverterTab"
+                android:text="Inverter" />
+
             <Button
                 android:id="@+id/Location"
                 style="?android:attr/buttonStyleSmall"
@@ -25,7 +34,7 @@
                 android:layout_weight="1"
                 android:enabled="false"
                 android:onClick="locationTab"
-                android:text="Location" />
+                android:text="Other" />
 
             <Button
                 android:id="@+id/Results"
@@ -38,45 +47,57 @@
                 android:text="Results" />
 
         </LinearLayout>
-
-        <TableRow
-            android:id="@+id/rowPanelSize"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+
+		<TableRow
+		    android:id="@+id/rowPanelManufacturer"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/tvPanelSize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Panel Size"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white" />
+		    <TextView
+		        android:id="@+id/tvPanelManufacturer"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Manufacturer"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textColor="@color/white" />
 
-            <EditText
-                android:id="@+id/PanelSize"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:height="@dimen/editBoxHeight"
-                android:inputType="number|numberDecimal"
-                android:text="@string/defaultPanelSize"
-                android:width="@dimen/page1EditText" >
+		    <Spinner
+		        android:id="@+id/PanelManufacturer"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1" />
+		</TableRow>
 
-                <requestFocus />
-            </EditText>
-        </TableRow>
-
+		<TableRow
+		    android:id="@+id/rowPanelModel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content" >
+
+		    <TextView
+		        android:id="@+id/tvPanelModel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Model"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textColor="@color/white" />
+
+		    <Spinner
+		        android:id="@+id/PanelModel"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1" />
+		</TableRow>
+
         <TableRow
             android:id="@+id/rowPanelEfficiency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
-
+
             <TextView
                 android:id="@+id/tvPanelEfficiency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Panel Max Power"
+                android:text="Total Power"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
 
@@ -90,11 +111,53 @@
                 android:text="@string/defaultPanelEfficiency"
                 android:width="@dimen/page1EditText" />
         </TableRow>
-
+
+		<TableRow
+		    android:id="@+id/rowInverterManufacturer"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:visibility="gone" >
+
+		    <TextView
+		        android:id="@+id/tvInverterManufacturer"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Manufacturer"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textColor="@color/white" />
+
+		    <Spinner
+		        android:id="@+id/InverterManufacturer"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1" />
+		</TableRow>
+
+		<TableRow
+		    android:id="@+id/rowInverterModel"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:visibility="gone" >
+
+		    <TextView
+		        android:id="@+id/tvInverterModel"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:text="Model"
+		        android:textAppearance="?android:attr/textAppearanceLarge"
+		        android:textColor="@color/white" />
+
+		    <Spinner
+		        android:id="@+id/InverterModel"
+		        android:layout_width="0dp"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1" />
+		</TableRow>
         <TableRow
             android:id="@+id/rowInverterEfficiency"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/tvInverterEfficiency"
@@ -138,11 +201,12 @@
                 android:text="@string/defaultPanelAngle"
                 android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowPowerConsumption"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/tvPowerConsumption"
@@ -235,11 +299,12 @@
                 android:text="@string/defaultOrientation"
                 android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowTariffValue"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/tvTariffValue"
@@ -257,6 +322,32 @@
                 android:ems="10"
                 android:inputType="number"
                 android:text="44" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/rowCoordinates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/white" />
+
+            <EditText
+                android:id="@+id/Coordinates"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:editable="false"
+                android:ems="10"
+                android:inputType="none"
+                android:onClick="SetLocation"
+                android:width="@dimen/page1EditText" />
 
         </TableRow>
 
