@@ -104,7 +104,7 @@ public class SolarPowerCalculator extends Activity {
                     address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
                     address.getLocality(),
                     address.getCountryName());
-			((TextView)findViewById(R.id.CurrentTab)).setText("Panel Settings");
+			((TextView)findViewById(R.id.Address)).setText(addressText);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

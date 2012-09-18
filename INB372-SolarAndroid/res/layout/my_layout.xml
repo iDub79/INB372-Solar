@@ -337,12 +337,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" >
-
+
             <TextView
                 android:id="@+id/tvTariffValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tariff Value (c/kWh)"
+                android:text="Tariff (c/kWh)"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
 
