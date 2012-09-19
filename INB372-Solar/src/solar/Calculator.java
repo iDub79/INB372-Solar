@@ -1,8 +1,14 @@
 package solar;
+
 import static java.lang.Math.*;
+
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import components.Inverter;
 import components.Panel;
+
+import solar.SunPosition;
 
 import exceptions.CalculatorException;
 
@@ -13,16 +19,52 @@ public class Calculator {
 	private float consumption;
 	private float panelAngle;
 	private Integer panelQty;
-	
-	private final int HOURSINDAY = 6;
-	private final float AVGDAYSUN = 6.7f;
-	
-	private float[] angSunGround = new float[HOURSINDAY];
-	private float[] angSunPanel = new float[HOURSINDAY];
-	private float[] hourlyInsolation = new float[HOURSINDAY];
-	private float[] hourlySun = new float[HOURSINDAY];
-	
-	public Calculator(Panel panel, Inverter inverter, Integer panelQty, float consumption, float panelAngle) throws CalculatorException {
+
+	private final int DAYSINYEAR = 365;
+	private final int HOURSINDAY = 24;
+	private final int DAWNTIME = 0;
+	private final int SUNHOURS = 1;
+
+	private float[] brisSunPerDay = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
+			4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
+			5.8f, 6.4f, 6.8f, 8.5f, 8.5f, 8.9f, 8.8f, 8.7f, 8.6f, 7.5f, 7.6f,
+			5.2f, 7.8f, 6.8f, 7.1f, 6.8f, 8.4f, 8.1f, 7f, 5.1f, 2.6f, 6.1f,
+			6.5f, 4.8f, 8.1f, 7.2f, 7.8f, 5.3f, 4.8f, 5.2f, 6.4f, 7f, 8.1f,
+			6.5f, 5.7f, 5.9f, 6.4f, 7.3f, 7.4f, 7.3f, 7.9f, 7.9f, 7.4f, 6.8f,
+			2.3f, 3.8f, 6.6f, 6.3f, 5.4f, 5.5f, 4.7f, 6.3f, 5.6f, 5.7f, 6.7f,
+			6.3f, 6.2f, 5.2f, 3.6f, 1.7f, 3.5f, 5.2f, 6.8f, 6.9f, 7.1f, 7f, 6f,
+			5.3f, 4.9f, 4.1f, 2.3f, 4.6f, 3.9f, 6.2f, 3.8f, 5.7f, 4.8f, 5.9f,
+			4.9f, 3f, 5.4f, 5.9f, 4.8f, 6.1f, 6.1f, 6.1f, 5.9f, 2.6f, 4.1f,
+			2.1f, 3.3f, 4.3f, 5.3f, 5.4f, 5.1f, 4.6f, 3.3f, 4.6f, 3.6f, 4f,
+			4.1f, 4.4f, 5.4f, 5.3f, 3.4f, 5.1f, 4.7f, 5.1f, 5.2f, 4.1f, 1.9f,
+			5f, 5.1f, 5f, 5f, 5f, 4.9f, 4.1f, 4.6f, 4.1f, 3.4f, 4.1f, 3.7f,
+			3.9f, 2.7f, 4.3f, 4.6f, 4.6f, 4.6f, 4.1f, 3.7f, 4.3f, 4.2f, 3.3f,
+			4.1f, 4.3f, 4.4f, 3.3f, 4.3f, 2.2f, 2.7f, 1.7f, 4.3f, 1.8f, 2.6f,
+			4.1f, 4f, 3.5f, 4.1f, 4.2f, 4.3f, 4.3f, 4.3f, 4.2f, 4.3f, 4.3f, 4f,
+			4f, 3.5f, 2.9f, 3.7f, 2.9f, 3.7f, 3.9f, 3.7f, 3.2f, 4.1f, 4.2f,
+			4.3f, 4.3f, 4.3f, 4.4f, 4.5f, 4.4f, 4.4f, 4.3f, 4.2f, 2.5f, 2.4f,
+			3.8f, 4.4f, 4.6f, 2.8f, 4.5f, 4.4f, 4.5f, 4.6f, 4.4f, 4.3f, 4.5f,
+			4.2f, 3.8f, 3.7f, 4.1f, 4.5f, 4.5f, 4.1f, 4.1f, 3.2f, 4.1f, 3.9f,
+			4.5f, 4.7f, 4.8f, 3.8f, 4.9f, 4f, 3.6f, 4.6f, 4.5f, 2.8f, 3.2f,
+			5.2f, 4.4f, 3.2f, 3.8f, 3.1f, 2.9f, 3.2f, 2.6f, 1.8f, 5f, 5.4f,
+			2.4f, 5.6f, 5.5f, 5f, 5.1f, 4f, 4.8f, 4.5f, 5.7f, 5.9f, 1.7f, 6.4f,
+			6.5f, 4.9f, 5f, 6.5f, 6.6f, 6.6f, 6.6f, 6.5f, 6.5f, 6.7f, 6f, 6.3f,
+			6.7f, 6.2f, 6.2f, 4.3f, 5.6f, 4.6f, 2.4f, 7.4f, 6.6f, 7.2f, 3.9f,
+			7.5f, 6f, 2f, 5.2f, 3.1f, 7.3f, 3.7f, 7.3f, 6.8f, 5f, 5.8f, 5.8f,
+			7.7f, 2.3f, 5.7f, 5.3f, 5.3f, 5.8f, 5.3f, 6.3f, 7.5f, 7.9f, 3.8f,
+			4.2f, 2.9f, 4.6f, 5.5f, 2.8f, 6.5f, 7f, 8.1f, 7.6f, 6.1f, 8.3f,
+			8.5f, 8.7f, 8.7f, 8.6f, 8f, 8.5f, 8.3f, 8.6f, 8.8f, 8.8f, 7.5f,
+			7.4f, 8.8f, 8.7f, 8.9f, 8f, 6.7f, 4.1f, 7.4f, 6.5f, 8.3f, 8.8f,
+			8.8f, 7.2f, 4.6f, 5.9f, 8f, 7.4f, 5.7f, 4.9f, 3.3f, 6.1f, 7.8f,
+			5.1f, 6.4f, 8.1f, 8.8f, 8f, 5.2f, 5.4f, 8.1f, 6.1f, 7.7f, 8.7f,
+			6.8f, 8f, 5.6f, 6.2f, 8.3f, 9.3f, 3.7f, 6.3f, 5.2f, 6.3f, 4.8f, };
+
+	private int[][] numSunlitHours = new int[2][DAYSINYEAR];
+
+	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle) throws CalculatorException {
+		
+		calcNumSunHours();
+		
 		if ((panel == null) || (inverter == null)) {
 			throw new CalculatorException();
 		}
@@ -32,73 +74,172 @@ public class Calculator {
 			this.consumption = consumption;
 			this.panelAngle = panelAngle;
 			this.panelQty = panelQty;
-			
-			initialiseAngSunGround();
 		}
 	}
 
-	private void initialiseAngSunGround() {
-		angSunGround[0] = 10;
-		angSunGround[1] = 35;
-		angSunGround[2] = 40;
-		angSunGround[3] = 40;
-		angSunGround[4] = 35;
-		angSunGround[5] = 10;
-	}
-	
 	private float calcPanelEff() throws CalculatorException {
 		return panel.getPower() / 1000;
+
 	}
 
-	private float[] calcSunPerHour() {		
-		float[] hrSun = new float[HOURSINDAY];
-		
-		for (int i = 0; i < HOURSINDAY; i++) {
-			hrSun[i] = AVGDAYSUN / HOURSINDAY;
-		}
-		
-		return hrSun;
-	}
-	
-	private float[] calcAngleSunPanel(float[] angSunGround) {
-		float[] angSunPanel = new float[HOURSINDAY];
+	private void calcNumSunHours() {
+		Calendar calendar = new GregorianCalendar(2012, 0, 1, 0, 0);
+		SunPosition sunsElevations = new SunPosition();
 
-		for (int i = 0; i < HOURSINDAY; i++) {
-			angSunPanel[i] = angSunGround[i] - panelAngle;
-		}
+		boolean foundDawn = false;
 		
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			for (int j = 0; j < HOURSINDAY; j++) {
+				sunsElevations.sunPosition(calendar.get(calendar.YEAR),
+						calendar.get(calendar.MONTH),
+						calendar.get(calendar.DAY_OF_MONTH),
+						calendar.get(calendar.HOUR_OF_DAY), 0, 0, 27.4667,
+						153.0333);
+				
+				if (sunsElevations.getElevation() < 0) {
+					if (!foundDawn) {
+						numSunlitHours[DAWNTIME][i] = j;
+						foundDawn = true;
+					}
+					numSunlitHours[SUNHOURS][i] += 1;
+				}
+				calendar.add(calendar.HOUR_OF_DAY, 1);
+			}
+			foundDawn = false;
+		}
+	}
+
+	private float[][] calcAngSunGround() {
+		float[][] angSunGround = new float[DAYSINYEAR][HOURSINDAY];
+
+		Calendar calendar = new GregorianCalendar(2012, 0, 1, 0, 0);
+		SunPosition sunsElevations = new SunPosition();
+
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
+				sunsElevations.sunPosition(calendar.get(calendar.YEAR),
+						calendar.get(calendar.MONTH),
+						calendar.get(calendar.DAY_OF_MONTH), j, 0, 0, 27.4667,
+						153.0333);
+				angSunGround[i][j] = (float) (sunsElevations.getElevation() * -1);
+				//System.out.println("Sun angle Day " + i + " hour " + j + " angle: " + angSunGround[i][j]);
+			}
+			calendar.add(calendar.DAY_OF_YEAR, 1);
+		}
+		return angSunGround;
+	}
+
+	private float[][] calcAngleSunPanel(float[][] angSunGround) {
+		float[][] angSunPanel = new float[DAYSINYEAR][HOURSINDAY];
+		float prevAngle = 0.0f;
+		float curAngle = 0.0f;
+		
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i]
+					+ numSunlitHours[SUNHOURS][i]; j++) {
+				curAngle = angSunGround[i][j];
+				if (curAngle < prevAngle) {
+					prevAngle = curAngle;
+					curAngle = 90 + (90 - curAngle);
+				}
+				else {
+					prevAngle = curAngle;
+				}
+
+				if (curAngle < 90 + (90 - panelAngle)) {
+					angSunPanel[i][j] = panelAngle + curAngle;
+				}
+				else {
+					angSunPanel[i][j] = 0;
+				}
+				
+				//System.out.println("Panel tp sun angle Day " + i + " hour " + j + " angle: " + angSunPanel[i][j]);
+			}
+
+		}
 		return angSunPanel;
 	}
-	
-	private float[] calcHourlyInsolation(float[] angSunPanel) {
-		float[] hourlyInsolation = new float[HOURSINDAY];
-		
-		for (int i = 0; i < HOURSINDAY; i++) {
-			hourlyInsolation[i] = (float) sin(angSunPanel[i]);
+
+	private float[][] calcHourlyInsolation(float[][] angSunPanel) {
+		float[][] hourlyInsolation = new float[DAYSINYEAR][HOURSINDAY];
+
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
+				hourlyInsolation[i][j] = (float) sin(toRadians(angSunPanel[i][j]));
+				
+				//System.out.println("Insol Day " + i + " hour " + j + " insol: " + hourlyInsolation[i][j]);
+			}
 		}
-		
+
 		return hourlyInsolation;
 	}
-	
-	private float calcDailySunHit() {
-		float dailySun = 0;
-		hourlySun = calcSunPerHour();
-		angSunPanel = calcAngleSunPanel(angSunGround);
-		hourlyInsolation = calcHourlyInsolation(angSunPanel);
-		
-		for (int i = 0; i < HOURSINDAY; i++) {
-			dailySun += hourlyInsolation[i] * hourlySun[i];
+
+	private float[][] calcSunPerHour() {
+		float[][] hrSun = new float[DAYSINYEAR][HOURSINDAY];
+
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
+				hrSun[i][j] = brisSunPerDay[i] / numSunlitHours[SUNHOURS][i];
+				
+				//System.out.println("Day " + i + " hour " + j + " sunPresent: " + hrSun[i][j]);
+			}
 		}
-		
-		return dailySun;
+
+		return hrSun;
 	}
-	
+
+	public float[] makeDailyGenTable() throws CalculatorException {
+		float[] dailyGen = new float[DAYSINYEAR];
+		float[][] angSunGround = calcAngSunGround();
+		float[][] angSunPanel = calcAngleSunPanel(angSunGround);
+		float[][] hourlyInsolation = calcHourlyInsolation(angSunPanel);
+
+		float[][] sunPerHour = calcSunPerHour();
+
+		float panelEff = calcPanelEff();
+		float inverterEff = inverter.getEfficiency();
+
+		float oneDayPower;
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			oneDayPower = 0.0f;
+			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
+				oneDayPower += hourlyInsolation[i][j] * sunPerHour[i][j] * panelEff * inverterEff / 100 * panelQty;
+			}
+			dailyGen[i] = oneDayPower;
+		}
+
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			//System.out.println(dailyGen[i]);
+		}
+
+		return dailyGen;
+	}
+
+	public float[] makeDailyExcessTable() throws CalculatorException {
+		float[] dailyGen = makeDailyGenTable();
+		float[] dailyExcess = new float[DAYSINYEAR];
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			dailyExcess[i] = dailyGen[i] - consumption;
+		}
+
+		return dailyExcess;
+	}
+
 	public float calcDailyPower() throws CalculatorException {
-		return calcPanelEff() * inverter.getEfficiency() * calcDailySunHit();
+		float[] dailyGen = makeDailyGenTable();
+		float avgPowerGen;
+		float totalPowerGen = 0;
+		for (int i = 0; i < DAYSINYEAR; i++) {
+			totalPowerGen += dailyGen[i];
+		}
+		avgPowerGen = totalPowerGen / DAYSINYEAR;
+		//System.out.println("Average Daily Genned Power is: " + avgPowerGen);
+		return avgPowerGen;
 	}
-	
+
 	public float calcDailyExcess() throws CalculatorException {
-		return calcDailyPower() - consumption;
+		float dailyExcess = calcDailyPower() - consumption;
+		//System.out.println("Average Daily Excess Power is: " + dailyExcess);
+		return dailyExcess;
 	}
 }
-

@@ -10,7 +10,8 @@ import org.junit.runners.Suite.SuiteClasses;
 	InverterTests.class,
 	CalculatorTests.class,	
 	TariffTests.class,
-	SolarServletTests.class
+	SolarServletTests.class,
+	SunPositionTests.class
 	//PanelServletTests.class,
 	//InverterServletTests.class
 })
