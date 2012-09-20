@@ -3,9 +3,9 @@ function calculateInput() {
         type : "POST",
         url : "solarServlet",
         data : "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
-        		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel + "&inverterEfficiency=" + inverterEfficiency +
-        		"&orientation=" + orientation + "&angle=" + angle + "&sunlight=" + sunlight + "&consumption=" + consumption +
-        		"&address=" + address + "&tariff=" + tariff,
+        		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel +
+        		"&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation + "&angle=" + angle + 
+        		"&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff,
 	    async: false,
         success : displayResult
     });
@@ -150,7 +150,23 @@ function displayResult(result, status) {
 				amountSavedNum = parseFloat(amountSaved);
 				try {
 					amountSavedNum = amountSavedNum.toFixed(2);
-					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong>");
+					
+					var startDate = new Date();
+					startDate = Date.parse("January 1st, 2012");
+					
+					var output = "<table class='table table-hover table-condensed table-bordered table-striped'>";
+					output += "<tr><th>Date</th><th>Daily Generated</th><th>Daily Excess</th>";
+					
+					$.each(result.Savings.ReturnTable, function (i) {
+						output += "<tr><td>" + startDate.toString('d-MMM-yyyy') + "</td><td>" + result.Savings.ReturnTable[i][0] + "</td><td>" + result.Savings.ReturnTable[i][1] + "</td></tr>";
+						startDate = startDate.addDays(1);
+				    });
+					
+					output += "</table>";
+					
+					
+					
+					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong><br /><br /><br />" + output);
 					$("#pnlResults").show();
 					
 					$("html, body").animate({scrollTop: "+=" + $("#lblSavings").offset().top + "px"}, "fast");

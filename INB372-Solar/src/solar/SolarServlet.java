@@ -36,14 +36,16 @@ public class SolarServlet extends HttpServlet {
 	private String latitude = "";
 	private String longitude = "";
 	private String orientation = "";
-	private Integer sunlight = 0;
 	private float tariffAmount = 0;
 
 	private Calculator calc;
 	private TariffCalculation tariff;
+	
+	private float[] dailyGenerated;
+	private float[] dailyExcess;
+	private float[][] returnTable = new float[365][2];
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String reqOption = request.getParameter("option");
 
@@ -53,13 +55,11 @@ public class SolarServlet extends HttpServlet {
 		try {
 			panelManufacturer = request.getParameter("panelManufacturer");
 			panelModel = request.getParameter("panelModel");
-			panelEfficiency = Float.parseFloat(request
-					.getParameter("panelEfficiency"));
+			panelEfficiency = Float.parseFloat(request.getParameter("panelEfficiency"));
 			panelQty = Integer.parseInt(request.getParameter("panelQty"));
 			inverterManufacturer = request.getParameter("inverterManufacturer");
 			inverterModel = request.getParameter("inverterModel");
-			inverterEfficiency = Float.parseFloat(request
-					.getParameter("inverterEfficiency"));
+			inverterEfficiency = Float.parseFloat(request.getParameter("inverterEfficiency"));
 
 			angle = Float.parseFloat(request.getParameter("angle"));
 			consumption = Float.parseFloat(request.getParameter("consumption"));
@@ -67,11 +67,11 @@ public class SolarServlet extends HttpServlet {
 			latitude = request.getParameter("latitude");
 			longitude = request.getParameter("longitude");
 			orientation = request.getParameter("orientation");
-			sunlight = Integer.parseInt(request.getParameter("sunlight"));
 			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
 
 			validInput = true;
-		} catch (NumberFormatException e1) {
+		}
+		catch (NumberFormatException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
@@ -83,18 +83,23 @@ public class SolarServlet extends HttpServlet {
 				createInverter();
 				createCalculator();
 				createTariff();
-				annualSavings = (float) (Math
-						.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
-			} catch (PanelException e1) {
+				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
+				
+				createTableDisplay();
+			}
+			catch (PanelException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			} catch (InverterException e) {
+			}
+			catch (InverterException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (CalculatorException calcEx) {
+			}
+			catch (CalculatorException calcEx) {
 				// TODO Auto-generated catch block
 				calcEx.printStackTrace();
-			} catch (TariffException tarEx) {
+			}
+			catch (TariffException tarEx) {
 				// TODO Auto-generated catch block
 				tarEx.printStackTrace();
 			}
@@ -107,8 +112,11 @@ public class SolarServlet extends HttpServlet {
 			if (validInput) {
 				moneyMade.put("Success", true);
 				moneyMade.put("Amount", annualSavings);
+				moneyMade.put("ReturnTable", returnTable);
+				
 				returnJson.put("Savings", moneyMade);
-			} else {
+			}
+			else {
 				moneyMade.put("Success", false);
 				returnJson.put("Savings", moneyMade);
 			}
@@ -122,20 +130,29 @@ public class SolarServlet extends HttpServlet {
 		log.log(Level.WARNING, returnJson.toString());
 	}
 
-	public void createTariff() throws TariffException, CalculatorException {
+	protected void createTableDisplay() throws CalculatorException {
+		dailyGenerated = calc.makeDailyGenTable();
+		dailyExcess = calc.makeDailyExcessTable();
+		
+		for (int i = 0; i < returnTable.length; i++) {
+			returnTable[i][0] = dailyGenerated[i];
+			returnTable[i][1] = dailyExcess[i];
+		}
+	}
+
+	protected void createTariff() throws TariffException, CalculatorException {
 		tariff = new TariffCalculation(calc, tariffAmount);
 	}
 
-	public void createCalculator() throws CalculatorException {
+	protected void createCalculator() throws CalculatorException {
 		calc = new Calculator(panel, inverter, panelQty, consumption, angle);
 	}
 
-	public void createInverter() throws InverterException {
-		inverter = new Inverter(inverterManufacturer, inverterModel,
-				inverterEfficiency);
+	protected void createInverter() throws InverterException {
+		inverter = new Inverter(inverterManufacturer, inverterModel, inverterEfficiency);
 	}
 
-	public void createPanel() throws PanelException {
+	protected void createPanel() throws PanelException {
 		panel = new Panel(panelManufacturer, panelModel, panelEfficiency);
 	}
 }

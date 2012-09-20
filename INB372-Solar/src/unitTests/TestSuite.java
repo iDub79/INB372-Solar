@@ -12,8 +12,6 @@ import org.junit.runners.Suite.SuiteClasses;
 	TariffTests.class,
 	SolarServletTests.class,
 	SunPositionTests.class
-	//PanelServletTests.class,
-	//InverterServletTests.class
 })
 
 

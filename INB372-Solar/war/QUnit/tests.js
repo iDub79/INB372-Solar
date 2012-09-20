@@ -7,7 +7,6 @@ testPositiveNumericInputFields("Panel Quantity", "panelQty");
 testPositiveNumericInputFields("Panel Efficiency", "panelEfficiency");
 testPositiveNumericInputFields("Inverter Efficiency", "inverterEfficiency");
 testPositiveNumericInputFields("Angle", "angle");
-testPositiveNumericInputFields("Sunlight", "sunlight");
 testPositiveNumericInputFields("Consumption", "consumption");
 testAlphaNumericInputFields("Address", "address");
 testNumericInputFields("Latitude", "latitude");
@@ -35,7 +34,7 @@ test("All input data submitted as valid parameters", function() {
 	var input = "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
         		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel +
         		"&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation + "&angle=" + angle +
-        		"&sunlight=" + sunlight + "&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
+        		"&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
 	
 	var options = null;
 	$.ajax = function(param) {
@@ -130,7 +129,6 @@ function setupValidInputs() {
 	longitude = -28.67;
 	orientation = "N";
 	angle = 5;
-	sunlight = 5;
 	consumption = 5;
 	tariff = 0.44;
 	manufacturer = "Test manufacturer";
@@ -151,7 +149,6 @@ function clearInputFields() {
 	longitude = "";
 	orientation = "";
 	angle = "";
-	sunlight = "";
 	consumption = "";
 	tariff = "";
 	manufacturer = "";

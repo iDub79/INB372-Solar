@@ -13,7 +13,6 @@ var consumption;
 var address;
 var latitude;
 var longitude;
-var sunlight;
 var tariff;
 var amountSavedNum = 0.00;
 
@@ -46,7 +45,6 @@ $(function() {
 		angle = $("#txtPanelAngle").val();
 		consumption = $("#txtPowerConsumption").val();
 		orientation = $("#ddlPanelOrientation").val();				
-		sunlight = $("#txtDailySunlight").val();
 		address = $("#searchTextField").val();
 		latitude = $("#txtLatitude").val();
 		longitude = $("#txtLongitude").val();
@@ -96,8 +94,7 @@ $(function() {
 	
 	
 	$("#btnResetCalculate").click(function() {
-		$("#txtPanelEfficiency, #txtInverterEfficiency," +
-				"#txtPanelAngle, #txtPowerConsumption, #txtDailySunlight, #searchTextField").val("");
+		$("#txtPanelEfficiency, #txtInverterEfficiency, #txtPanelAngle, #txtPowerConsumption, #searchTextField").val("");
 		$("#ddlPanelManufacturer, #ddlPanelModel, #ddlInverterManufacturer, #ddlInverterModel, #listPanelOrientation, #listTariff").val("-1");
 		clearValidationMessages();
 	});
@@ -158,7 +155,7 @@ function showMissingFieldsError() {
 function clearValidationMessages() {
 	$("#grpPanelManufacturer, #grpPanelModel, #grpPanelQty, #grpPanelEfficiency, #grpInverterManufacturer," +
 			"#grpInverterModel, #grpInverterEfficiency, #grpPanelOrientation, #grpPanelAngle, #grpPowerConsumption," +
-			"#grpAddress, #grpDailySunlight, #grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower," +
+			"#grpAddress, #grpTariff, #grpPanelManufacturer, #grpPanelModel, #grpPanelPower," +
 			"#grpInverterNewManufacturer, #grpInverterNewModel, #grpInverterNewEfficiency, #grpLatitude, #grpLongitude")
 		.removeClass("error");
 	$("#pnlErrors, #pnlResults").hide();
@@ -186,10 +183,6 @@ function validCalculateSolarForm() {
 	}
 	if ((invalidPostiveNumberField(angle)) || (angle > 90)) {
 		$("#grpPanelAngle").addClass("error");
-		validForm = false;
-	}
-	if (invalidPostiveNumberField(sunlight)) {
-		$("#grpDailySunlight").addClass("error");
 		validForm = false;
 	}
 	if (invalidPostiveNumberField(consumption)) {

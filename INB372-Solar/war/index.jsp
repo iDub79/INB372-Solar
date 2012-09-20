@@ -14,6 +14,7 @@
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbIURPjdlsOMzJagYMlrMe7BDRAOiprN0&libraries=places&sensor=false"></script>
 <script type="text/javascript" src="js/GoogleMaps.js"></script>
+<script type="text/javascript" src="js/date-en-AU.js"></script>
 <script type="text/javascript" src="js/AjaxCalls.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
 
@@ -119,12 +120,6 @@
                                 <input type="number" class="input-large" id="txtLongitude" disabled="disabled" />                                                                
                             </div>
 						</div>
-						<div class="control-group" id="grpDailySunlight">
-							<label class="control-label" for="txtDailySunlight">Daily Sunlight</label>
-							<div class="controls">
-								<input type="number" class="input-large" id="txtDailySunlight" placeholder="Enter sunlight in kilowatts" />
-							</div>
-						</div>						
                         <div class="control-group" id="grpPanelAngle">
                             <label class="control-label" for="txtPanelAngle">Panel Angle</label>
                             <div class="controls">
