@@ -146,8 +146,9 @@ function displayResult(result, status) {
 		if (result.Savings.Success == true) {
 			var amountSaved = result.Savings.Amount;
 			
-			if (amountSaved > 0) {
+			//if (amountSaved > 0) {
 				amountSavedNum = parseFloat(amountSaved);
+				
 				try {
 					amountSavedNum = amountSavedNum.toFixed(2);
 					
@@ -155,30 +156,85 @@ function displayResult(result, status) {
 					startDate = Date.parse("January 1st, 2012");
 					
 					var output = "<table class='table table-hover table-condensed table-bordered table-striped'>";
-					output += "<tr><th>Date</th><th>Daily Generated</th><th>Daily Excess</th>";
+					output += "<tr><th>Date</th><th>Daily Generated Electricity</th><th>Amount Put Back To Grid</th>";
+					
+					var graphDataMade = new Array();
+					var graphDataExcess = new Array();
+					var dates = new Array();
 					
 					$.each(result.Savings.ReturnTable, function (i) {
 						output += "<tr><td>" + startDate.toString('d-MMM-yyyy') + "</td><td>" + result.Savings.ReturnTable[i][0] + "</td><td>" + result.Savings.ReturnTable[i][1] + "</td></tr>";
+						
+						// limit to only January (31 days)
+						if (i < 31) {
+							dates[i] = startDate.toString('d-MMM-yyyy');						
+							graphDataMade[i] = result.Savings.ReturnTable[i][0];
+							graphDataExcess[i] = result.Savings.ReturnTable[i][1];
+						}
+						
 						startDate = startDate.addDays(1);
 				    });
 					
 					output += "</table>";
+
+					var plot1 = $.jqplot('chartdiv', [graphDataMade, graphDataExcess], {
+						title: 'Electricity Generated',
+						seriesDefaults:{
+				            rendererOptions: {fillToZero: true},
+				            markerOptions: {size: 12}
+						},
+						axesDefaults: {
+					        tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+					        tickOptions: {
+					          fontSize: '10pt'
+					        }
+					    },
+						series: [
+					         {label: 'Total Generated'},
+					         {label: 'Put Back To Grid'}
+						],
+						legend: {
+							show: true
+						},
+						axes: {
+							xaxis: {
+								label: 'Date',
+								renderer: $.jqplot.CategoryAxisRenderer,
+				                ticks: dates,
+				                tickOptions: {
+						          angle: -45,
+						        }
+				            },
+				            yaxis: {
+				            	label: '$',
+				                pad: 1.05
+				            }
+						},
+						highlighter: {
+					        show: true,
+					        sizeAdjust: 7.5
+				        },
+				        cursor: {
+				        	show: false
+				        }
+					});
 					
-					
-					
-					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong><br /><br /><br />" + output);
+					$("#chartdiv").css("visibility", "visible");
+
+					//$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong><br /><br /><br />" + output);
+					$("#lblSavings").html("Based on your input, the annual savings will be <strong>$" + amountSavedNum + "</strong>");
 					$("#pnlResults").show();
 					
 					$("html, body").animate({scrollTop: "+=" + $("#lblSavings").offset().top + "px"}, "fast");
 
 				}
 				catch (Error) {
-					displayError("There was an error in calculating the fields");
+					//displayError("There was an error in calculating the fields");
 				}
-			}
-			else {
-				displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.");
-			}
+			//}
+			//else {
+				//displayError("The value calculated is below $0 which means that you are consuming more energy than what you're putting back into the grid.");
+			//}
 		}
 		else {
 			displayError("There was an error in calculating the fields");

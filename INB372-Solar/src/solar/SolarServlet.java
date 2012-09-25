@@ -40,9 +40,7 @@ public class SolarServlet extends HttpServlet {
 
 	private Calculator calc;
 	private TariffCalculation tariff;
-	
-	private float[] dailyGenerated;
-	private float[] dailyExcess;
+
 	private float[][] returnTable = new float[365][2];
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -131,8 +129,8 @@ public class SolarServlet extends HttpServlet {
 	}
 
 	protected void createTableDisplay() throws CalculatorException {
-		dailyGenerated = calc.makeDailyGenTable();
-		dailyExcess = calc.makeDailyExcessTable();
+		float[] dailyGenerated = calc.makeDailyGenTable();
+		float[] dailyExcess = calc.makeDailyExcessTable();
 		
 		for (int i = 0; i < returnTable.length; i++) {
 			returnTable[i][0] = dailyGenerated[i];

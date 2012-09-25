@@ -12,6 +12,7 @@ public class TariffCalculation {
 	
 	// Constructor
 	public TariffCalculation(Calculator calc, float tariffAmount) throws TariffException, CalculatorException {
+		/*
 		if (calc.calcDailyExcess() < 0) {
 			throw new TariffException ("This value must be greater than 0.");
 		}
@@ -19,6 +20,9 @@ public class TariffCalculation {
 			this.dailyElectricity = calc.calcDailyExcess();
 			this.tariffAmount = tariffAmount;
 		}
+		*/
+		this.dailyElectricity = calc.calcDailyExcess();
+		this.tariffAmount = tariffAmount;
 	}
 	
 	// Calculate the Annual Electric

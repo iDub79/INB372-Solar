@@ -33,6 +33,8 @@ $(function() {
 
 		clearValidationMessages();
 		
+		$("#chartdiv").empty();
+		
 		panelManufacturer = $("txtPanelManufacturer").val();
 		panelModel = $("txtPanelModel").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();

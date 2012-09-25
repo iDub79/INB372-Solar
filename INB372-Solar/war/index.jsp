@@ -8,6 +8,7 @@
 
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
+<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.min.css" />
 <link rel="stylesheet" type="text/css" href="css/skin.css" />
 
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
@@ -18,7 +19,21 @@
 <script type="text/javascript" src="js/AjaxCalls.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
 
-<!--[if lt IE 9]> <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
+<script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="js/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot.pointLabels.min.js"></script>
+<script type="text/javascript" src="js/jqplot.highlighter.min.js"></script>
+<script type="text/javascript" src="js/jqplot.cursor.min.js"></script>
+<script type="text/javascript" src="js/jqplot.dateAxisRenderer.min.js"></script>
+
+
+<!--[if lt IE 9]>
+    <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="js/excanvas.js"></script>
+<![endif]-->
 
 <script type="text/javascript">
 	$(function() {
@@ -151,7 +166,7 @@
 					<button class="btn btn-large btn-primary" id="btnCalculate">Calculate</button>
 					<button class="btn btn-large" id="btnCancelCalculate">Cancel</button>									
 				</div>				
-			</div>
+			</div>			
 			<div class="span12">
                 <div class="alert alert-success" id="pnlResults" style="display: none;">
                     <span id="lblSavings"></span>
@@ -161,12 +176,16 @@
 			    </div>
 			</div>
 			<div class="span12">
+                <div id="chartdiv" style="height: 600px; margin-bottom: 20px; visibility: hidden;"></div>
+            </div>
+			<div class="span12">
                 <div class="alert alert-info">
                      <p style="text-align: center; font-style: italic;">Please note that this calculator is based on values for Brisbane, Australia and currently only gives an approximation.</p>
                 </div>
             </div>
 		</div>
 	</div>
+	
 	
 	<!-- Address Modal -->
 	<div id="addressModal" class="modal hide fade">
