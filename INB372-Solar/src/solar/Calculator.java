@@ -14,6 +14,7 @@ import exceptions.CalculatorException;
 
 public class Calculator {
 
+	private final int MONTHSINYEAR = 12;
 	private Panel panel;
 	private Inverter inverter;
 	private float consumption;
@@ -213,6 +214,43 @@ public class Calculator {
 		}
 
 		return dailyGen;
+	}
+	
+	public float[] makeMonthlyGenTable() throws CalculatorException {
+		float[] dailyGen = makeDailyGenTable();
+		float[] monthlyGen = new float[MONTHSINYEAR];
+		Calendar calendar = new GregorianCalendar(2012, Calendar.JANUARY, 1, 0, 0);
+		int currMonth = 0;
+		int firstDay;
+		int dayLimit;
+		float monthTotal;
+		for (int i = 0; i <MONTHSINYEAR; i ++) {
+			monthTotal = 0;
+			firstDay = calendar.get(calendar.DAY_OF_YEAR);
+			dayLimit = calendar.getActualMaximum(calendar.DAY_OF_MONTH);
+			
+			// This is a hack fix until I implement dynamic dates throughout the calcuator class
+			if (i==11) {
+				dayLimit = 29;
+			}
+			System.out.println(firstDay);
+			System.out.println(dayLimit);
+			
+			
+			for (int j = firstDay; j< firstDay + dayLimit; j++) {
+				
+				monthTotal+=dailyGen[j-1];
+				
+				calendar.add(calendar.DAY_OF_YEAR, 1);
+			}
+			System.out.println("Month " + currMonth + " has " + monthTotal + " genned power");
+			monthlyGen[i] = monthTotal;
+			
+			currMonth++;
+			
+		}
+		return monthlyGen;
+		
 	}
 
 	public float[] makeDailyExcessTable() throws CalculatorException {

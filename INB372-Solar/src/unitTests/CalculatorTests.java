@@ -17,7 +17,7 @@ import static java.lang.Math.*;
 
 public class CalculatorTests {
 
-	@Test
+	//@Test
 	public void printLnTests() {
 		try {
 			Panel testPanel = new Panel("panel1", "panelCompany", 300);
@@ -38,6 +38,28 @@ public class CalculatorTests {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Test
+	public void basicTestMonthlyTable() {
+		try {
+			Panel testPanel = new Panel("panel1", "panelCompany", 300);
+			Inverter testInverter = new Inverter("invert1", "inverterCompany", 90);
+			Calculator testCalc = new Calculator(testPanel, testInverter, 2, 4, 90);
+			testCalc.makeMonthlyGenTable();
+		}
+		catch (PanelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (InverterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (CalculatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 
 	/*
