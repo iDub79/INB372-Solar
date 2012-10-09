@@ -2,6 +2,7 @@
 <html id="home" lang="en">
 <head>
 <title>Solar Power Calculator</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style type="text/css"> body { padding-top: 60px; } </style>
@@ -18,9 +19,7 @@
 <script type="text/javascript" src="js/AjaxCalls.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
 
-
-<%@ include file="jqplot.jsp" %>
-
+<%@ include file="jqPlot.jsp" %>
 
 <!--[if lt IE 9]>
     <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
