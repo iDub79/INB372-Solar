@@ -10,7 +10,7 @@ public class DistanceCalc {
 	
 	private List<float[]> stationReadings = new ArrayList<float[2]>;
 	
-	float[] brisbaneLocation = {-27.471011,153.023449};
+	float[] brisbaneLocation = {-27.471011f,153.023449f};
 	float[] brisbaneReadings = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
 			4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
 			5.8f, 6.4f, 6.8f, 8.5f, 8.5f, 8.9f, 8.8f, 8.7f, 8.6f, 7.5f, 7.6f,
@@ -47,7 +47,7 @@ public class DistanceCalc {
 	stationLocations.add(brisbaneLocation);
 	stationReadings.add(brisbaneReadings);
 	
-	float[] sydneyLocation = {-33.867487,151.20699};
+	float[] sydneyLocation = {-33.867487f,151.20699f};
 	float[] sydneyReadings = { 9.5f, 	8f, 	3.1f, 	4.2f, 	6.4f, 	8.6f, 	7f, 	8.5f, 	7.4f, 	6.5f, 	4f, 	7.1f, 	6f, 	8.4f, 	5.3f, 	7.1f, 	8.4f, 	6f, 	6f, 	8.6f, 	9.1f, 	9f, 	8f, 	5.5f, 	8.4f, 	7.8f, 	7.2f, 	4.2f, 	8.1f, 	9f, 	8.8f, 
 			8.8f, 	8.4f, 	4.8f, 	7.8f, 	8.4f, 	3.9f, 	4.1f, 	4.9f, 	6.6f, 	6.3f, 	7.1f, 	2.3f, 	2.7f, 	3.4f, 	4.9f, 	4.6f, 	6.2f, 	5f, 	6.8f, 	6.4f, 	4.6f, 	4.4f, 	5.7f, 	8.1f, 	6.8f, 	7.7f, 	3.6f, 	4.9f, 			
 			4f, 	2.9f, 	6.9f, 	7.4f, 	3.8f, 	4.5f, 	6.8f, 	7.3f, 	4.6f, 	3.3f, 	4f, 	6.2f, 	6.9f, 	3f, 	4.5f, 	5.8f, 	4.4f, 	3f, 	3f, 	4.2f, 	3.6f, 	5.8f, 	5.9f, 	6.3f, 	5.2f, 	3f, 	2.8f, 	4.4f, 	5.5f, 	5.1f, 	1.9f, 
@@ -66,7 +66,7 @@ public class DistanceCalc {
 	
 	// Here down needs solar values done
 	
-	float[] darwinLocation = {-12.46282,130.841769};
+	float[] darwinLocation = {-12.46282f,130.841769f};
 	float[] darwinReadings = { 6.5f, 	6.9f, 	5.1f, 	7.9f, 	7.6f, 	2.3f, 	4.4f, 	4.5f, 	6.1f, 	3.1f, 	2.1f, 	5.5f, 	6.6f, 	7.1f, 	3.6f, 	3.4f, 	5.2f, 	3.2f, 	6.8f, 	7f, 	2.2f, 	2.5f, 	4.6f, 	2.2f, 	4.7f, 	6.9f, 	7.7f, 	7.5f, 	8.1f, 
 			8.3f, 	7.1f, 	7f, 	7.4f, 	6.9f, 	4.7f, 	5.2f, 	4.7f, 	7.5f, 	8f, 	4.8f, 	6.5f, 	7f, 	2.9f, 	1.4f, 	2f, 	5.5f, 	1.7f, 	4.1f, 	4.7f, 	7.9f, 	5.1f, 	5.5f, 	4.6f, 	4.5f, 	6.8f, 	6.8f, 	7.5f, 	
 			7.3f, 	6.6f, 	3.8f, 	5.4f, 	3.5f, 	5.5f, 	3.7f, 	2.8f, 	4.5f, 	5.6f, 	3f, 	6.6f, 	6.5f, 	7f, 	4.8f, 	6.6f, 	6.9f, 	6.7f, 	3.3f, 	7.1f, 	7.4f, 	6.3f, 	5.7f, 	6.5f, 	7f, 	6.6f, 	6f, 	6.1f, 	6.3f, 
@@ -83,7 +83,7 @@ public class DistanceCalc {
 	stationLocations.add(darwinLocation);
 	stationReadings.add(darwinReadings);
 	
-	float[] canberraLocation = {-35.308235,149.124224};
+	float[] canberraLocation = {-35.308235f,149.124224f};
 	float[] canberraReadings = {9.4f, 	6.2f, 	4.5f, 	6.1f, 	7.7f, 	7.2f, 	7.7f, 	7.4f, 	4.4f, 	6.3f, 	2.9f, 	4.8f, 	2.5f, 	4.1f, 	9.1f, 	8.8f, 	9.5f, 	8.9f, 	7.9f, 	7.5f, 	9f, 	6.1f, 	8.9f, 	6.7f, 	8.4f, 	8.5f, 	7.7f, 	8.9f, 	9.2f, 
 			9f, 	7.5f, 	7.3f, 	5.5f, 	6.4f, 	3.6f, 	8.5f, 	6.3f, 	6.5f, 	7.4f, 	2.3f, 	4f, 	7.6f, 	8.3f, 	5f, 	2.3f, 	6.8f, 	6.1f, 	4f, 	8.2f, 	8f, 	8.2f, 	8.3f, 	7.8f, 	6.2f, 	7.7f, 	2.2f, 	4.8f, 	
 			6.5f, 	5.7f, 	7.9f, 	7.9f, 	5.8f, 	6f, 	7.6f, 	6.7f, 	4.3f, 	2.6f, 	3.8f, 	6.4f, 	6.9f, 	4f, 	5.1f, 	6f, 	5.2f, 	3.9f, 	4.4f, 	3.4f, 	1.7f, 	5.2f, 	5.4f, 	5.3f, 	5.7f, 	5.7f, 	5.9f, 	6.1f, 	5.8f, 
@@ -100,7 +100,7 @@ public class DistanceCalc {
 	stationLocations.add(canberraLocation);
 	stationReadings.add(canberraReadings);
 	
-	float[] melbourneLocation = {-37.811367,144.971829};
+	float[] melbourneLocation = {-37.811367f,144.971829f};
 	float[] melbourneReadings = {5.7f, 	8.7f, 	8.7f, 	9.8f, 	9.1f, 	9.2f, 	8f, 	7.7f, 	3.9f, 	2.7f, 	3.8f, 	3.9f, 	2.1f, 	5.6f, 	9.2f, 	8.6f, 	4.2f, 	6.2f, 	7.2f, 	9.4f, 	8.1f, 	7.6f, 	8.9f, 	7.1f, 	7.3f, 	4.8f, 	9.1f, 	8.9f, 	9f, 
 			7.1f, 	8.2f, 	5.6f, 	2.7f, 	1.9f, 	8.2f, 	8.7f, 	7.7f, 	8.1f, 	4.5f, 	2f, 	8f, 	6.7f, 	7.8f, 	7.6f, 	4.6f, 	7.1f, 	5.3f, 	7.2f, 	5.9f, 	6f, 	5.7f, 	7.7f, 	7.6f, 	6f, 	6.4f, 	2.3f, 	2.2f, 	
 			6.2f, 	6.2f, 	5.4f, 	4.2f, 	7.6f, 	7.4f, 	7.2f, 	3.1f, 	2.4f, 	2.9f, 	6.6f, 	6.6f, 	4.1f, 	7f, 	6.8f, 	6.6f, 	4f, 	4.2f, 	6.5f, 	6f, 	2.9f, 	2.6f, 	5.4f, 	3f, 	4f, 	2.8f, 	4f, 	5.8f, 	5.8f, 
@@ -117,7 +117,7 @@ public class DistanceCalc {
 	stationLocations.add(melbourneLocation);
 	stationReadings.add(melbourneReadings);
 	
-	float[] perthLocation = {-31.932854,115.86194};
+	float[] perthLocation = {-31.932854f,115.86194f};
 	float[] perthReadings = {9.4f, 	9.1f, 	6.6f, 	9.3f, 	4f, 	9.1f, 	9.2f, 	9.5f, 	9.5f, 	9.4f, 	9.6f, 	9.6f, 	8.8f, 	8.5f, 	9.5f, 	9.4f, 	7.9f, 	9.5f, 	9.2f, 	9.3f, 	7.1f, 	7.4f, 	5.9f, 	3.8f, 	9.3f, 	9.3f, 	8.4f, 	8.4f, 	5.9f, 
 			9f, 	8.9f, 	8.7f, 	8.6f, 	8.9f, 	8.9f, 	8.8f, 	8.5f, 	8.6f, 	8.6f, 	7.5f, 	8.6f, 	8.3f, 	7.9f, 	8.2f, 	7.3f, 	8f, 	8.1f, 	8.1f, 	3f, 	8.1f, 	8.3f, 	8f, 	6.4f, 	7.2f, 	7.8f, 	7.3f, 	7.3f, 	
 			7.6f, 	7.8f, 	7.7f, 	7.5f, 	7f, 	7.7f, 	7.2f, 	7.5f, 	7.6f, 	7.3f, 	7.4f, 	7f, 	7.3f, 	6.9f, 	7.1f, 	6.9f, 	7.1f, 	7f, 	6.9f, 	6.9f, 	6.5f, 	6.3f, 	6.7f, 	6.7f, 	6.7f, 	6.6f, 	6.6f, 	6.5f, 	6.2f, 
@@ -134,7 +134,7 @@ public class DistanceCalc {
 	stationLocations.add(perthLocation);
 	stationReadings.add(perthReadings);
 	
-	float[] adelaideLocation = {-34.928621,138.599959};
+	float[] adelaideLocation = {-34.928621f,138.599959f};
 	float[] adelaideReadings = {6.9f, 	9.7f, 	9.8f, 	8.6f, 	9.2f, 	8.3f, 	9.1f, 	4.5f, 	9.2f, 	9.2f, 	4.7f, 	4.6f, 	2.3f, 	9.3f, 	9.4f, 	9.4f, 	7.5f, 	9.4f, 	9.5f, 	9.5f, 	9.2f, 	9.2f, 	9f, 	7.5f, 	5.8f, 	9f, 	8.4f, 	9.2f, 	8.9f, 
 			8.7f, 	8.2f, 	4.6f, 	6.3f, 	4.2f, 	9.1f, 	9.1f, 	8.8f, 	8.3f, 	6.4f, 	4.1f, 	5f, 	8.7f, 	7.9f, 	7.6f, 	8.2f, 	7.2f, 	1.6f, 	6.7f, 	6.6f, 	7.8f, 	8.3f, 	8.1f, 	8f, 	6.4f, 	4.6f, 	7.7f, 	7.1f, 	
 			6.8f, 	7.9f, 	7.7f, 	7.7f, 	7.7f, 	7.7f, 	5.5f, 	2.3f, 	5f, 	5f, 	7.2f, 	6.9f, 	4.2f, 	6.9f, 	6.8f, 	7f, 	5.6f, 	4.6f, 	6.7f, 	2.9f, 	3.3f, 	4.6f, 	2.6f, 	3.9f, 	5.2f, 	4.7f, 	5.1f, 	6.2f, 	6.1f, 
@@ -151,7 +151,7 @@ public class DistanceCalc {
 	stationLocations.add(adelaideLocation);
 	stationReadings.add(adelaideReadings);
 	
-	float[] hobartLocation = {-42.881903,147.323815};
+	float[] hobartLocation = {-42.881903f,147.323815f};
 	float[] hobartReadings = {8.9f, 	7.9f, 	7.9f, 	6.4f, 	5.4f, 	8.1f, 	5.8f, 	6.1f, 	5.2f, 	3.9f, 	2.7f, 	1.7f, 	2.4f, 	3.5f, 	9.3f, 	9.4f, 	6.8f, 	7.6f, 	4.8f, 	8f, 	4.8f, 	7.6f, 	8.9f, 	8.6f, 	5.4f, 	7.1f, 	7.6f, 	8.3f, 	6.6f, 
 			2.3f, 	6.9f, 	8.8f, 	8.3f, 	5.4f, 	8.3f, 	6.1f, 	6.1f, 	8.1f, 	3.2f, 	3.1f, 	6.6f, 	6.8f, 	8.1f, 	8f, 	5.8f, 	3.3f, 	6.1f, 	2.1f, 	6.6f, 	6.4f, 	5.9f, 	7.6f, 	3.8f, 	3.4f, 	3.9f, 	4.6f, 	3.9f, 	
 			5f, 	4.7f, 	6f, 	5.4f, 	5.2f, 	7.1f, 	5.6f, 	4.1f, 	3.4f, 	3.2f, 	5.2f, 	6.6f, 	5.6f, 	6.6f, 	5.4f, 	5.4f, 	5.9f, 	5f, 	3.4f, 	3.3f, 	4.8f, 	3.3f, 	1.5f, 	2.9f, 	4.8f, 	4f, 	5.3f, 	5.5f, 	5.2f, 
@@ -173,7 +173,7 @@ public class DistanceCalc {
 		
 	}
 	
-	public double findDistance(double lat1, double long1, double lat2, double long2) {
+	public float findDistance(float lat1, float long1, float lat2, float long2) {
 		final double earthRadius = 6371;
 		double distBetween = 0;
 		double diffLat = Math.toRadians(lat2-lat1);
@@ -183,14 +183,14 @@ public class DistanceCalc {
 		
 		// a and c are splitting the equation up into pieces
 		double a = sin(diffLat/2) * Math.sin(diffLat/2) +
-				Math.cos(rLat1) * Math.Math.cos(rLat2) *
+				Math.cos(rLat1) * Math.cos(rLat2) *
 				sin(diffLong/2) * Math.sin(diffLong/2);
 		double c = 2* Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 		distBetween = earthRadius * c; //distance in km;
-		return distBetween;
+		return (float) distBetween;
 	}
 	
-	public float[] findClosestStation(userLat, userLon){
+	public float[] findClosestStation(float userLat, float userLon){
 		float prevDist = 10000000; // Make it really big so impossible to b further away
 		float curDist;
 		// for loop compares userLocation to each location in list, setting the to be returned

@@ -93,14 +93,13 @@ public class SolarServlet extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			catch (CalculatorException calcEx) {
+			catch (exceptions.CalculatorException calcEx) {
 				// TODO Auto-generated catch block
 				calcEx.printStackTrace();
 			}
-			catch (TariffException tarEx) {
+			catch (exceptions.TariffException tarEx) {
 				// TODO Auto-generated catch block
 				tarEx.printStackTrace();
-			}
 		}
 
 		JSONObject moneyMade = new JSONObject();
@@ -128,7 +127,7 @@ public class SolarServlet extends HttpServlet {
 		log.log(Level.WARNING, returnJson.toString());
 	}
 
-	protected void createTableDisplay() throws CalculatorException {
+	protected void createTableDisplay() throws exceptions.CalculatorException {
 		float[] dailyGenerated = calc.makeDailyGenTable();
 		float[] dailyExcess = calc.makeDailyExcessTable();
 		
@@ -138,11 +137,11 @@ public class SolarServlet extends HttpServlet {
 		}
 	}
 
-	protected void createTariff() throws TariffException, CalculatorException {
+	protected void createTariff() throws exceptions.TariffException, exceptions.CalculatorException {
 		tariff = new TariffCalculation(calc, tariffAmount);
 	}
 
-	protected void createCalculator() throws CalculatorException {
+	protected void createCalculator() throws exceptions.CalculatorException {
 		calc = new Calculator(panel, inverter, panelQty, consumption, angle);
 	}
 
