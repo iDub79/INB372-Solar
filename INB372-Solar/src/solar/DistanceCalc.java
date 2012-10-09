@@ -1,10 +1,13 @@
 package solar;
 
 import static java.lang.Math.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class DistanceCalc {
 
-
+	private List<float> stationReadings = new ArrayList<float[]>;
+	
 	
 	public DistanceCalc() {
 		
@@ -27,5 +30,7 @@ public class DistanceCalc {
 		return distBetween;
 	}
 	
-	public int findClosest();
+//	public float[] findClosestStation(){
+//		return 
+//	}
 }
