@@ -86,7 +86,23 @@ public class DistanceCalc {
 		return distBetween;
 	}
 	
-//	public float[] findClosestStation(){
-//		return 
-//	}
+	public float[] findClosestStation(userLat, userLon){
+		float prevDist = 10000000; // Make it really big so impossible to b further away
+		float curDist;
+		// for loop compares userLocation to each location in list, setting the to be returned
+		// value to list of sun rays if dist lower than previous
+		int lowestIndex = 0;
+		float lat, lon;
+		for (int i = 0; i < stationLocations.size();i++)
+		{
+			lat = stationLocations.get(i)[0];
+			lon = stationLocations.get(i)[1];
+			curDist = findDistance(userLat, userLon, lat, lon);
+			if (curDist < prevDistance) {
+				curDist = prevDist;
+				lowestIndex = i;
+			}
+		}
+		return stationReadings.get(lowestIndex);
+	}
 }
