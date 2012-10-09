@@ -86,7 +86,7 @@ public class DistanceCalc {
 		return distBetween;
 	}
 	
-	public float[] findClosestStation(){
-		return 
-	}
+//	public float[] findClosestStation(){
+//		return 
+//	}
 }
