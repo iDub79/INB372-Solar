@@ -4,14 +4,14 @@ public class TariffRule {
 
 	private String State;
 	private String Description;
-	private TariffRuleSet TRS;
+	//private TariffRuleSet TRS;
 	private Boolean Gross;
 
-	public TrariffRule(String State, Boolean Gross, double TarriffRate) {
+	public TariffRule(String State, Boolean Gross, double TarriffRate) {
 		this.State = State;
 		this.Description =Description;
 		this.Gross = Gross;
-		this.TRS = new TRS (TarriffRate);
+		//this.TRS = new TariffRuleSet(TarriffRate);
 	}
 	
 }

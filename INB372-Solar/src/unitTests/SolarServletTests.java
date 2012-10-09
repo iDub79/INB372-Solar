@@ -30,13 +30,13 @@ public class SolarServletTests {
 	}
 	
 	@Test
-	public void testCreateCalculator() throws CalculatorException {
+	public void testCreateCalculator() throws exceptions.CalculatorException {
 		calcNew = new Calculator(panel, inverter, panelQty, consumption, panelAngle);
 		//assert(createCalculator(), calc.equals(calcNew));
 	}
 	
 	@Test
-	public void testCreateTariff() throws TariffException, CalculatorException {		
+	public void testCreateTariff() throws exceptions.TariffException, exceptions.CalculatorException {		
 		//tariff = new TariffCalculation(calcNew, tariffAmount);
 	}
 }
