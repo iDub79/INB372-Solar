@@ -11,14 +11,14 @@ import exceptions.SolarSystemException;
 import exceptions.TariffException;
 
 import solar.Calculator;
-import solar.SolarSystemInfo;
+//import solar.SolarSystemInfo;
 import solar.TariffCalculation;
 
 public class TariffTests {
 	
 	private TariffCalculation tariff;
-	private SolarSystemInfo runCorrectSystemInfo;
-	private Calculator runCorrectCalculator;
+	//private SolarSystemInfo runCorrectSystemInfo;
+	//private Calculator runCorrectCalculator;
 	
 	private final int PANELSIZE = 1000;
 	private final int PANELRATING = 2000;
@@ -28,9 +28,10 @@ public class TariffTests {
 	
 	@Before
 	public void initialise() throws SolarSystemException, CalculatorException, TariffException {		
-		runCorrectSystemInfo = new SolarSystemInfo(PANELSIZE, PANELRATING, INVERTOREFFICIENCY, PANELANGLE, CONSUMPTION);
-		runCorrectCalculator = new Calculator(runCorrectSystemInfo);
-		tariff = new TariffCalculation(runCorrectCalculator, 0.8f);
+		// COmmented caue solarsystem info doesnt exist anymore
+		//runCorrectSystemInfo = new SolarSystemInfo(PANELSIZE, PANELRATING, INVERTOREFFICIENCY, PANELANGLE, CONSUMPTION);
+		//runCorrectCalculator = new Calculator(runCorrectSystemInfo);
+		//tariff = new TariffCalculation(runCorrectCalculator, 0.8f);
 	}
 	
 

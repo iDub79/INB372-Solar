@@ -100,6 +100,8 @@ public class SolarServlet extends HttpServlet {
 			catch (exceptions.TariffException tarEx) {
 				// TODO Auto-generated catch block
 				tarEx.printStackTrace();
+			// Calin added this bracket, Imade the guess that someone forgot o cloas a catch properly
+			}
 		}
 
 		JSONObject moneyMade = new JSONObject();

@@ -26,6 +26,7 @@ public class Calculator {
 	private final int HOURSINDAY = 24;
 	private final int DAWNTIME = 0;
 	private final int SUNHOURS = 1;
+	private final int MONTHSINYEAR = 12;
 
 	private float[] sunPerDay = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
 			4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
