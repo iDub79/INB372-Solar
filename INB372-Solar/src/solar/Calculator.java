@@ -237,7 +237,7 @@ public class Calculator {
 			monthTotal = 0;
 			firstDay = calendar.get(calendar.DAY_OF_YEAR);
 			dayLimit = calendar.getActualMaximum(calendar.DAY_OF_MONTH);
-			
+			//
 			// This is a hack fix until I implement dynamic dates throughout the calcuator class
 			if (i==11) {
 				dayLimit = 29;
