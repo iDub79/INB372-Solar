@@ -2,10 +2,10 @@ package solar;
 
 public class TariffRule {
 
-String State;
-String Description;
-TariffRuleSet TRS;
-Boolean Gross;
+	private String State;
+	private String Description;
+	private TariffRuleSet TRS;
+	private Boolean Gross;
 
 	public TrariffRule(String State, Boolean Gross, double TarriffRate) {
 		this.State = State;

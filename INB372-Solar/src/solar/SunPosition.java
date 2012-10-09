@@ -4,15 +4,7 @@ public class SunPosition {
 
 	public static double elevation;
 	public static double azimuth;
-	/*
-	/**
-	 * @param args
-	 */
-	/*	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		//sunPosition(2012, 8, 20, 12, 0, 0, -27.4667, 153.0333);
-	}
-*/
+
 	public static int cumsum(int month) {
 		int[] monthDays = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30 };
 		int sum = 0;
