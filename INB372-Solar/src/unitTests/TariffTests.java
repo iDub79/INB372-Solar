@@ -36,7 +36,7 @@ public class TariffTests {
 	public void initialise() throws CalculatorException, TariffException, PanelException, InverterException {
 		panel = new Panel(PMANUFACTURER, PMODEL, PANELRATING);
 		inverter = new Inverter(IMANUFACTURER, IMODEL, INVERTOREFFICIENCY);
-		calculator = new Calculator(panel, inverter, 1, CONSUMPTION, PANELANGLE);
+		calculator = new Calculator(panel, inverter, 1, CONSUMPTION, PANELANGLE, 0, 0);
 		tariff = new TariffCalculation(calculator, TARIFFVALUE);
 	}
 

@@ -5,7 +5,7 @@ function calculateInput() {
         data : "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
         		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel +
         		"&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation + "&angle=" + angle + 
-        		"&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff,
+        		"&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff + "&latitude=" + latitude + "&longitude=" + longitude,
 	    async: false,
         success : displayResult
     });

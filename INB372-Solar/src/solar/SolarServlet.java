@@ -33,8 +33,8 @@ public class SolarServlet extends HttpServlet {
 	private float angle = 0;
 	private float consumption = 0;
 	private String address = "";
-	private String latitude = "";
-	private String longitude = "";
+	private double latitude = 0;
+	private double longitude = 0;
 	private String orientation = "";
 	private float tariffAmount = 0;
 
@@ -62,8 +62,8 @@ public class SolarServlet extends HttpServlet {
 			angle = Float.parseFloat(request.getParameter("angle"));
 			consumption = Float.parseFloat(request.getParameter("consumption"));
 			address = request.getParameter("address");
-			latitude = request.getParameter("latitude");
-			longitude = request.getParameter("longitude");
+			latitude = Double.parseDouble(request.getParameter("latitude"));
+			longitude = Double.parseDouble(request.getParameter("longitude"));
 			orientation = request.getParameter("orientation");
 			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
 
@@ -143,7 +143,7 @@ public class SolarServlet extends HttpServlet {
 	}
 
 	protected void createCalculator() throws CalculatorException {
-		calc = new Calculator(panel, inverter, panelQty, consumption, angle);
+		calc = new Calculator(panel, inverter, panelQty, consumption, angle, latitude, longitude);
 	}
 
 	protected void createInverter() throws InverterException {

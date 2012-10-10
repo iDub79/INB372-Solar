@@ -21,6 +21,8 @@ public class Calculator {
 	private float consumption;
 	private float panelAngle;
 	private Integer panelQty;
+	private double latitude;
+	private double longitude;
 
 	private final int DAYSINYEAR = 365;
 	private final int HOURSINDAY = 24;
@@ -28,45 +30,11 @@ public class Calculator {
 	private final int SUNHOURS = 1;
 	private final int MONTHSINYEAR = 12;
 
-	private float[] sunPerDay = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
-			4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
-			5.8f, 6.4f, 6.8f, 8.5f, 8.5f, 8.9f, 8.8f, 8.7f, 8.6f, 7.5f, 7.6f,
-			5.2f, 7.8f, 6.8f, 7.1f, 6.8f, 8.4f, 8.1f, 7f, 5.1f, 2.6f, 6.1f,
-			6.5f, 4.8f, 8.1f, 7.2f, 7.8f, 5.3f, 4.8f, 5.2f, 6.4f, 7f, 8.1f,
-			6.5f, 5.7f, 5.9f, 6.4f, 7.3f, 7.4f, 7.3f, 7.9f, 7.9f, 7.4f, 6.8f,
-			2.3f, 3.8f, 6.6f, 6.3f, 5.4f, 5.5f, 4.7f, 6.3f, 5.6f, 5.7f, 6.7f,
-			6.3f, 6.2f, 5.2f, 3.6f, 1.7f, 3.5f, 5.2f, 6.8f, 6.9f, 7.1f, 7f, 6f,
-			5.3f, 4.9f, 4.1f, 2.3f, 4.6f, 3.9f, 6.2f, 3.8f, 5.7f, 4.8f, 5.9f,
-			4.9f, 3f, 5.4f, 5.9f, 4.8f, 6.1f, 6.1f, 6.1f, 5.9f, 2.6f, 4.1f,
-			2.1f, 3.3f, 4.3f, 5.3f, 5.4f, 5.1f, 4.6f, 3.3f, 4.6f, 3.6f, 4f,
-			4.1f, 4.4f, 5.4f, 5.3f, 3.4f, 5.1f, 4.7f, 5.1f, 5.2f, 4.1f, 1.9f,
-			5f, 5.1f, 5f, 5f, 5f, 4.9f, 4.1f, 4.6f, 4.1f, 3.4f, 4.1f, 3.7f,
-			3.9f, 2.7f, 4.3f, 4.6f, 4.6f, 4.6f, 4.1f, 3.7f, 4.3f, 4.2f, 3.3f,
-			4.1f, 4.3f, 4.4f, 3.3f, 4.3f, 2.2f, 2.7f, 1.7f, 4.3f, 1.8f, 2.6f,
-			4.1f, 4f, 3.5f, 4.1f, 4.2f, 4.3f, 4.3f, 4.3f, 4.2f, 4.3f, 4.3f, 4f,
-			4f, 3.5f, 2.9f, 3.7f, 2.9f, 3.7f, 3.9f, 3.7f, 3.2f, 4.1f, 4.2f,
-			4.3f, 4.3f, 4.3f, 4.4f, 4.5f, 4.4f, 4.4f, 4.3f, 4.2f, 2.5f, 2.4f,
-			3.8f, 4.4f, 4.6f, 2.8f, 4.5f, 4.4f, 4.5f, 4.6f, 4.4f, 4.3f, 4.5f,
-			4.2f, 3.8f, 3.7f, 4.1f, 4.5f, 4.5f, 4.1f, 4.1f, 3.2f, 4.1f, 3.9f,
-			4.5f, 4.7f, 4.8f, 3.8f, 4.9f, 4f, 3.6f, 4.6f, 4.5f, 2.8f, 3.2f,
-			5.2f, 4.4f, 3.2f, 3.8f, 3.1f, 2.9f, 3.2f, 2.6f, 1.8f, 5f, 5.4f,
-			2.4f, 5.6f, 5.5f, 5f, 5.1f, 4f, 4.8f, 4.5f, 5.7f, 5.9f, 1.7f, 6.4f,
-			6.5f, 4.9f, 5f, 6.5f, 6.6f, 6.6f, 6.6f, 6.5f, 6.5f, 6.7f, 6f, 6.3f,
-			6.7f, 6.2f, 6.2f, 4.3f, 5.6f, 4.6f, 2.4f, 7.4f, 6.6f, 7.2f, 3.9f,
-			7.5f, 6f, 2f, 5.2f, 3.1f, 7.3f, 3.7f, 7.3f, 6.8f, 5f, 5.8f, 5.8f,
-			7.7f, 2.3f, 5.7f, 5.3f, 5.3f, 5.8f, 5.3f, 6.3f, 7.5f, 7.9f, 3.8f,
-			4.2f, 2.9f, 4.6f, 5.5f, 2.8f, 6.5f, 7f, 8.1f, 7.6f, 6.1f, 8.3f,
-			8.5f, 8.7f, 8.7f, 8.6f, 8f, 8.5f, 8.3f, 8.6f, 8.8f, 8.8f, 7.5f,
-			7.4f, 8.8f, 8.7f, 8.9f, 8f, 6.7f, 4.1f, 7.4f, 6.5f, 8.3f, 8.8f,
-			8.8f, 7.2f, 4.6f, 5.9f, 8f, 7.4f, 5.7f, 4.9f, 3.3f, 6.1f, 7.8f,
-			5.1f, 6.4f, 8.1f, 8.8f, 8f, 5.2f, 5.4f, 8.1f, 6.1f, 7.7f, 8.7f,
-			6.8f, 8f, 5.6f, 6.2f, 8.3f, 9.3f, 3.7f, 6.3f, 5.2f, 6.3f, 4.8f, };
+	private double[] sunPerDay;
 
 	private int[][] numSunlitHours = new int[2][DAYSINYEAR];
 
-	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle) throws CalculatorException {
-		
-		calcNumSunHours();
+	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, double lat, double lon) throws CalculatorException {
 		
 		if ((panel == null) || (inverter == null)) {
 			throw new CalculatorException();
@@ -77,25 +45,13 @@ public class Calculator {
 			this.consumption = consumption;
 			this.panelAngle = panelAngle;
 			this.panelQty = panelQty;
-		}
-	}
-	
-public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, float lat, float lon) throws CalculatorException {
-		
-		calcNumSunHours();
-		
-		DistanceCalc distCalc = new DistanceCalc();
-		sunPerDay = distCalc.findClosestStation(lat, lon);
-		
-		if ((panel == null) || (inverter == null)) {
-			throw new CalculatorException();
-		}
-		else {
-			this.panel = panel;
-			this.inverter = inverter;
-			this.consumption = consumption;
-			this.panelAngle = panelAngle;
-			this.panelQty = panelQty;
+			this.latitude = lat;
+			this.longitude = lon;
+			
+			calcNumSunHours();
+			
+			DistanceCalc distCalc = new DistanceCalc();
+			sunPerDay = distCalc.findClosestStation(latitude, longitude);
 		}
 	}
 
@@ -201,7 +157,7 @@ public Calculator(Panel panel, Inverter inverter, int panelQty, float consumptio
 
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
-				hrSun[i][j] = sunPerDay[i] / numSunlitHours[SUNHOURS][i];
+				hrSun[i][j] = (float) (sunPerDay[i] / numSunlitHours[SUNHOURS][i]);
 				
 				//System.out.println("Day " + i + " hour " + j + " sunPresent: " + hrSun[i][j]);
 			}
@@ -300,5 +256,43 @@ public Calculator(Panel panel, Inverter inverter, int panelQty, float consumptio
 		float dailyExcess = calcDailyPower() - consumption;
 		//System.out.println("Average Daily Excess Power is: " + dailyExcess);
 		return dailyExcess;
+	}
+	
+	private float[] initBrisbaneSunPerDay() {
+		float[] brisSun = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
+				4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
+				5.8f, 6.4f, 6.8f, 8.5f, 8.5f, 8.9f, 8.8f, 8.7f, 8.6f, 7.5f, 7.6f,
+				5.2f, 7.8f, 6.8f, 7.1f, 6.8f, 8.4f, 8.1f, 7f, 5.1f, 2.6f, 6.1f,
+				6.5f, 4.8f, 8.1f, 7.2f, 7.8f, 5.3f, 4.8f, 5.2f, 6.4f, 7f, 8.1f,
+				6.5f, 5.7f, 5.9f, 6.4f, 7.3f, 7.4f, 7.3f, 7.9f, 7.9f, 7.4f, 6.8f,
+				2.3f, 3.8f, 6.6f, 6.3f, 5.4f, 5.5f, 4.7f, 6.3f, 5.6f, 5.7f, 6.7f,
+				6.3f, 6.2f, 5.2f, 3.6f, 1.7f, 3.5f, 5.2f, 6.8f, 6.9f, 7.1f, 7f, 6f,
+				5.3f, 4.9f, 4.1f, 2.3f, 4.6f, 3.9f, 6.2f, 3.8f, 5.7f, 4.8f, 5.9f,
+				4.9f, 3f, 5.4f, 5.9f, 4.8f, 6.1f, 6.1f, 6.1f, 5.9f, 2.6f, 4.1f,
+				2.1f, 3.3f, 4.3f, 5.3f, 5.4f, 5.1f, 4.6f, 3.3f, 4.6f, 3.6f, 4f,
+				4.1f, 4.4f, 5.4f, 5.3f, 3.4f, 5.1f, 4.7f, 5.1f, 5.2f, 4.1f, 1.9f,
+				5f, 5.1f, 5f, 5f, 5f, 4.9f, 4.1f, 4.6f, 4.1f, 3.4f, 4.1f, 3.7f,
+				3.9f, 2.7f, 4.3f, 4.6f, 4.6f, 4.6f, 4.1f, 3.7f, 4.3f, 4.2f, 3.3f,
+				4.1f, 4.3f, 4.4f, 3.3f, 4.3f, 2.2f, 2.7f, 1.7f, 4.3f, 1.8f, 2.6f,
+				4.1f, 4f, 3.5f, 4.1f, 4.2f, 4.3f, 4.3f, 4.3f, 4.2f, 4.3f, 4.3f, 4f,
+				4f, 3.5f, 2.9f, 3.7f, 2.9f, 3.7f, 3.9f, 3.7f, 3.2f, 4.1f, 4.2f,
+				4.3f, 4.3f, 4.3f, 4.4f, 4.5f, 4.4f, 4.4f, 4.3f, 4.2f, 2.5f, 2.4f,
+				3.8f, 4.4f, 4.6f, 2.8f, 4.5f, 4.4f, 4.5f, 4.6f, 4.4f, 4.3f, 4.5f,
+				4.2f, 3.8f, 3.7f, 4.1f, 4.5f, 4.5f, 4.1f, 4.1f, 3.2f, 4.1f, 3.9f,
+				4.5f, 4.7f, 4.8f, 3.8f, 4.9f, 4f, 3.6f, 4.6f, 4.5f, 2.8f, 3.2f,
+				5.2f, 4.4f, 3.2f, 3.8f, 3.1f, 2.9f, 3.2f, 2.6f, 1.8f, 5f, 5.4f,
+				2.4f, 5.6f, 5.5f, 5f, 5.1f, 4f, 4.8f, 4.5f, 5.7f, 5.9f, 1.7f, 6.4f,
+				6.5f, 4.9f, 5f, 6.5f, 6.6f, 6.6f, 6.6f, 6.5f, 6.5f, 6.7f, 6f, 6.3f,
+				6.7f, 6.2f, 6.2f, 4.3f, 5.6f, 4.6f, 2.4f, 7.4f, 6.6f, 7.2f, 3.9f,
+				7.5f, 6f, 2f, 5.2f, 3.1f, 7.3f, 3.7f, 7.3f, 6.8f, 5f, 5.8f, 5.8f,
+				7.7f, 2.3f, 5.7f, 5.3f, 5.3f, 5.8f, 5.3f, 6.3f, 7.5f, 7.9f, 3.8f,
+				4.2f, 2.9f, 4.6f, 5.5f, 2.8f, 6.5f, 7f, 8.1f, 7.6f, 6.1f, 8.3f,
+				8.5f, 8.7f, 8.7f, 8.6f, 8f, 8.5f, 8.3f, 8.6f, 8.8f, 8.8f, 7.5f,
+				7.4f, 8.8f, 8.7f, 8.9f, 8f, 6.7f, 4.1f, 7.4f, 6.5f, 8.3f, 8.8f,
+				8.8f, 7.2f, 4.6f, 5.9f, 8f, 7.4f, 5.7f, 4.9f, 3.3f, 6.1f, 7.8f,
+				5.1f, 6.4f, 8.1f, 8.8f, 8f, 5.2f, 5.4f, 8.1f, 6.1f, 7.7f, 8.7f,
+				6.8f, 8f, 5.6f, 6.2f, 8.3f, 9.3f, 3.7f, 6.3f, 5.2f, 6.3f, 4.8f, };
+		
+		return brisSun;
 	}
 }

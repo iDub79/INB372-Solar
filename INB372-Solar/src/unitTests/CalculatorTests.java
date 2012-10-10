@@ -22,7 +22,7 @@ public class CalculatorTests {
 		try {
 			Panel testPanel = new Panel("panel1", "panelCompany", 300);
 			Inverter testInverter = new Inverter("invert1", "inverterCompany", 90);
-			Calculator testCalc = new Calculator(testPanel, testInverter, 2, 4, 90);
+			Calculator testCalc = new Calculator(testPanel, testInverter, 2, 4, 90, 0, 0);
 			testCalc.calcDailyExcess();
 		}
 		catch (PanelException e) {

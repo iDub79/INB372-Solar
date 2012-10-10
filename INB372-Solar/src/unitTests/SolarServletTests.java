@@ -31,7 +31,7 @@ public class SolarServletTests {
 	
 	@Test
 	public void testCreateCalculator() throws exceptions.CalculatorException {
-		calcNew = new Calculator(panel, inverter, panelQty, consumption, panelAngle);
+		calcNew = new Calculator(panel, inverter, panelQty, consumption, panelAngle, 0, 0);
 		//assert(createCalculator(), calc.equals(calcNew));
 	}
 	

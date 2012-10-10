@@ -8,7 +8,7 @@ var inverterModel;
 var inverterEfficiency;
 
 var orientation;
-var angle = 45;
+var angle;
 var consumption;
 var address;
 var latitude;
@@ -35,13 +35,13 @@ $(function() {
 		
 		$("#chartdiv").empty();
 		
-		panelManufacturer = $("txtPanelManufacturer").val();
-		panelModel = $("txtPanelModel").val();
+		panelManufacturer = $("#ddlPanelManufacturer").val();
+		panelModel = $("#ddlPanelModel").val();
 		panelEfficiency = $("#txtPanelEfficiency").val();
 		panelQty = $("#txtPanelQty").val();
 		
-		inverterManufacturer = $("ddlInverterManufacturer").val();
-		inverterModel = $("ddlInverterModel").val();
+		inverterManufacturer = $("#ddlInverterManufacturer").val();
+		inverterModel = $("#ddlInverterModel").val();
 		inverterEfficiency = $("#txtInverterEfficiency").val();		
 		
 		angle = $("#txtPanelAngle").val();
