@@ -2,7 +2,6 @@ package solar;
 
 import components.Inverter;
 import components.InverterController;
-import components.PanelController;
 import exceptions.InverterException;
 
 import java.io.*;

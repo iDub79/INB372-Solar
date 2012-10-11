@@ -42,6 +42,7 @@ public class SolarServlet extends HttpServlet {
 	private TariffCalculation tariff;
 
 	private float[][] returnTable = new float[365][2];
+	private float[] monthlyGen;
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -110,6 +111,7 @@ public class SolarServlet extends HttpServlet {
 			if (validInput) {
 				moneyMade.put("Success", true);
 				moneyMade.put("Amount", annualSavings);
+				moneyMade.put("MonthlyGen", monthlyGen);
 				moneyMade.put("ReturnTable", returnTable);
 				
 				returnJson.put("Savings", moneyMade);
@@ -118,8 +120,9 @@ public class SolarServlet extends HttpServlet {
 				moneyMade.put("Success", false);
 				returnJson.put("Savings", moneyMade);
 			}
-		} catch (JSONException e) {
-
+		}
+		catch (JSONException e) {
+			e.printStackTrace();
 		}
 
 		response.setContentType("application/json");
@@ -131,6 +134,8 @@ public class SolarServlet extends HttpServlet {
 	protected void createTableDisplay() throws CalculatorException {
 		float[] dailyGenerated = calc.makeDailyGenTable();
 		float[] dailyExcess = calc.makeDailyExcessTable();
+		
+		monthlyGen = calc.makeMonthlyGenTable();
 		
 		for (int i = 0; i < returnTable.length; i++) {
 			returnTable[i][0] = dailyGenerated[i];

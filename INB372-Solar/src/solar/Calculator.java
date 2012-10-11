@@ -9,7 +9,6 @@ import components.Inverter;
 import components.Panel;
 
 import solar.SunPosition;
-
 import solar.DistanceCalc;
 
 import exceptions.CalculatorException;
@@ -29,9 +28,7 @@ public class Calculator {
 	private final int DAWNTIME = 0;
 	private final int SUNHOURS = 1;
 	private final int MONTHSINYEAR = 12;
-
 	private double[] sunPerDay;
-
 	private int[][] numSunlitHours = new int[2][DAYSINYEAR];
 
 	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, double lat, double lon) throws CalculatorException {
@@ -48,8 +45,7 @@ public class Calculator {
 			this.latitude = lat;
 			this.longitude = lon;
 			
-			calcNumSunHours();
-			
+			calcNumSunHours();			
 			DistanceCalc distCalc = new DistanceCalc();
 			sunPerDay = distCalc.findClosestStation(latitude, longitude);
 		}
@@ -57,7 +53,6 @@ public class Calculator {
 
 	private float calcPanelEff() throws CalculatorException {
 		return panel.getPower() / 1000;
-
 	}
 
 	private void calcNumSunHours() {
@@ -68,10 +63,10 @@ public class Calculator {
 		
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = 0; j < HOURSINDAY; j++) {
-				sunsElevations.sunPosition(calendar.get(calendar.YEAR),
-						calendar.get(calendar.MONTH),
-						calendar.get(calendar.DAY_OF_MONTH),
-						calendar.get(calendar.HOUR_OF_DAY), 0, 0, 27.4667,
+				SunPosition.sunPosition(calendar.get(Calendar.YEAR),
+						calendar.get(Calendar.MONTH),
+						calendar.get(Calendar.DAY_OF_MONTH),
+						calendar.get(Calendar.HOUR_OF_DAY), 0, 0, 27.4667,
 						153.0333);
 				
 				if (sunsElevations.getElevation() < 0) {
@@ -81,7 +76,7 @@ public class Calculator {
 					}
 					numSunlitHours[SUNHOURS][i] += 1;
 				}
-				calendar.add(calendar.HOUR_OF_DAY, 1);
+				calendar.add(Calendar.HOUR_OF_DAY, 1);
 			}
 			foundDawn = false;
 		}
@@ -95,14 +90,14 @@ public class Calculator {
 
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
-				sunsElevations.sunPosition(calendar.get(calendar.YEAR),
-						calendar.get(calendar.MONTH),
-						calendar.get(calendar.DAY_OF_MONTH), j, 0, 0, 27.4667,
+				SunPosition.sunPosition(calendar.get(Calendar.YEAR),
+						calendar.get(Calendar.MONTH),
+						calendar.get(Calendar.DAY_OF_MONTH), j, 0, 0, 27.4667,
 						153.0333);
 				angSunGround[i][j] = (float) (sunsElevations.getElevation() * -1);
 				//System.out.println("Sun angle Day " + i + " hour " + j + " angle: " + angSunGround[i][j]);
 			}
-			calendar.add(calendar.DAY_OF_YEAR, 1);
+			calendar.add(Calendar.DAY_OF_YEAR, 1);
 		}
 		return angSunGround;
 	}
@@ -171,9 +166,7 @@ public class Calculator {
 		float[][] angSunGround = calcAngSunGround();
 		float[][] angSunPanel = calcAngleSunPanel(angSunGround);
 		float[][] hourlyInsolation = calcHourlyInsolation(angSunPanel);
-
 		float[][] sunPerHour = calcSunPerHour();
-
 		float panelEff = calcPanelEff();
 		float inverterEff = inverter.getEfficiency();
 
@@ -186,16 +179,13 @@ public class Calculator {
 			dailyGen[i] = oneDayPower;
 		}
 
-		for (int i = 0; i < DAYSINYEAR; i++) {
-			//System.out.println(dailyGen[i]);
-		}
-
 		return dailyGen;
 	}
 
 	public float[] makeDailyExcessTable() throws CalculatorException {
 		float[] dailyGen = makeDailyGenTable();
 		float[] dailyExcess = new float[DAYSINYEAR];
+		
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			dailyExcess[i] = dailyGen[i] - consumption;
 		}
@@ -207,34 +197,32 @@ public class Calculator {
 		float[] dailyGen = makeDailyGenTable();
 		float[] monthlyGen = new float[MONTHSINYEAR];
 		Calendar calendar = new GregorianCalendar(2012, Calendar.JANUARY, 1, 0, 0);
-		int currMonth = 0;
+		//int currMonth = 0;
 		int firstDay;
 		int dayLimit;
 		float monthTotal;
-		for (int i = 0; i <MONTHSINYEAR; i ++) {
+		
+		for (int i = 0; i < MONTHSINYEAR; i ++) {			
+			
 			monthTotal = 0;
-			firstDay = calendar.get(calendar.DAY_OF_YEAR);
-			dayLimit = calendar.getActualMaximum(calendar.DAY_OF_MONTH);
-			//
-			// This is a hack fix until I implement dynamic dates throughout the calcuator class
-			if (i==11) {
+			firstDay = calendar.get(Calendar.DAY_OF_YEAR);
+			dayLimit = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+			// This is a hack fix until I implement dynamic dates throughout the calculator class
+			if (i == 11) {
 				dayLimit = 29;
 			}
-			System.out.println(firstDay);
-			System.out.println(dayLimit);
+			//System.out.println(firstDay);
+			//System.out.println(dayLimit);
 			
 			
-			for (int j = firstDay; j< firstDay + dayLimit; j++) {
-				
-				monthTotal+=dailyGen[j-1];
-				
-				calendar.add(calendar.DAY_OF_YEAR, 1);
+			for (int j = firstDay; j< firstDay + dayLimit; j++) {				
+				monthTotal += dailyGen[j - 1];				
+				calendar.add(Calendar.DAY_OF_YEAR, 1);
 			}
-			System.out.println("Month " + currMonth + " has " + monthTotal + " genned power");
-			monthlyGen[i] = monthTotal;
-			
-			currMonth++;
-			
+			//System.out.println("Month " + currMonth + " has " + monthTotal + " genned power");
+			monthlyGen[i] = monthTotal;			
+			//currMonth++;			
 		}
 		return monthlyGen;
 		
@@ -258,6 +246,7 @@ public class Calculator {
 		return dailyExcess;
 	}
 	
+	@SuppressWarnings("unused")
 	private float[] initBrisbaneSunPerDay() {
 		float[] brisSun = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
 				4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,

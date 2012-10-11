@@ -1,7 +1,6 @@
 package unitTests;
 
 import static org.junit.Assert.*;
-import org.junit.Before;
 import org.junit.Test;
 
 import components.Inverter;
@@ -13,7 +12,6 @@ import exceptions.PanelException;
 
 import solar.Calculator;
 
-import static java.lang.Math.*;
 
 public class CalculatorTests {
 
