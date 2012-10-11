@@ -33,8 +33,8 @@ public class SolarServlet extends HttpServlet {
 	private float angle = 0;
 	private float consumption = 0;
 	private String address = "";
-	private double latitude = 0;
-	private double longitude = 0;
+	private double latitude = 0.0;
+	private double longitude = 0.0;
 	private String orientation = "";
 	private float tariffAmount = 0;
 

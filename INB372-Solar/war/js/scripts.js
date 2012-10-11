@@ -48,8 +48,8 @@ $(function() {
 		consumption = $("#txtPowerConsumption").val();
 		orientation = $("#ddlPanelOrientation").val();				
 		address = $("#searchTextField").val();
-		latitude = $("#txtLatitude").val();
-		longitude = $("#txtLongitude").val();
+		latitude = parseFloat($("#txtLatitude").val());
+		longitude = parseFloat($("#txtLongitude").val());
 		tariff = $("#listTariff").val();
 		
 		if (validCalculateSolarForm()) {
