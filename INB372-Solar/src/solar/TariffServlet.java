@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.labs.repackaged.org.json.JSONArray;
 import com.google.appengine.labs.repackaged.org.json.JSONException;
 import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
@@ -20,22 +21,29 @@ public class TariffServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		JSONArray jsonArray = new JSONArray();
 		JSONObject returnJson = new JSONObject();
 		
 		TariffRuleList ruleList = new TariffRuleList();
 		ArrayList<TariffRule> rules = ruleList.getrules();
 		
 		try {				
-			JSONObject tariffs = new JSONObject();
-			
-			for (int i = 0; i < rules.size(); i++) {				
-				tariffs.put("Success", true);
-				tariffs.put("State", rules.get(i).getState());
-				tariffs.put("Description", rules.get(i).getDescription());
-				tariffs.put("TariffRate", rules.get(i).getTariffRate());
+			if (rules.size() > 0) {
+				for (TariffRule rule : rules) {
+					JSONObject tariff = new JSONObject();
+					tariff.put("State", rule.getState());
+					tariff.put("Description", rule.getDescription());
+					tariff.put("TariffRate", rule.getTariffRate());
+					
+					jsonArray.put(tariff);
+				}
+				
+				returnJson.put("Success", true);
+				returnJson.put("Tariffs", jsonArray);
 			}
-			
-			returnJson.put("Tariffs", tariffs);
+			else {
+				returnJson.put("Success", "empty");
+			}
 		}
 		catch (JSONException jsonEx) {
 			jsonEx.printStackTrace();

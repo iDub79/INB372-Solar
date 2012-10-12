@@ -50,7 +50,7 @@ $(function() {
 		address = $("#searchTextField").val();
 		latitude = parseFloat($("#txtLatitude").val());
 		longitude = parseFloat($("#txtLongitude").val());
-		tariff = $("#listTariff").val();
+		tariff = $("#ddlTariff").val();
 		
 		if (validCalculateSolarForm()) {
 			calculateInput();

@@ -383,11 +383,11 @@ function displayError(message) {
 
 function buildTariffDropDownList(result, status) {
 	if (status == 'success') {
-		if (result.Tariffs.Success == true) {
+		if (result.Success == true) {
 			var output = "";
 			
 			$.each(result.Tariffs, function (i) {
-				output += "<option val='" + result.Tariffs[i].TariffRate + "'>" + result.Tariffs[i].State + " - " + result.Tariffs[i].Description + "</option>";	        
+				output += "<option value='" + result.Tariffs[i].TariffRate + "'>" + result.Tariffs[i].State + " - " + result.Tariffs[i].Description + "</option>";	        
 		    });
 			
 			$("#ddlTariff").append(output);
