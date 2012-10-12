@@ -55,6 +55,7 @@ function getPanelModels(manufacturer) {
     });
 }
 
+
 function getPanelPower(model) {
 	$.ajax({
         type : "POST",
@@ -98,6 +99,7 @@ function getInverterList() {
     });
 }
 
+
 function deleteInverter(inverterToDelete) {
 	$.ajax({
         type : "POST",
@@ -107,6 +109,7 @@ function deleteInverter(inverterToDelete) {
         success : reloadPage
     });
 }
+
 
 function getInverterManufacturers() {
 	$.ajax({
@@ -129,6 +132,7 @@ function getInverterModels(manufacturer) {
     });
 }
 
+
 function getInverterEfficiency(model) {
 	$.ajax({
         type : "POST",
@@ -136,6 +140,17 @@ function getInverterEfficiency(model) {
         data : "option=getInverterEfficiency&model=" + model,
 	    async: false,
         success : addInverterEfficiency
+    });
+}
+
+
+function getStateTariffs() {
+	$.ajax({
+        type : "POST",
+        url : "tariffServlet",
+        data : "",
+	    async: false,
+        success : buildTariffDropDownList
     });
 }
 
@@ -366,3 +381,22 @@ function displayError(message) {
 }
 
 
+function buildTariffDropDownList(result, status) {
+	if (status == 'success') {
+		if (result.Tariffs.Success == true) {
+			var output = "";
+			
+			$.each(result.Tariffs, function (i) {
+				output += "<option val='" + result.Tariffs[i].TariffRate + "'>" + result.Tariffs[i].State + " - " + result.Tariffs[i].Description + "</option>";	        
+		    });
+			
+			$("#ddlTariff").append(output);
+		}
+		else if (result.Tariffs.Success == false) {
+			displayError("There was an error trying to retrieve the results.");
+		}
+	}
+	else {
+		displayError("There was an error trying to retrieve the results.");
+	}
+}

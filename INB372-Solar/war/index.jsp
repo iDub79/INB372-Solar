@@ -31,6 +31,7 @@
 	    $("#navHome").addClass("active");
 	    getPanelManufacturers();
 	    getInverterManufacturers();
+	    getStateTariffs();
 	});
 </script>
 
@@ -138,14 +139,14 @@
 			<div class="span6">
                 <div class="form-horizontal">
                     <fieldset>
-                        <legend>Brisbane Tariff Value</legend>
+                        <legend>Tariff Value</legend>
                         <div class="control-group" id="grpTariff">
-                            <label class="control-label" for="listTariff">Tariff Value</label>
+                            <label class="control-label" for="ddlTariff">Tariff Value</label>
                             <div class="controls">
-                                <select id="listTariff">
+                                <select id="ddlTariff">
                                     <option value="-1">-- Select Tariff Value --</option>                                    
-                                    <option value="0.08">8c (from July 10, 2012)</option>
-                                    <option value="0.44">44c (pre July 10, 2012)</option>
+                                    <!-- <option value="0.08">8c (from July 10, 2012)</option>  -->
+                                    <!-- <option value="0.44">44c (pre July 10, 2012)</option>  -->
                                 </select>
                             </div>
                         </div>

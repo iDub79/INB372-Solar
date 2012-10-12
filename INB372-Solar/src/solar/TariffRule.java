@@ -2,39 +2,47 @@ package solar;
 
 public class TariffRule {
 
-	private String State;
-	private String Description;	
-	private Boolean Gross;
-	//private TariffRuleSet TRS;
+	private String state;
+	private String description;	
+	private Boolean gross;
+	private double tariffRate;
 
-	public TariffRule(String State, String Description, Boolean Gross, double TarriffRate) {
-		this.State = State;
-		this.Description = Description;
-		this.Gross = Gross;
-		//this.TRS = new TariffRuleSet(TarriffRate);
+	public TariffRule(String state, String description, Boolean gross, double tariffRate) {
+		this.state = state;
+		this.description = description;
+		this.gross = gross;
+		this.tariffRate = tariffRate;
 	}
 
 	public String getState() {
-		return State;
+		return state;
 	}
 
 	public void setState(String state) {
-		State = state;
+		this.state = state;
 	}
 
 	public String getDescription() {
-		return Description;
+		return description;
 	}
 
 	public void setDescription(String description) {
-		Description = description;
+		this.description = description;
 	}
 
 	public Boolean getGross() {
-		return Gross;
+		return gross;
 	}
 
 	public void setGross(Boolean gross) {
-		Gross = gross;
-	}	
+		this.gross = gross;
+	}
+	
+	public double getTariffRate() {
+		return tariffRate;
+	}
+
+	public void setTariffRate(double tariffRate) {
+		this.tariffRate = tariffRate;
+	}
 }

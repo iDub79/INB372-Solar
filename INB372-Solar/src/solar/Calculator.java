@@ -20,18 +20,19 @@ public class Calculator {
 	private float consumption;
 	private float panelAngle;
 	private Integer panelQty;
-	private double latitude;
-	private double longitude;
+	private float latitude;
+	private float longitude;
 
 	private final int DAYSINYEAR = 365;
 	private final int HOURSINDAY = 24;
 	private final int DAWNTIME = 0;
 	private final int SUNHOURS = 1;
 	private final int MONTHSINYEAR = 12;
+	
 	private double[] sunPerDay;
 	private int[][] numSunlitHours = new int[2][DAYSINYEAR];
 
-	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, double lat, double lon) throws CalculatorException {
+	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, float lat, float lon) throws CalculatorException {
 		
 		if ((panel == null) || (inverter == null)) {
 			throw new CalculatorException();

@@ -8,6 +8,14 @@
 		<url-pattern>/solarServlet</url-pattern>
 	</servlet-mapping>
 	<servlet>
+        <servlet-name>Tariff</servlet-name>
+        <servlet-class>solar.TariffServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Tariff</servlet-name>
+        <url-pattern>/tariffServlet</url-pattern>
+    </servlet-mapping>
+	<servlet>
         <servlet-name>Panel</servlet-name>
         <servlet-class>solar.PanelServlet</servlet-class>
     </servlet>
@@ -23,6 +31,7 @@
 		<servlet-name>Inverter</servlet-name>
 		<url-pattern>/inverterServlet</url-pattern>
 	</servlet-mapping>
+	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
