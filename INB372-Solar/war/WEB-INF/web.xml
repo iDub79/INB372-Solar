@@ -30,8 +30,7 @@
 	<servlet-mapping>
 		<servlet-name>Inverter</servlet-name>
 		<url-pattern>/inverterServlet</url-pattern>
-	</servlet-mapping>
-	
+	</servlet-mapping>	
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
