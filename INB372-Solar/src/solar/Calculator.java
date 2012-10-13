@@ -9,6 +9,7 @@ import components.Inverter;
 import components.Panel;
 
 import solar.SunPosition;
+import solar.DistanceCalc;
 
 import exceptions.CalculatorException;
 
@@ -19,51 +20,19 @@ public class Calculator {
 	private float consumption;
 	private float panelAngle;
 	private Integer panelQty;
+	private float latitude;
+	private float longitude;
 
 	private final int DAYSINYEAR = 365;
 	private final int HOURSINDAY = 24;
 	private final int DAWNTIME = 0;
 	private final int SUNHOURS = 1;
-
-	private float[] brisSunPerDay = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
-			4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
-			5.8f, 6.4f, 6.8f, 8.5f, 8.5f, 8.9f, 8.8f, 8.7f, 8.6f, 7.5f, 7.6f,
-			5.2f, 7.8f, 6.8f, 7.1f, 6.8f, 8.4f, 8.1f, 7f, 5.1f, 2.6f, 6.1f,
-			6.5f, 4.8f, 8.1f, 7.2f, 7.8f, 5.3f, 4.8f, 5.2f, 6.4f, 7f, 8.1f,
-			6.5f, 5.7f, 5.9f, 6.4f, 7.3f, 7.4f, 7.3f, 7.9f, 7.9f, 7.4f, 6.8f,
-			2.3f, 3.8f, 6.6f, 6.3f, 5.4f, 5.5f, 4.7f, 6.3f, 5.6f, 5.7f, 6.7f,
-			6.3f, 6.2f, 5.2f, 3.6f, 1.7f, 3.5f, 5.2f, 6.8f, 6.9f, 7.1f, 7f, 6f,
-			5.3f, 4.9f, 4.1f, 2.3f, 4.6f, 3.9f, 6.2f, 3.8f, 5.7f, 4.8f, 5.9f,
-			4.9f, 3f, 5.4f, 5.9f, 4.8f, 6.1f, 6.1f, 6.1f, 5.9f, 2.6f, 4.1f,
-			2.1f, 3.3f, 4.3f, 5.3f, 5.4f, 5.1f, 4.6f, 3.3f, 4.6f, 3.6f, 4f,
-			4.1f, 4.4f, 5.4f, 5.3f, 3.4f, 5.1f, 4.7f, 5.1f, 5.2f, 4.1f, 1.9f,
-			5f, 5.1f, 5f, 5f, 5f, 4.9f, 4.1f, 4.6f, 4.1f, 3.4f, 4.1f, 3.7f,
-			3.9f, 2.7f, 4.3f, 4.6f, 4.6f, 4.6f, 4.1f, 3.7f, 4.3f, 4.2f, 3.3f,
-			4.1f, 4.3f, 4.4f, 3.3f, 4.3f, 2.2f, 2.7f, 1.7f, 4.3f, 1.8f, 2.6f,
-			4.1f, 4f, 3.5f, 4.1f, 4.2f, 4.3f, 4.3f, 4.3f, 4.2f, 4.3f, 4.3f, 4f,
-			4f, 3.5f, 2.9f, 3.7f, 2.9f, 3.7f, 3.9f, 3.7f, 3.2f, 4.1f, 4.2f,
-			4.3f, 4.3f, 4.3f, 4.4f, 4.5f, 4.4f, 4.4f, 4.3f, 4.2f, 2.5f, 2.4f,
-			3.8f, 4.4f, 4.6f, 2.8f, 4.5f, 4.4f, 4.5f, 4.6f, 4.4f, 4.3f, 4.5f,
-			4.2f, 3.8f, 3.7f, 4.1f, 4.5f, 4.5f, 4.1f, 4.1f, 3.2f, 4.1f, 3.9f,
-			4.5f, 4.7f, 4.8f, 3.8f, 4.9f, 4f, 3.6f, 4.6f, 4.5f, 2.8f, 3.2f,
-			5.2f, 4.4f, 3.2f, 3.8f, 3.1f, 2.9f, 3.2f, 2.6f, 1.8f, 5f, 5.4f,
-			2.4f, 5.6f, 5.5f, 5f, 5.1f, 4f, 4.8f, 4.5f, 5.7f, 5.9f, 1.7f, 6.4f,
-			6.5f, 4.9f, 5f, 6.5f, 6.6f, 6.6f, 6.6f, 6.5f, 6.5f, 6.7f, 6f, 6.3f,
-			6.7f, 6.2f, 6.2f, 4.3f, 5.6f, 4.6f, 2.4f, 7.4f, 6.6f, 7.2f, 3.9f,
-			7.5f, 6f, 2f, 5.2f, 3.1f, 7.3f, 3.7f, 7.3f, 6.8f, 5f, 5.8f, 5.8f,
-			7.7f, 2.3f, 5.7f, 5.3f, 5.3f, 5.8f, 5.3f, 6.3f, 7.5f, 7.9f, 3.8f,
-			4.2f, 2.9f, 4.6f, 5.5f, 2.8f, 6.5f, 7f, 8.1f, 7.6f, 6.1f, 8.3f,
-			8.5f, 8.7f, 8.7f, 8.6f, 8f, 8.5f, 8.3f, 8.6f, 8.8f, 8.8f, 7.5f,
-			7.4f, 8.8f, 8.7f, 8.9f, 8f, 6.7f, 4.1f, 7.4f, 6.5f, 8.3f, 8.8f,
-			8.8f, 7.2f, 4.6f, 5.9f, 8f, 7.4f, 5.7f, 4.9f, 3.3f, 6.1f, 7.8f,
-			5.1f, 6.4f, 8.1f, 8.8f, 8f, 5.2f, 5.4f, 8.1f, 6.1f, 7.7f, 8.7f,
-			6.8f, 8f, 5.6f, 6.2f, 8.3f, 9.3f, 3.7f, 6.3f, 5.2f, 6.3f, 4.8f, };
-
+	private final int MONTHSINYEAR = 12;
+	
+	private double[] sunPerDay;
 	private int[][] numSunlitHours = new int[2][DAYSINYEAR];
 
-	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle) throws CalculatorException {
-		
-		calcNumSunHours();
+	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, float lat, float lon) throws CalculatorException {
 		
 		if ((panel == null) || (inverter == null)) {
 			throw new CalculatorException();
@@ -74,12 +43,17 @@ public class Calculator {
 			this.consumption = consumption;
 			this.panelAngle = panelAngle;
 			this.panelQty = panelQty;
+			this.latitude = lat;
+			this.longitude = lon;
+			
+			calcNumSunHours();			
+			DistanceCalc distCalc = new DistanceCalc();
+			sunPerDay = distCalc.findClosestStation(latitude, longitude);
 		}
 	}
 
 	private float calcPanelEff() throws CalculatorException {
 		return panel.getPower() / 1000;
-
 	}
 
 	private void calcNumSunHours() {
@@ -90,10 +64,10 @@ public class Calculator {
 		
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = 0; j < HOURSINDAY; j++) {
-				sunsElevations.sunPosition(calendar.get(calendar.YEAR),
-						calendar.get(calendar.MONTH),
-						calendar.get(calendar.DAY_OF_MONTH),
-						calendar.get(calendar.HOUR_OF_DAY), 0, 0, 27.4667,
+				SunPosition.sunPosition(calendar.get(Calendar.YEAR),
+						calendar.get(Calendar.MONTH),
+						calendar.get(Calendar.DAY_OF_MONTH),
+						calendar.get(Calendar.HOUR_OF_DAY), 0, 0, 27.4667,
 						153.0333);
 				
 				if (sunsElevations.getElevation() < 0) {
@@ -103,7 +77,7 @@ public class Calculator {
 					}
 					numSunlitHours[SUNHOURS][i] += 1;
 				}
-				calendar.add(calendar.HOUR_OF_DAY, 1);
+				calendar.add(Calendar.HOUR_OF_DAY, 1);
 			}
 			foundDawn = false;
 		}
@@ -117,14 +91,14 @@ public class Calculator {
 
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
-				sunsElevations.sunPosition(calendar.get(calendar.YEAR),
-						calendar.get(calendar.MONTH),
-						calendar.get(calendar.DAY_OF_MONTH), j, 0, 0, 27.4667,
+				SunPosition.sunPosition(calendar.get(Calendar.YEAR),
+						calendar.get(Calendar.MONTH),
+						calendar.get(Calendar.DAY_OF_MONTH), j, 0, 0, 27.4667,
 						153.0333);
 				angSunGround[i][j] = (float) (sunsElevations.getElevation() * -1);
 				//System.out.println("Sun angle Day " + i + " hour " + j + " angle: " + angSunGround[i][j]);
 			}
-			calendar.add(calendar.DAY_OF_YEAR, 1);
+			calendar.add(Calendar.DAY_OF_YEAR, 1);
 		}
 		return angSunGround;
 	}
@@ -179,7 +153,7 @@ public class Calculator {
 
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
-				hrSun[i][j] = brisSunPerDay[i] / numSunlitHours[SUNHOURS][i];
+				hrSun[i][j] = (float) (sunPerDay[i] / numSunlitHours[SUNHOURS][i]);
 				
 				//System.out.println("Day " + i + " hour " + j + " sunPresent: " + hrSun[i][j]);
 			}
@@ -193,9 +167,7 @@ public class Calculator {
 		float[][] angSunGround = calcAngSunGround();
 		float[][] angSunPanel = calcAngleSunPanel(angSunGround);
 		float[][] hourlyInsolation = calcHourlyInsolation(angSunPanel);
-
 		float[][] sunPerHour = calcSunPerHour();
-
 		float panelEff = calcPanelEff();
 		float inverterEff = inverter.getEfficiency();
 
@@ -208,16 +180,13 @@ public class Calculator {
 			dailyGen[i] = oneDayPower;
 		}
 
-		for (int i = 0; i < DAYSINYEAR; i++) {
-			//System.out.println(dailyGen[i]);
-		}
-
 		return dailyGen;
 	}
 
 	public float[] makeDailyExcessTable() throws CalculatorException {
 		float[] dailyGen = makeDailyGenTable();
 		float[] dailyExcess = new float[DAYSINYEAR];
+		
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			dailyExcess[i] = dailyGen[i] - consumption;
 		}
@@ -229,34 +198,32 @@ public class Calculator {
 		float[] dailyGen = makeDailyGenTable();
 		float[] monthlyGen = new float[MONTHSINYEAR];
 		Calendar calendar = new GregorianCalendar(2012, Calendar.JANUARY, 1, 0, 0);
-		int currMonth = 0;
+		//int currMonth = 0;
 		int firstDay;
 		int dayLimit;
 		float monthTotal;
-		for (int i = 0; i <MONTHSINYEAR; i ++) {
+		
+		for (int i = 0; i < MONTHSINYEAR; i ++) {			
+			
 			monthTotal = 0;
-			firstDay = calendar.get(calendar.DAY_OF_YEAR);
-			dayLimit = calendar.getActualMaximum(calendar.DAY_OF_MONTH);
-			//
-			// This is a hack fix until I implement dynamic dates throughout the calcuator class
-			if (i==11) {
+			firstDay = calendar.get(Calendar.DAY_OF_YEAR);
+			dayLimit = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+			// This is a hack fix until I implement dynamic dates throughout the calculator class
+			if (i == 11) {
 				dayLimit = 29;
 			}
-			System.out.println(firstDay);
-			System.out.println(dayLimit);
+			//System.out.println(firstDay);
+			//System.out.println(dayLimit);
 			
 			
-			for (int j = firstDay; j< firstDay + dayLimit; j++) {
-				
-				monthTotal+=dailyGen[j-1];
-				
-				calendar.add(calendar.DAY_OF_YEAR, 1);
+			for (int j = firstDay; j< firstDay + dayLimit; j++) {				
+				monthTotal += dailyGen[j - 1];				
+				calendar.add(Calendar.DAY_OF_YEAR, 1);
 			}
-			System.out.println("Month " + currMonth + " has " + monthTotal + " genned power");
-			monthlyGen[i] = monthTotal;
-			
-			currMonth++;
-			
+			//System.out.println("Month " + currMonth + " has " + monthTotal + " genned power");
+			monthlyGen[i] = monthTotal;			
+			//currMonth++;			
 		}
 		return monthlyGen;
 		
@@ -278,5 +245,44 @@ public class Calculator {
 		float dailyExcess = calcDailyPower() - consumption;
 		//System.out.println("Average Daily Excess Power is: " + dailyExcess);
 		return dailyExcess;
+	}
+	
+	@SuppressWarnings("unused")
+	private float[] initBrisbaneSunPerDay() {
+		float[] brisSun = { 3.3f, 8.3f, 6.1f, 7.1f, 5.8f, 2.4f, 3.6f,
+				4.2f, 3.3f, 2.8f, 0.5f, 7.6f, 6.8f, 6.4f, 5.4f, 7.2f, 8.9f, 7.9f,
+				5.8f, 6.4f, 6.8f, 8.5f, 8.5f, 8.9f, 8.8f, 8.7f, 8.6f, 7.5f, 7.6f,
+				5.2f, 7.8f, 6.8f, 7.1f, 6.8f, 8.4f, 8.1f, 7f, 5.1f, 2.6f, 6.1f,
+				6.5f, 4.8f, 8.1f, 7.2f, 7.8f, 5.3f, 4.8f, 5.2f, 6.4f, 7f, 8.1f,
+				6.5f, 5.7f, 5.9f, 6.4f, 7.3f, 7.4f, 7.3f, 7.9f, 7.9f, 7.4f, 6.8f,
+				2.3f, 3.8f, 6.6f, 6.3f, 5.4f, 5.5f, 4.7f, 6.3f, 5.6f, 5.7f, 6.7f,
+				6.3f, 6.2f, 5.2f, 3.6f, 1.7f, 3.5f, 5.2f, 6.8f, 6.9f, 7.1f, 7f, 6f,
+				5.3f, 4.9f, 4.1f, 2.3f, 4.6f, 3.9f, 6.2f, 3.8f, 5.7f, 4.8f, 5.9f,
+				4.9f, 3f, 5.4f, 5.9f, 4.8f, 6.1f, 6.1f, 6.1f, 5.9f, 2.6f, 4.1f,
+				2.1f, 3.3f, 4.3f, 5.3f, 5.4f, 5.1f, 4.6f, 3.3f, 4.6f, 3.6f, 4f,
+				4.1f, 4.4f, 5.4f, 5.3f, 3.4f, 5.1f, 4.7f, 5.1f, 5.2f, 4.1f, 1.9f,
+				5f, 5.1f, 5f, 5f, 5f, 4.9f, 4.1f, 4.6f, 4.1f, 3.4f, 4.1f, 3.7f,
+				3.9f, 2.7f, 4.3f, 4.6f, 4.6f, 4.6f, 4.1f, 3.7f, 4.3f, 4.2f, 3.3f,
+				4.1f, 4.3f, 4.4f, 3.3f, 4.3f, 2.2f, 2.7f, 1.7f, 4.3f, 1.8f, 2.6f,
+				4.1f, 4f, 3.5f, 4.1f, 4.2f, 4.3f, 4.3f, 4.3f, 4.2f, 4.3f, 4.3f, 4f,
+				4f, 3.5f, 2.9f, 3.7f, 2.9f, 3.7f, 3.9f, 3.7f, 3.2f, 4.1f, 4.2f,
+				4.3f, 4.3f, 4.3f, 4.4f, 4.5f, 4.4f, 4.4f, 4.3f, 4.2f, 2.5f, 2.4f,
+				3.8f, 4.4f, 4.6f, 2.8f, 4.5f, 4.4f, 4.5f, 4.6f, 4.4f, 4.3f, 4.5f,
+				4.2f, 3.8f, 3.7f, 4.1f, 4.5f, 4.5f, 4.1f, 4.1f, 3.2f, 4.1f, 3.9f,
+				4.5f, 4.7f, 4.8f, 3.8f, 4.9f, 4f, 3.6f, 4.6f, 4.5f, 2.8f, 3.2f,
+				5.2f, 4.4f, 3.2f, 3.8f, 3.1f, 2.9f, 3.2f, 2.6f, 1.8f, 5f, 5.4f,
+				2.4f, 5.6f, 5.5f, 5f, 5.1f, 4f, 4.8f, 4.5f, 5.7f, 5.9f, 1.7f, 6.4f,
+				6.5f, 4.9f, 5f, 6.5f, 6.6f, 6.6f, 6.6f, 6.5f, 6.5f, 6.7f, 6f, 6.3f,
+				6.7f, 6.2f, 6.2f, 4.3f, 5.6f, 4.6f, 2.4f, 7.4f, 6.6f, 7.2f, 3.9f,
+				7.5f, 6f, 2f, 5.2f, 3.1f, 7.3f, 3.7f, 7.3f, 6.8f, 5f, 5.8f, 5.8f,
+				7.7f, 2.3f, 5.7f, 5.3f, 5.3f, 5.8f, 5.3f, 6.3f, 7.5f, 7.9f, 3.8f,
+				4.2f, 2.9f, 4.6f, 5.5f, 2.8f, 6.5f, 7f, 8.1f, 7.6f, 6.1f, 8.3f,
+				8.5f, 8.7f, 8.7f, 8.6f, 8f, 8.5f, 8.3f, 8.6f, 8.8f, 8.8f, 7.5f,
+				7.4f, 8.8f, 8.7f, 8.9f, 8f, 6.7f, 4.1f, 7.4f, 6.5f, 8.3f, 8.8f,
+				8.8f, 7.2f, 4.6f, 5.9f, 8f, 7.4f, 5.7f, 4.9f, 3.3f, 6.1f, 7.8f,
+				5.1f, 6.4f, 8.1f, 8.8f, 8f, 5.2f, 5.4f, 8.1f, 6.1f, 7.7f, 8.7f,
+				6.8f, 8f, 5.6f, 6.2f, 8.3f, 9.3f, 3.7f, 6.3f, 5.2f, 6.3f, 4.8f, };
+		
+		return brisSun;
 	}
 }

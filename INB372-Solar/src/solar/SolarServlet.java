@@ -33,8 +33,8 @@ public class SolarServlet extends HttpServlet {
 	private float angle = 0;
 	private float consumption = 0;
 	private String address = "";
-	private String latitude = "";
-	private String longitude = "";
+	private float latitude = 0.0f;
+	private float longitude = 0.0f;
 	private String orientation = "";
 	private float tariffAmount = 0;
 
@@ -42,10 +42,11 @@ public class SolarServlet extends HttpServlet {
 	private TariffCalculation tariff;
 
 	private float[][] returnTable = new float[365][2];
+	private float[] monthlyGen;
+	
+	private JSONObject returnJson = new JSONObject();
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String reqOption = request.getParameter("option");
 
 		float annualSavings = 0;
 		boolean validInput = false;
@@ -62,21 +63,17 @@ public class SolarServlet extends HttpServlet {
 			angle = Float.parseFloat(request.getParameter("angle"));
 			consumption = Float.parseFloat(request.getParameter("consumption"));
 			address = request.getParameter("address");
-			latitude = request.getParameter("latitude");
-			longitude = request.getParameter("longitude");
+			latitude = Float.parseFloat(request.getParameter("latitude"));
+			longitude = Float.parseFloat(request.getParameter("longitude"));
 			orientation = request.getParameter("orientation");
 			tariffAmount = Float.parseFloat(request.getParameter("tariff"));
 
 			validInput = true;
-		}
-		catch (NumberFormatException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
-		if (validInput) {
-
-			try {
+		
+			JSONObject moneyMade = new JSONObject();
+			
+			if (validInput) {
+	
 				createPanel();
 				createInverter();
 				createCalculator();
@@ -84,72 +81,80 @@ public class SolarServlet extends HttpServlet {
 				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
 				
 				createTableDisplay();
-			}
-			catch (PanelException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			catch (InverterException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			catch (CalculatorException calcEx) {
-				// TODO Auto-generated catch block
-				calcEx.printStackTrace();
-			}
-			catch (TariffException tarEx) {
-				// TODO Auto-generated catch block
-				tarEx.printStackTrace();
-			}
-		}
-
-		JSONObject moneyMade = new JSONObject();
-		JSONObject returnJson = new JSONObject();
-
-		try {
-			if (validInput) {
+				
+				monthlyGen = calc.makeMonthlyGenTable();
+				
 				moneyMade.put("Success", true);
 				moneyMade.put("Amount", annualSavings);
+				moneyMade.put("MonthlyGen", monthlyGen);
 				moneyMade.put("ReturnTable", returnTable);
 				
 				returnJson.put("Savings", moneyMade);
+									
 			}
 			else {
 				moneyMade.put("Success", false);
 				returnJson.put("Savings", moneyMade);
 			}
-		} catch (JSONException e) {
-
 		}
+		catch (NumberFormatException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (PanelException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		catch (InverterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (CalculatorException calcEx) {
+			// TODO Auto-generated catch block
+			calcEx.printStackTrace();
+		}
+		catch (TariffException tarEx) {
+			// TODO Auto-generated catch block
+			tarEx.printStackTrace();
+		}
+		catch (JSONException jsonEx) {
+			jsonEx.printStackTrace();
+		}
+		
 
 		response.setContentType("application/json");
 		response.getWriter().write(returnJson.toString());
 
 		log.log(Level.WARNING, returnJson.toString());
 	}
+	
 
 	protected void createTableDisplay() throws CalculatorException {
 		float[] dailyGenerated = calc.makeDailyGenTable();
 		float[] dailyExcess = calc.makeDailyExcessTable();
-		
+				
 		for (int i = 0; i < returnTable.length; i++) {
 			returnTable[i][0] = dailyGenerated[i];
 			returnTable[i][1] = dailyExcess[i];
 		}
 	}
+	
 
 	protected void createTariff() throws TariffException, CalculatorException {
 		tariff = new TariffCalculation(calc, tariffAmount);
 	}
+	
 
 	protected void createCalculator() throws CalculatorException {
-		calc = new Calculator(panel, inverter, panelQty, consumption, angle);
+		calc = new Calculator(panel, inverter, panelQty, consumption, angle, latitude, longitude);
 	}
 
+	
 	protected void createInverter() throws InverterException {
 		inverter = new Inverter(inverterManufacturer, inverterModel, inverterEfficiency);
 	}
 
+	
 	protected void createPanel() throws PanelException {
 		panel = new Panel(panelManufacturer, panelModel, panelEfficiency);
 	}

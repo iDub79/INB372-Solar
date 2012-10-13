@@ -2,14 +2,13 @@
 <html id="home" lang="en">
 <head>
 <title>Solar Power Calculator</title>
-<!-- This is a comment -->
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 <style type="text/css"> body { padding-top: 60px; } </style>
 
 <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.min.css" />
-<link rel="stylesheet" type="text/css" href="css/jquery.jqplot.min.css" />
 <link rel="stylesheet" type="text/css" href="css/skin.css" />
 
 <script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
@@ -20,16 +19,7 @@
 <script type="text/javascript" src="js/AjaxCalls.js"></script>
 <script type="text/javascript" src="js/scripts.js"></script>
 
-<script type="text/javascript" src="js/jquery.jqplot.min.js"></script>
-<script type="text/javascript" src="js/jqplot.barRenderer.min.js"></script>
-<script type="text/javascript" src="js/jqplot.categoryAxisRenderer.min.js"></script>
-<script type="text/javascript" src="js/jqplot.canvasAxisTickRenderer.min.js"></script>
-<script type="text/javascript" src="js/jqplot.canvasTextRenderer.min.js"></script>
-<script type="text/javascript" src="js/jqplot.pointLabels.min.js"></script>
-<script type="text/javascript" src="js/jqplot.highlighter.min.js"></script>
-<script type="text/javascript" src="js/jqplot.cursor.min.js"></script>
-<script type="text/javascript" src="js/jqplot.dateAxisRenderer.min.js"></script>
-
+<%@ include file="jqPlot.jsp" %>
 
 <!--[if lt IE 9]>
     <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -41,6 +31,7 @@
 	    $("#navHome").addClass("active");
 	    getPanelManufacturers();
 	    getInverterManufacturers();
+	    getStateTariffs();
 	});
 </script>
 
@@ -58,7 +49,7 @@
                             <label class="control-label" for="ddlPanelManufacturer">Manufacturer</label>
                             <div class="controls">
                                 <select id="ddlPanelManufacturer">
-                                    <option val="-1">-- Select Panel Manufacturer --</option>
+                                    <option value="-1">-- Select Panel Manufacturer --</option>
                                 </select>
                             </div>
                         </div>
@@ -66,7 +57,7 @@
                             <label class="control-label" for="ddlPanelModel">Model</label>
                             <div class="controls">
                                 <select id="ddlPanelModel">
-                                    <option val="-1">-- Select Panel Model --</option>
+                                    <option value="-1">-- Select Panel Model --</option>
                                 </select>
                             </div>
                         </div>                        
@@ -88,7 +79,7 @@
                             <label class="control-label" for="ddlInverterManufacturer">Manufacturer</label>
                             <div class="controls">
                                 <select id="ddlInverterManufacturer">
-                                    <option val="-1">-- Select Inverter Manufacturer --</option>
+                                    <option value="-1">-- Select Inverter Manufacturer --</option>
                                 </select>
                             </div>
                         </div>
@@ -96,7 +87,7 @@
                             <label class="control-label" for="ddlInverterModel">Model</label>
                             <div class="controls">
                                 <select id="ddlInverterModel">
-                                    <option val="-1">-- Select Inverter Model --</option>
+                                    <option value="-1">-- Select Inverter Model --</option>
                                 </select>
                             </div>
                         </div>
@@ -148,14 +139,14 @@
 			<div class="span6">
                 <div class="form-horizontal">
                     <fieldset>
-                        <legend>Brisbane Tariff Value</legend>
+                        <legend>Tariff Value</legend>
                         <div class="control-group" id="grpTariff">
-                            <label class="control-label" for="listTariff">Tariff Value</label>
+                            <label class="control-label" for="ddlTariff">Tariff Value</label>
                             <div class="controls">
-                                <select id="listTariff">
+                                <select id="ddlTariff">
                                     <option value="-1">-- Select Tariff Value --</option>                                    
-                                    <option value="0.08">8c (from July 10, 2012)</option>
-                                    <option value="0.44">44c (pre July 10, 2012)</option>
+                                    <!-- <option value="0.08">8c (from July 10, 2012)</option>  -->
+                                    <!-- <option value="0.44">44c (pre July 10, 2012)</option>  -->
                                 </select>
                             </div>
                         </div>
@@ -218,7 +209,7 @@
 	       <a href="#" data-dismiss="modal" class="btn btn-large btn-primary">Close</a>
 	    </div>
     </div>
-	<!-- End Addres Modal -->
+	<!-- End Address Modal -->
 	
 	
 </body>
