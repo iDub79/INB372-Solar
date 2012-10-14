@@ -41,8 +41,8 @@ public class SolarServlet extends HttpServlet {
 	private Calculator calc;
 	private TariffCalculation tariff;
 
-	private float[][] returnTable = new float[365][2];
-	private float[] monthlyGen;
+	private float[][] dailyGen = new float[365][2];
+	private float[][] monthlyGen = new float[12][2];
 	
 	private JSONObject returnJson = new JSONObject();
 
@@ -80,14 +80,13 @@ public class SolarServlet extends HttpServlet {
 				createTariff();
 				annualSavings = (float) (Math.round(tariff.calAnnualSaving() * 100.0f) / 100.0f);
 				
-				createTableDisplay();
-				
-				monthlyGen = calc.makeMonthlyGenTable();
+				createDailyDisplay();				
+				createMonthlyDisplay();
 				
 				moneyMade.put("Success", true);
 				moneyMade.put("Amount", annualSavings);
 				moneyMade.put("MonthlyGen", monthlyGen);
-				moneyMade.put("ReturnTable", returnTable);
+				moneyMade.put("DailyGen", dailyGen);
 				
 				returnJson.put("Savings", moneyMade);
 									
@@ -129,13 +128,23 @@ public class SolarServlet extends HttpServlet {
 	}
 	
 
-	protected void createTableDisplay() throws CalculatorException {
+	protected void createDailyDisplay() throws CalculatorException {
 		float[] dailyGenerated = calc.makeDailyGenTable();
 		float[] dailyExcess = calc.makeDailyExcessTable();
 				
-		for (int i = 0; i < returnTable.length; i++) {
-			returnTable[i][0] = dailyGenerated[i];
-			returnTable[i][1] = dailyExcess[i];
+		for (int i = 0; i < dailyGen.length; i++) {
+			dailyGen[i][0] = dailyGenerated[i];
+			dailyGen[i][1] = dailyExcess[i];
+		}
+	}
+	
+	protected void createMonthlyDisplay() throws CalculatorException {
+		float[] monthlyGenerated = calc.makeMonthlyGenTable();
+		float[] monthlyExcess = calc.makeMonthlyExcessTable();
+				
+		for (int i = 0; i < monthlyGen.length; i++) {
+			monthlyGen[i][0] = monthlyGenerated[i];
+			monthlyGen[i][1] = monthlyExcess[i];
 		}
 	}
 	

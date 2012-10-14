@@ -167,8 +167,8 @@
 				    <span id="lblErrors">Please correct the fields highlighted in red.</span>
 			    </div>
 			</div>
-			<div class="span12">
-                <div id="chartdiv" style="height: 600px; margin-bottom: 20px; visibility: hidden;"></div>
+			<div class="span12" id="chartContainer">
+                <div id="chartdiv" style="margin-bottom: 20px;"></div>
             </div>
 			<div class="span12">
                 <div class="alert alert-info">
