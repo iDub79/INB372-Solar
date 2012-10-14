@@ -93,6 +93,8 @@ public class SolarPowerCalculator extends Activity {
 		}
 	}
 	
+	Address address;
+	
 	public void SetLocation(View view) {
 		Double roundedLatitude = Math.round(lastKnownLocation.getLatitude() * 100.0) / 100.0;
         Double roundedLongitude = Math.round(lastKnownLocation.getLongitude() * 100.0) / 100.0;
@@ -113,7 +115,7 @@ public class SolarPowerCalculator extends Activity {
         Geocoder geocoder = new Geocoder(this);
         try {
 			List<Address> addresses = geocoder.getFromLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude(), 1);
-			Address address = addresses.get(0);
+			address = addresses.get(0);
 			String addressText = String.format("%s, %s, %s",
                     address.getMaxAddressLineIndex() > 0 ? address.getAddressLine(0) : "",
                     address.getLocality(),
@@ -123,6 +125,7 @@ public class SolarPowerCalculator extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+        //((Button)findViewById(R.id.PanelOrientation)).setText(address.getSubLocality());
 	}
 	
 	public void SetLocation() {
@@ -240,6 +243,7 @@ public class SolarPowerCalculator extends Activity {
 				// Insert check if location is visible (don't want to change it if someone is looking at it)
 				SetLocation();
 				//output.
+				
 			}
 
 			public void onProviderDisabled(String provider) {
@@ -284,7 +288,7 @@ public class SolarPowerCalculator extends Activity {
 		findViewById(R.id.rowInverterEfficiency).setVisibility(View.GONE);
 		
 		// other page
-		findViewById(R.id.rowAddress).setVisibility(View.GONE);
+		//findViewById(R.id.rowAddress).setVisibility(View.GONE);
 		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
 		//findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
@@ -313,7 +317,7 @@ public class SolarPowerCalculator extends Activity {
 		findViewById(R.id.rowInverterEfficiency).setVisibility(View.VISIBLE);
 		
 		// other page
-		findViewById(R.id.rowAddress).setVisibility(View.GONE);
+		//findViewById(R.id.rowAddress).setVisibility(View.GONE);
 		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
 		//findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
@@ -383,7 +387,7 @@ public class SolarPowerCalculator extends Activity {
 		findViewById(R.id.rowInverterEfficiency).setVisibility(View.GONE);
 		
 		// other page
-		findViewById(R.id.rowAddress).setVisibility(View.GONE);
+		//findViewById(R.id.rowAddress).setVisibility(View.GONE);
 		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
 		//findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
@@ -437,7 +441,7 @@ public class SolarPowerCalculator extends Activity {
 	}
 	
 	private Float getTariff() throws InvalidInputException{
-		String tariffText = ((EditText)findViewById(R.id.TariffRate)).getText().toString();
+		String tariffText = ((Spinner)findViewById(R.id.TariffRate)).getSelectedItem().toString();
 		if (tariffText.length() == 0) {
 			throw new InvalidInputException("Require tariff rate to be input.");
 		}
@@ -915,6 +919,21 @@ public class SolarPowerCalculator extends Activity {
 			}
 		});
 		
+		PopulateTariffRules();
+		Spinner tariffRulesSpinner = (Spinner)findViewById(R.id.TariffRate);
+		/*tariffRulesSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				//String selected = parentView.getItemAtPosition(position).toString();
+				//populatePanelModels(selected);
+			}
+			
+			public void onNothingSelected(AdapterView<?> parentView) {
+				
+			}
+		});*/
+		
+		
+		
 		PopulateInverterManufacturer();
 		Spinner invManufacturerSpinner = (Spinner)findViewById(R.id.InverterManufacturer);
 		invManufacturerSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -940,6 +959,56 @@ public class SolarPowerCalculator extends Activity {
 			}
 		});
     }
+	
+	private void PopulateTariffRules() {
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("option", "state"));
+		nameValuePairs.add(new BasicNameValuePair("state", "Queensland"));		// hardcoded to queensland, since for the moment all the testing will take place in queensland and android is local features only
+		ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connec.getActiveNetworkInfo().isAvailable()) {
+		    HttpClient httpclient = new DefaultHttpClient();
+		    HttpPost httppost = new HttpPost(baseServletAddress + "tariffServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
+		    try {
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			
+			
+				// Execute HTTP Post Request
+				HttpResponse response;
+				
+				response = httpclient.execute(httppost);
+				
+				JSONObject jObject = new JSONObject(EntityUtils.toString(response.getEntity()));
+				
+				JSONArray jArray = jObject.getJSONArray("Tariffs");
+				String[] tariffRules = new String[jArray.length()];
+				for (int i = 0; i < jArray.length(); i++) {
+					JSONObject manu = (JSONObject)jArray.get(i);
+					tariffRules[i] = Long.toString(Math.round(manu.getDouble("TariffRate") * 100));			// tariffRate only in spinner, fix this to include description and only use rate to feed back to solarServlet
+				}
+				
+				Spinner spinner = (Spinner)findViewById(R.id.TariffRate);
+				
+				ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this, android.R.layout.simple_spinner_item, tariffRules);
+				spinner.setAdapter(adapter);
+				
+		    } catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	
 	// Called when the application "starts", populates the InverterManufacturer spinner
 		private void PopulateInverterManufacturer() {
