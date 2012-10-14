@@ -3,11 +3,43 @@ package unitTests;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import components.Inverter;
+import components.Panel;
+
+import exceptions.CalculatorException;
+import exceptions.InverterException;
+import exceptions.PanelException;
+
+import solar.Calculator;
 import solar.DistanceCalc;
 
 public class DistanceCalcTests {
 
-	
+	@Test
+	public void BrisbaneCalculatorOutput() {
+		try {
+			Panel testPanel = new Panel("panel1", "panelCompany", 300);
+			Inverter testInverter = new Inverter("invert1", "inverterCompany", 90);
+			float morayfieldLat = -27.105453f;
+			float morayfieldLon = 152.948145f;
+			Calculator testCalc = new Calculator(testPanel, testInverter, 2, 4, 90, -34.928621f, 138.599959f);
+			testCalc.calcDailyExcess();
+			testCalc.makeDailyGenTable();
+			testCalc.makeMonthlyGenTable();
+		}
+		catch (PanelException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (InverterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (CalculatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	@Test
 	public void normalCloseBrisban() {

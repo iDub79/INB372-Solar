@@ -11,17 +11,31 @@ import exceptions.InverterException;
 import exceptions.PanelException;
 
 import solar.Calculator;
+import solar.DistanceCalc;
 
 
 public class CalculatorTests {
 
+	
+	@Test
+	public void normalCloseBrisban() {
+		DistanceCalc brisClose = new DistanceCalc();
+		double morayfieldLat = -27.105453;
+		double morayfieldLon = 152.948145;
+		double[] closestSunTable = brisClose.findClosestStation(morayfieldLat, morayfieldLon);
+		assert(closestSunTable[0] == 3.3f);
+		
+	}
+	
 	@Test
 	public void printLnTests() {
 		try {
 			Panel testPanel = new Panel("panel1", "panelCompany", 300);
 			Inverter testInverter = new Inverter("invert1", "inverterCompany", 90);
-			Calculator testCalc = new Calculator(testPanel, testInverter, 2, 4, 90, 0, 0);
+			
+			Calculator testCalc = new Calculator(testPanel, testInverter, 2, 4, 90, -42.881903f, 147.323815f);
 			testCalc.calcDailyExcess();
+			testCalc.makeDailyGenTable();
 		}
 		catch (PanelException e) {
 			// TODO Auto-generated catch block

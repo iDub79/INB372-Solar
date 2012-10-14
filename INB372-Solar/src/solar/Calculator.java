@@ -153,6 +153,8 @@ public class Calculator {
 
 		for (int i = 0; i < DAYSINYEAR; i++) {
 			for (int j = numSunlitHours[DAWNTIME][i]; j < numSunlitHours[DAWNTIME][i] + numSunlitHours[SUNHOURS][i]; j++) {
+				//System.out.println(sunPerDay[i]);
+				//System.out.println(sunPerDay[numSunlitHours[SUNHOURS][i]]);
 				hrSun[i][j] = (float) (sunPerDay[i] / numSunlitHours[SUNHOURS][i]);
 				
 				//System.out.println("Day " + i + " hour " + j + " sunPresent: " + hrSun[i][j]);
@@ -225,8 +227,22 @@ public class Calculator {
 			monthlyGen[i] = monthTotal;			
 			//currMonth++;			
 		}
+		for (int month = 0; month<12; month++) {
+			System.out.println(monthlyGen[month]);
+		}
 		return monthlyGen;
 		
+	}
+	
+	public float[] makeMonthlyExcessTable() throws CalculatorException {
+		float[] monthlyGen = makeMonthlyGenTable();
+		float[] monthlyExcess = new float[MONTHSINYEAR];
+		
+		for (int eachMonth = 0; eachMonth<MONTHSINYEAR;eachMonth++) {
+			monthlyExcess[eachMonth] = monthlyGen[eachMonth] - consumption*30;
+		}
+
+		return monthlyExcess;
 	}
 
 	public float calcDailyPower() throws CalculatorException {
