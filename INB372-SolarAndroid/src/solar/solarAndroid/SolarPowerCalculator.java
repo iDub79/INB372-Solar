@@ -34,29 +34,24 @@ import com.jjoe64.graphview.LineGraphView;
 
 import solar.solarAndroid.*;
 
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.hardware.SensorListener;
 import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.location.LocationProvider;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -291,7 +286,7 @@ public class SolarPowerCalculator extends Activity {
 		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
 		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
-		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
+		//findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
 		
@@ -320,7 +315,7 @@ public class SolarPowerCalculator extends Activity {
 		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
 		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
-		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
+		//findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
 		
@@ -357,7 +352,7 @@ public class SolarPowerCalculator extends Activity {
 
 		findViewById(R.id.rowCoordinates).setVisibility(View.VISIBLE);
 
-		findViewById(R.id.rowSunlightHours).setVisibility(View.VISIBLE);
+		//findViewById(R.id.rowSunlightHours).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.VISIBLE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.VISIBLE);
 		
@@ -390,7 +385,7 @@ public class SolarPowerCalculator extends Activity {
 		// other page
 		findViewById(R.id.rowAddress).setVisibility(View.GONE);
 		findViewById(R.id.rowCoordinates).setVisibility(View.GONE);
-		findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
+		//findViewById(R.id.rowSunlightHours).setVisibility(View.GONE);
 		findViewById(R.id.rowPowerConsumption).setVisibility(View.GONE);
 		findViewById(R.id.rowTariffValue).setVisibility(View.GONE);
 		
@@ -451,10 +446,10 @@ public class SolarPowerCalculator extends Activity {
 		
 		// Some weird place might have really high feed-in tariff returns
 		if (tariff > 0 && tariff < 1) {	// value must have been input in dollars!
-			return tariff * 100;
+			return tariff;
 		}
 		if (tariff >= 1 && tariff <= 500) {
-			return tariff;
+			return tariff / 100;
 		} else {
 			// not sure whether I should return false or throw an exception
 			throw new InvalidInputException("Feed-in tariff rate must be between 0 and 500 cents");
@@ -463,7 +458,7 @@ public class SolarPowerCalculator extends Activity {
 	}
 
 	// what was this value again?
-	private Integer getSunlight() throws InvalidInputException {
+	/*private Integer getSunlight() throws InvalidInputException {
 		String sunlightText = ((EditText)findViewById(R.id.SunlightHours)).getText().toString();
 		if (sunlightText.length() == 0) {
 			throw new InvalidInputException("Require sunlight to be input.");
@@ -479,7 +474,7 @@ public class SolarPowerCalculator extends Activity {
 			throw new InvalidInputException("Feed-in sunlight rate must be greater than 0");
 			//return null;
 		}
-	}
+	}*/
 
 	private Float getConsumption() throws InvalidInputException {
 		String consumptionText = ((EditText)findViewById(R.id.PowerConsumption)).getText().toString();
@@ -578,7 +573,30 @@ public class SolarPowerCalculator extends Activity {
 		return total;
 	}
 	
-	private GraphViewData[] getMonthlyElectricityGraphViewSeries(JSONArray electricityJSONArray, int index) {
+	/*private GraphViewData[] getMonthlyElectricityGraphViewSeries(JSONArray electricityJSONArray, int index) {
+		GraphViewData[] graphViewData = new GraphViewData[12];
+		graphViewData[0] = new GraphViewData(1, getMonthsElectricity(electricityJSONArray, index, 0, 31));
+		int leap = 0;
+		if (electricityJSONArray.length() == 366) {
+			leap = 1;
+		}
+		graphViewData[1] = new GraphViewData(2, getMonthsElectricity(electricityJSONArray, index, 31, 59 + leap));
+		graphViewData[2] = new GraphViewData(3, getMonthsElectricity(electricityJSONArray, index, 59 + leap, 90 + leap));
+		graphViewData[3] = new GraphViewData(4, getMonthsElectricity(electricityJSONArray, index, 90 + leap, 120 + leap));
+		graphViewData[4] = new GraphViewData(5, getMonthsElectricity(electricityJSONArray, index, 120 + leap, 151 + leap));
+		graphViewData[5] = new GraphViewData(6, getMonthsElectricity(electricityJSONArray, index, 151 + leap, 181 + leap));
+		graphViewData[6] = new GraphViewData(7, getMonthsElectricity(electricityJSONArray, index, 181 + leap, 212 + leap));
+		graphViewData[7] = new GraphViewData(8, getMonthsElectricity(electricityJSONArray, index, 212 + leap, 243 + leap));
+		graphViewData[8] = new GraphViewData(9, getMonthsElectricity(electricityJSONArray, index, 243 + leap, 273 + leap));
+		graphViewData[9] = new GraphViewData(10, getMonthsElectricity(electricityJSONArray, index, 273 + leap, 304 + leap));
+		graphViewData[10] = new GraphViewData(11, getMonthsElectricity(electricityJSONArray, index, 304 + leap, 334 + leap));
+		graphViewData[11] = new GraphViewData(12, getMonthsElectricity(electricityJSONArray, index, 334 + leap, 365 + leap));
+		//GraphViewSeries theSeries = new GraphViewSeries(graphViewData);
+		
+		return graphViewData;
+	}*/
+	
+	private GraphViewData[] getMonthlyElectricityGraphViewSeriesFromDaily(JSONArray electricityJSONArray, int index) {
 		GraphViewData[] graphViewData = new GraphViewData[12];
 		graphViewData[0] = new GraphViewData(1, getMonthsElectricity(electricityJSONArray, index, 0, 31));
 		int leap = 0;
@@ -605,8 +623,10 @@ public class SolarPowerCalculator extends Activity {
 	private void SetElectricityGraph(JSONArray electricityJSONArray) {
 		//((EditText)findViewById(R.id.PanelOrientation)).setText("q");
 		
-		GraphViewSeries generatedSeries = new GraphViewSeries("Total generated", null, getMonthlyElectricityGraphViewSeries(electricityJSONArray, 0));
-		GraphViewSeries excessSeries = new GraphViewSeries("Put Back to Grid", null, getMonthlyElectricityGraphViewSeries(electricityJSONArray, 1));
+		//GraphViewSeries generatedSeries = new GraphViewSeries("Total generated", Color.rgb(0xEA, 0xA2, 0x28), getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 0));	// the line that should be there (throwing error)
+		GraphViewSeries generatedSeries = new GraphViewSeries("Total generated", null, getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 0));
+		
+		GraphViewSeries excessSeries = new GraphViewSeries("Put Back to Grid", null, getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 1));
 		
 		
 		graphView.addSeries(generatedSeries);		//generated
@@ -622,7 +642,7 @@ public class SolarPowerCalculator extends Activity {
     		String address = getAddress();
     		String orientation = getOrientation();
     		Float angle = getAngle();
-    		Integer sunlight = getSunlight();
+    		//Integer sunlight = getSunlight();
     		Float consumption = getConsumption();
     		Float tariff = getTariff();
     		Integer  panelQuantity = getPanelQuantity();
@@ -644,8 +664,6 @@ public class SolarPowerCalculator extends Activity {
 		        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		        nameValuePairs.add(new BasicNameValuePair("panelManufacturer", panelManufacturer));
 		        nameValuePairs.add(new BasicNameValuePair("panelModel", panelModel));
-		        nameValuePairs.add(new BasicNameValuePair("panelManufacturer", "abc"));
-		        nameValuePairs.add(new BasicNameValuePair("panelModel", "def"));
 		        nameValuePairs.add(new BasicNameValuePair("panelEfficiency", panelEfficiency.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("panelQty", panelQuantity.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("orientation", orientation.toString()));
@@ -656,7 +674,7 @@ public class SolarPowerCalculator extends Activity {
 		        nameValuePairs.add(new BasicNameValuePair("inverterEfficiency", inverterEfficiency.toString()));
 		        
 		        
-		        nameValuePairs.add(new BasicNameValuePair("sunlight", sunlight.toString()));
+		        //nameValuePairs.add(new BasicNameValuePair("sunlight", sunlight.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("consumption", consumption.toString()));
 		        nameValuePairs.add(new BasicNameValuePair("latitude", Double.toString(lastKnownLocation.getLatitude())));
 		        nameValuePairs.add(new BasicNameValuePair("longitude", Double.toString(lastKnownLocation.getLongitude())));
@@ -676,9 +694,9 @@ public class SolarPowerCalculator extends Activity {
 		        //((EditText)findViewById(R.id.PanelOrientation)).setText("f");
 		        if (savingsJSONObject.getBoolean("Success")) {
 		        	Double savings = savingsJSONObject.getDouble("Amount");
-		        	savings = ((int)(savings * 100.0)) / 100.0;
+		        	savings = Math.round(savings * 100.0) / 100.0;
 		        	DecimalFormat f = new DecimalFormat("#.00");
-		        	//((TextView)findViewById(R.id.Savings)).setText("$" + f.format(savings));
+		        	((TextView)findViewById(R.id.Savings)).setText("$" + f.format(savings));
 		        	resultsTab(view);
 		        	findViewById(R.id.Results).setEnabled(true);
 		        	
@@ -692,7 +710,7 @@ public class SolarPowerCalculator extends Activity {
 		     		graphView.setLegendAlign(LegendAlign.TOP);
 		     		graphView.setHorizontalLabels(new String[] {"Jan", "Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"});
 		     		
-		        	SetElectricityGraph(savingsJSONObject.getJSONArray("ReturnTable"));
+		        	SetElectricityGraph(savingsJSONObject.getJSONArray("DailyGen"));
 		        	TableLayout layout = (TableLayout)findViewById(R.id.layout);
 		        	layout.addView(graphView);
 		        	
