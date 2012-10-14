@@ -211,7 +211,7 @@
                 android:text="@string/defaultInverterEfficiency"
                 android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowPanelAngle"
             android:layout_width="wrap_content"
@@ -224,16 +224,15 @@
                 android:text="Angle"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
-
-            <EditText
+
+            <Button
                 android:id="@+id/PanelAngle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:inputType="numberDecimal"
-                android:text="@string/defaultPanelAngle"
-                android:width="@dimen/page1EditText" />
+                android:onClick="setPanelAngleOrientation"
+                android:text="27" />
+
         </TableRow>
 
         <TableRow
@@ -310,7 +309,7 @@
                 android:text="@string/defaultAddress"
                 android:width="@dimen/page1EditText" />
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowPanelOrientation"
             android:layout_width="wrap_content"
@@ -323,15 +322,15 @@
                 android:text="Orientation"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
-
-            <EditText
+
+            <Button
                 android:id="@+id/PanelOrientation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:text="@string/defaultOrientation"
-                android:width="@dimen/page1EditText" />
+                android:onClick="setPanelAngleOrientation"
+                android:text="North" />
+
         </TableRow>
 
         <TableRow

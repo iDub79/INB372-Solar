@@ -5,6 +5,7 @@ package unitTests;
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import solar.solarAndroid.InvalidInputException;
@@ -273,13 +274,13 @@ public class solarAndroidTests extends ActivityInstrumentationTestCase2<SolarPow
 	*/	
 	// invalid orientation
 	public void testInvalidOrientation() {
-		Activity act = getActivity();
-		EditText editText = (EditText)act.findViewById(R.id.PanelOrientation);
+		/*Activity act = getActivity();
+		Button editText = (Button)act.findViewById(R.id.PanelOrientation);
 		solo.clickOnView(editText);
 		solo.clearEditText(editText);
 		solo.enterText(editText, "QU");
 		solo.clickOnView(act.findViewById(R.id.Submit));
-		solo.sleep(servletResponseDelay);
+		solo.sleep(servletResponseDelay);*/
 		
 		fail("Expected an exception");
 	}

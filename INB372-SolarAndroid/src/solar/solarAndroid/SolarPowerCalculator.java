@@ -34,6 +34,11 @@ import com.jjoe64.graphview.LineGraphView;
 
 import solar.solarAndroid.*;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorListener;
+import android.hardware.SensorManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -53,17 +58,21 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
 
 public class SolarPowerCalculator extends Activity {
-	//String baseServletAddress = "http://inb372-solar.appspot.com/";
-	String baseServletAddress = "http://10.0.2.2:8888/";
+	String baseServletAddress = "http://inb372-solar.appspot.com/";
+	//String baseServletAddress = "http://10.0.2.2:8888/";
 	Location lastKnownLocation;
 	LocationManager locationManager;
 	LocationListener locationListener;
+	
+	SensorManager sensorManager;
+	SensorEventListener sensorListener;
 	
 	boolean graphViewInstantiated = false;
 	GraphView graphView;
@@ -125,16 +134,106 @@ public class SolarPowerCalculator extends Activity {
 		SetLocation(this.findViewById(R.id.Location));
 	}
 	
+	Sensor magFields;
+	Sensor accels;
+	
+	float m_lastMagFields[];
+	float m_lastAccels[];
+	
+	String orientationText = "North";
+	float angle = 27;
+	
+	// called by panelAngle and panelOrientation methods
+	public void setPanelAngleOrientation(View view) {
+		((Button)findViewById(R.id.PanelAngle)).setText(Float.toString(angle));
+		((Button)findViewById(R.id.PanelOrientation)).setText(orientationText);
+	}
+	
+	// method that gets the angle and orientation that the phone is probably currently at
+	public void computeOrientation() {
+		float rot[] = new float[9];
+		float I[] = new float[9];
+		float orientationValues[] = new float[3];
+		SensorManager.getRotationMatrix(rot, I, m_lastAccels, m_lastMagFields);
+		SensorManager.getOrientation(rot, orientationValues);
+		
+		double radiansToDegrees = (double) (180.0 / Math.PI);
+		
+		double orientation = Math.round(orientationValues[0] * radiansToDegrees * 100.0) / 100.0;
+		if (orientation < 0)
+			orientation = (360.0 + orientation);
+		angle = (float)(Math.round(Math.abs(orientationValues[1] * radiansToDegrees) * 100.0) / 100.0);
+		
+		
+		
+		//((EditText)findViewById(R.id.PanelOrientation)).setText("Z: " + Math.round(orientationValues[0] * radiansToDegrees)  + " X: " + Math.round(orientationValues[1] * radiansToDegrees) + " Y: " + Math.round(orientationValues[2] * radiansToDegrees));
+		//((EditText)findViewById(R.id.PanelOrientation)).setText("or: " + orientation  + " ang: " + angle);
+		
+		// separate to on button click
+		
+		if (orientation <= 45 || orientation > 315)
+			orientationText = "North";
+		
+		else if (orientation <= 135)
+			orientationText = "East";
+		
+		else if (orientation <= 225)
+			orientationText = "South";
+		
+		else if (orientation <= 315)
+			orientationText = "West";
+	}
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_layout);
         
+        sensorManager = (SensorManager)this.getSystemService(SENSOR_SERVICE);
+        accels = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        magFields = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        sensorListener = new SensorEventListener() {
+
+			public void onAccuracyChanged(Sensor sensor, int accuracy) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			
+
+			public void onSensorChanged(SensorEvent event) {
+				if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+					if (m_lastAccels == null) {
+			            m_lastAccels = new float[3];
+			        }
+		 
+			        System.arraycopy(event.values, 0, m_lastAccels, 0, 3);
+			 
+			        if (m_lastMagFields != null) {
+			            computeOrientation();
+			        }
+				} else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+					if (m_lastMagFields == null) {
+						m_lastMagFields = new float[3];
+					}
+		 
+			        System.arraycopy(event.values, 0, m_lastMagFields, 0, 3);
+			 
+			        if (m_lastAccels != null) {
+			            computeOrientation();
+			        }
+		        }
+				
+			}
+        	
+        };
+        sensorManager.registerListener(sensorListener, magFields, SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(sensorListener, accels, SensorManager.SENSOR_DELAY_NORMAL);
         
+        //	SensorMan
         
         locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
-			@Override
 			public void onLocationChanged(Location location) {
 				//((EditText)findViewById(R.id.PanelOrientation)).setText("abc");
 				lastKnownLocation = location;
@@ -148,19 +247,16 @@ public class SolarPowerCalculator extends Activity {
 				//output.
 			}
 
-			@Override
 			public void onProviderDisabled(String provider) {
 				//((EditText)findViewById(R.id.PanelOrientation)).append(provider + "di");
 				
 			}
 
-			@Override
 			public void onProviderEnabled(String provider) {
 				//((EditText)findViewById(R.id.PanelOrientation)).append(provider + "en");
 				
 			}
 
-			@Override
 			public void onStatusChanged(String provider, int status,
 					Bundle extras) {
 				//((EditText)findViewById(R.id.PanelOrientation)).setText(provider);
@@ -404,7 +500,7 @@ public class SolarPowerCalculator extends Activity {
 	}
 
 	private Float getAngle() throws InvalidInputException {
-		String angleText = ((EditText)findViewById(R.id.PanelAngle)).getText().toString();
+		String angleText = ((Button)findViewById(R.id.PanelAngle)).getText().toString();
 		if (angleText.length() == 0) {
 			throw new InvalidInputException("Require angle to be input.");
 		}
@@ -423,7 +519,7 @@ public class SolarPowerCalculator extends Activity {
 	// orientation will probably end up being a N, S, E, W combination or a number of degrees between 
 	// 1 and 360 and will need to be converted to something consistent
 	private String getOrientation() throws InvalidInputException {
-		String orientationText = ((EditText)findViewById(R.id.PanelOrientation)).getText().toString();
+		String orientationText = ((Button)findViewById(R.id.PanelOrientation)).getText().toString();
 		if (orientationText.length() == 0) {
 			throw new InvalidInputException("Require orientation to be input.");
 		}
@@ -580,7 +676,7 @@ public class SolarPowerCalculator extends Activity {
 		        //((EditText)findViewById(R.id.PanelOrientation)).setText("f");
 		        if (savingsJSONObject.getBoolean("Success")) {
 		        	Double savings = savingsJSONObject.getDouble("Amount");
-		        	savings = Math.round(savings) / 100.0;
+		        	savings = ((int)(savings * 100.0)) / 100.0;
 		        	DecimalFormat f = new DecimalFormat("#.00");
 		        	//((TextView)findViewById(R.id.Savings)).setText("$" + f.format(savings));
 		        	resultsTab(view);
@@ -779,13 +875,11 @@ public class SolarPowerCalculator extends Activity {
 		PopulatePanelManufacturer();
 		Spinner panelManufacturerSpinner = (Spinner)findViewById(R.id.PanelManufacturer);
 		panelManufacturerSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				String selected = parentView.getItemAtPosition(position).toString();
 				populatePanelModels(selected);
 			}
 			
-			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
 				
 			}
@@ -793,13 +887,11 @@ public class SolarPowerCalculator extends Activity {
 		
 		Spinner panelModelSpinner = (Spinner)findViewById(R.id.PanelModel);
 		panelModelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				String selected = parentView.getItemAtPosition(position).toString();
 				setPanelPowerOnModelSelected(selected);
 			}
 			
-			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
 				
 			}
@@ -808,13 +900,11 @@ public class SolarPowerCalculator extends Activity {
 		PopulateInverterManufacturer();
 		Spinner invManufacturerSpinner = (Spinner)findViewById(R.id.InverterManufacturer);
 		invManufacturerSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				String selected = parentView.getItemAtPosition(position).toString();
 				populateInverterModels(selected);
 			}
 			
-			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
 				
 			}
@@ -822,13 +912,11 @@ public class SolarPowerCalculator extends Activity {
 		
 		Spinner invModelSpinner = (Spinner)findViewById(R.id.InverterModel);
 		invModelSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 				String selected = parentView.getItemAtPosition(position).toString();
 				setInverterEfficiencyOnModelSelected(selected);
 			}
 			
-			@Override
 			public void onNothingSelected(AdapterView<?> parentView) {
 				
 			}
