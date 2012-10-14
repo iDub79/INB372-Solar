@@ -303,49 +303,7 @@ function createDailyGraph(result) {
 	
 	output += "</table>";
 	
-	$("#chartdiv").css("height", "600px");
-	
-	var plot1 = $.jqplot('chartdiv', [graphDataMade, graphDataExcess], {
-		title: 'Electricity Generated',
-		seriesDefaults:{
-            rendererOptions: {fillToZero: true},
-            markerOptions: {size: 12}
-		},
-		axesDefaults: {
-	        tickRenderer: $.jqplot.CanvasAxisTickRenderer,
-	        tickOptions: {
-	          fontSize: '10pt'
-	        }
-	    },
-		series: [
-	         {label: 'Total Generated'},
-	         {label: 'Put Back To Grid'}
-		],
-		legend: {
-			show: true
-		},
-		axes: {
-			xaxis: {
-				label: 'Date',
-				renderer: $.jqplot.CategoryAxisRenderer,
-                ticks: dates,
-                tickOptions: {
-		          angle: -45,
-		        }
-            },
-            yaxis: {
-            	label: 'kWh',
-                pad: 1.05
-            }
-		},
-		highlighter: {
-	        show: true,
-	        sizeAdjust: 7.5
-        },
-        cursor: {
-        	show: false
-        }
-	});
+	createGraph("Date", dates, graphDataMade, graphDataExcess);	
 }
 
 function createMonthlyGraph(result) {
@@ -372,7 +330,13 @@ function createMonthlyGraph(result) {
 	
 	output += "</table>";
 	
-	$("#chartdiv").css("height", "600px");
+	createGraph("Month", dates, graphDataMade, graphDataExcess);
+}
+
+
+function createGraph(label, dates, graphDataMade, graphDataExcess) {
+	
+	$("#chartdiv").css("height", "400px");
 	
 	var plot1 = $.jqplot('chartdiv', [graphDataMade, graphDataExcess], {
 		title: 'Electricity Generated',
@@ -395,7 +359,7 @@ function createMonthlyGraph(result) {
 		},
 		axes: {
 			xaxis: {
-				label: 'Month',
+				label: label,
 				renderer: $.jqplot.CategoryAxisRenderer,
                 ticks: dates,
                 tickOptions: {

@@ -233,15 +233,15 @@ public class DistanceCalc {
 			
 			curDist = findDistance(userLat, userLon, lat, lon);
 			
-			System.out.println(lowestIndex+ " distance is " + prevDist);
-			System.out.println(i + " dist calc is" + curDist);
+			//System.out.println(lowestIndex+ " distance is " + prevDist);
+			//System.out.println(i + " dist calc is" + curDist);
 			
 			if (curDist < prevDist) {
 				prevDist = curDist;
 				lowestIndex = i;
 			}
 		}
-		System.out.println(lowestIndex + " was chosen");
+		//System.out.println(lowestIndex + " was chosen");
 		return stationReadings.get(lowestIndex);
 	}
 }
