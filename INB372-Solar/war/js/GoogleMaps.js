@@ -94,6 +94,9 @@ function displayCoordinates() {
     		$("#txtLatitude").val(lat.toString());
     		$("#txtLongitude").val(long.toString());
     		$("#txtDailySunlight").focus();
+    		
+    		var state = results[0].address_components[results[0].address_components.length - 3].long_name;
+    		getTariffsForState(state);
         }
     	else {
         	$("#lblCoordinates").html("Geocode was not successful for the following reason: " + status);

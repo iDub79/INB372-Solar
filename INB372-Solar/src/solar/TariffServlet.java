@@ -21,11 +21,22 @@ public class TariffServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String option = request.getParameter("option");		
+		
 		JSONArray jsonArray = new JSONArray();
 		JSONObject returnJson = new JSONObject();
 		
 		TariffRuleList ruleList = new TariffRuleList();
-		ArrayList<TariffRule> rules = ruleList.getrules();
+		ArrayList<TariffRule> rules = new ArrayList<TariffRule>();
+		
+		if (option.equals("all")) {
+			rules = ruleList.getrules();
+		}
+		else if (option.equals("state")){
+			String state = request.getParameter("state");
+			rules = ruleList.getRuleForState(state);
+		}
+		
 		
 		try {				
 			if (rules.size() > 0) {
