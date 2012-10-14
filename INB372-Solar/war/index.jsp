@@ -31,7 +31,7 @@
 	    $("#navHome").addClass("active");
 	    getPanelManufacturers();
 	    getInverterManufacturers();
-	    getStateTariffs();
+	    //getStateTariffs("");
 	});
 </script>
 
@@ -144,9 +144,7 @@
                             <label class="control-label" for="ddlTariff">Tariff Value</label>
                             <div class="controls">
                                 <select id="ddlTariff">
-                                    <option value="-1">-- Select Tariff Value --</option>                                    
-                                    <!-- <option value="0.08">8c (from July 10, 2012)</option>  -->
-                                    <!-- <option value="0.44">44c (pre July 10, 2012)</option>  -->
+                                    <option value="-1">-- Select Tariff Value --</option>
                                 </select>
                             </div>
                         </div>
@@ -167,8 +165,8 @@
 				    <span id="lblErrors">Please correct the fields highlighted in red.</span>
 			    </div>
 			</div>
-			<div class="span12">
-                <div id="chartdiv" style="height: 600px; margin-bottom: 20px; visibility: hidden;"></div>
+			<div class="span12" id="chartContainer">
+                <div id="chartdiv" style="margin-bottom: 20px;"></div>
             </div>
 			<div class="span12">
                 <div class="alert alert-info">

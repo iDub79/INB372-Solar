@@ -227,9 +227,11 @@ public class Calculator {
 			monthlyGen[i] = monthTotal;			
 			//currMonth++;			
 		}
+		/*
 		for (int month = 0; month<12; month++) {
 			System.out.println(monthlyGen[month]);
 		}
+		*/
 		return monthlyGen;
 		
 	}

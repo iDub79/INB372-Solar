@@ -148,7 +148,17 @@ function getStateTariffs() {
 	$.ajax({
         type : "POST",
         url : "tariffServlet",
-        data : "",
+        data : "option=all",
+	    async: false,
+        success : buildTariffDropDownList
+    });
+}
+
+function getTariffsForState(state) {
+	$.ajax({
+        type : "POST",
+        url : "tariffServlet",
+        data : "option=state&state=" + state,
 	    async: false,
         success : buildTariffDropDownList
     });
@@ -384,7 +394,10 @@ function displayError(message) {
 function buildTariffDropDownList(result, status) {
 	if (status == 'success') {
 		if (result.Success == true) {
-			var output = "";
+			
+			$("#ddlTariff").empty();
+			
+			var output = "<option value='-1'>-- Select Tariff Value --</option>";
 			
 			$.each(result.Tariffs, function (i) {
 				output += "<option value='" + result.Tariffs[i].TariffRate + "'>" + result.Tariffs[i].State + " - " + result.Tariffs[i].Description + "</option>";	        

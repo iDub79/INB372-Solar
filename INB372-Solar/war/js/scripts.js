@@ -288,20 +288,55 @@ function createDailyGraph(result) {
 	var graphDataExcess = new Array();
 	var dates = new Array();
 	
-	$.each(result.Savings.ReturnTable, function (i) {
-		output += "<tr><td>" + startDate.toString('d-MMM-yyyy') + "</td><td>" + result.Savings.ReturnTable[i][0] + "</td><td>" + result.Savings.ReturnTable[i][1] + "</td></tr>";
+	$.each(result.Savings.DailyGen, function (i) {
+		output += "<tr><td>" + startDate.toString('d-MMM-yyyy') + "</td><td>" + result.Savings.DailyGen[i][0] + "</td><td>" + result.Savings.DailyGen[i][1] + "</td></tr>";
 		
 		// limit to only January (31 days)
 		if (i < 31) {
 			dates[i] = startDate.toString('d-MMM-yyyy');						
-			graphDataMade[i] = result.Savings.ReturnTable[i][0];
-			graphDataExcess[i] = result.Savings.ReturnTable[i][1];
+			graphDataMade[i] = result.Savings.DailyGen[i][0];
+			graphDataExcess[i] = result.Savings.DailyGen[i][1];
 		}
 		
 		startDate = startDate.addDays(1);
     });
 	
 	output += "</table>";
+	
+	createGraph("Date", dates, graphDataMade, graphDataExcess);	
+}
+
+function createMonthlyGraph(result) {
+	
+	var startDate = new Date();
+	startDate = Date.parse("January 1st, 2012");
+	
+	var output = "<table class='table table-hover table-condensed table-bordered table-striped'>";
+	output += "<tr><th>Month</th><th>Monthly Generated Electricity</th><th>Amount Put Back To Grid</th>";
+	
+	var graphDataMade = new Array();
+	var graphDataExcess = new Array();
+	var dates = new Array();
+	
+	$.each(result.Savings.MonthlyGen, function (i) {
+		output += "<tr><td>" + startDate.toString('MMM') + "</td><td>" + result.Savings.MonthlyGen[i][0] + "</td><td>" + result.Savings.MonthlyGen[i][1] + "</td></tr>";
+		
+		dates[i] = startDate.toString('MMM');						
+		graphDataMade[i] = result.Savings.MonthlyGen[i][0];
+		graphDataExcess[i] = result.Savings.MonthlyGen[i][1];
+		
+		startDate = startDate.addMonths(1);
+    });
+	
+	output += "</table>";
+	
+	createGraph("Month", dates, graphDataMade, graphDataExcess);
+}
+
+
+function createGraph(label, dates, graphDataMade, graphDataExcess) {
+	
+	$("#chartdiv").css("height", "400px");
 	
 	var plot1 = $.jqplot('chartdiv', [graphDataMade, graphDataExcess], {
 		title: 'Electricity Generated',
@@ -324,7 +359,7 @@ function createDailyGraph(result) {
 		},
 		axes: {
 			xaxis: {
-				label: 'Date',
+				label: label,
 				renderer: $.jqplot.CategoryAxisRenderer,
                 ticks: dates,
                 tickOptions: {
@@ -332,7 +367,7 @@ function createDailyGraph(result) {
 		        }
             },
             yaxis: {
-            	label: '$',
+            	label: 'kWh',
                 pad: 1.05
             }
 		},
@@ -344,6 +379,4 @@ function createDailyGraph(result) {
         	show: false
         }
 	});
-	
-	$("#chartdiv").css("visibility", "visible");
 }

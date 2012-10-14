@@ -19,7 +19,7 @@ public class TariffRuleList {
 		ArrayList<TariffRule> Staterules = new ArrayList<TariffRule>();
 		
 		for (int i = 0; i < rules.size(); i++) {
-			if(rules.get(i).getState().equals(state)) {
+			if(rules.get(i).getState().toLowerCase().equals(state.toLowerCase())) {
 				Staterules.add(rules.get(i));
 			}
 		}
@@ -28,7 +28,7 @@ public class TariffRuleList {
 	
 	
 	private void setupTariffrules() {
-		rules.add( new TariffRule ("Victoria", "Before July 7 2012", false,  0.08f));
+		rules.add( new TariffRule ("Victoria", "Before July 7 2011", false,  0.08f));
 		rules.add( new TariffRule ("Victoria", "Before July 7 2012", false,  0.25f));
 		rules.add( new TariffRule ("Victoria", "From September 3 2012", false,  0.08f));
 		rules.add( new TariffRule ("South Australia", "27 January 2012 to 30 June 2012", false, 0.71f));
