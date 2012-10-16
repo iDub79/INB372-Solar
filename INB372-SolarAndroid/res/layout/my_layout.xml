@@ -261,31 +261,6 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/rowSunlightHours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" >
-
-            <TextView
-                android:id="@+id/tvSunlightHours"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sunlight Hours"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textColor="@color/white" />
-
-            <EditText
-                android:id="@+id/SunlightHours"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number"
-                android:text="@string/defaultSunlightHours"
-                android:width="@dimen/page1EditText" />
-        </TableRow>
-
-        <TableRow
             android:id="@+id/rowAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -332,13 +307,13 @@
                 android:text="North" />
 
         </TableRow>
-
+
         <TableRow
             android:id="@+id/rowTariffValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" >
-
+
             <TextView
                 android:id="@+id/tvTariffValue"
                 android:layout_width="wrap_content"
@@ -346,15 +321,12 @@
                 android:text="Tariff Value (c/kWh)"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
-
-            <EditText
+
+            <Spinner
                 android:id="@+id/TariffRate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:inputType="number"
-                android:text="44" />
+                android:layout_weight="1" />
 
         </TableRow>
 
