@@ -34,7 +34,7 @@ test("All input data submitted as valid parameters", function() {
 	var input = "panelManufacturer=" + panelManufacturer + "&panelModel=" + panelModel + "&panelEfficiency=" + panelEfficiency + 
         		"&panelQty=" + panelQty + "&inverterManufacturer=" + inverterManufacturer + "&inverterModel=" + inverterModel +
         		"&inverterEfficiency=" + inverterEfficiency + "&orientation=" + orientation + "&angle=" + angle +
-        		"&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff;
+        		"&consumption=" + consumption + "&address=" + address + "&tariff=" + tariff + "&latitude=" + latitude + "&longitude=" + longitude;
 	
 	var options = null;
 	$.ajax = function(param) {

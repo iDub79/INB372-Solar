@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=
 lastWarOutDir=C\:/Git/INB372-Solar/INB372-Solar/war
 warSrcDir=war
 warSrcDirIsOutput=false

@@ -11,6 +11,7 @@
                     <ul class="nav">
                         <li id="navHome"><a href="index.jsp">Home</a></li>
                         <li id="navAdmin"><a href="admin.jsp">Admin</a></li>
+                        <li id="navQUnit"><a href="QUnit/unitTests.jsp">QUnit Unit Tests</a></li>
                         <li id="navContact"><a href="#contact">Contact</a></li>
                     </ul>
                 </div>
