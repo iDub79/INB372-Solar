@@ -16,7 +16,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 public class TariffServlet extends HttpServlet {
 		
-	
+	//Try test
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getLogger(TariffServlet.class.getName());
 
