@@ -4,7 +4,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 public class PanelController {
 
-	DataProvider data = new DataProvider();
+	private DataProvider data = new DataProvider();
 	
 	public JSONObject getPanels() {
 		return data.getPanels();

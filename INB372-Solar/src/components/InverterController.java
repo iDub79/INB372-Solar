@@ -4,7 +4,7 @@ import com.google.appengine.labs.repackaged.org.json.JSONObject;
 
 public class InverterController {
 	
-DataProvider data = new DataProvider();
+	private DataProvider data = new DataProvider();
 	
 	public JSONObject getInverters() {
 		return data.getInverters();

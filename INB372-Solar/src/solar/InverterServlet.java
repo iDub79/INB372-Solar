@@ -34,39 +34,30 @@ public class InverterServlet extends HttpServlet {
 				efficiency = Integer.parseInt(request.getParameter("efficiency"));			
 				
 				validInput = true;
-			}
-			catch (NumberFormatException e1) {
-				try {
-					returnJsonObj.put("Success", false);
-				}
-				catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}	
-			
-			if (validInput) {
-				// create new Panel
-				try {					
+				
+				if (validInput) {
+					// create new Panel					
 					InverterController ctrl = new InverterController();
 					Inverter i = new Inverter(manufacturer, model, efficiency);
-					returnJsonObj = ctrl.addInverter(i);
-					
-				}
-				catch (InverterException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}			
-			else {
-				try {
+					returnJsonObj = ctrl.addInverter(i);					
+				}			
+				else {
 					returnJsonObj.put("Success", false);
 				}
-				catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}		
+			}
+			catch (NumberFormatException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();		
+			}
+			catch (InverterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+					
 		}
 		else if (reqOption.equals("getInverters")) {
 			InverterController ctrl = new InverterController();

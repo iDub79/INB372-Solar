@@ -35,7 +35,7 @@ public class Calculator {
 	public Calculator(Panel panel, Inverter inverter, int panelQty, float consumption, float panelAngle, float lat, float lon) throws CalculatorException {
 		
 		if ((panel == null) || (inverter == null)) {
-			throw new CalculatorException();
+			throw new CalculatorException("Panel or Inverter cannot be null");
 		}
 		else {
 			this.panel = panel;

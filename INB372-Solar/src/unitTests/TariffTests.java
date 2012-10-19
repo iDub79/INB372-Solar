@@ -41,14 +41,12 @@ public class TariffTests {
 	}
 
 	@Test
-	// Test if method return correct data.
 	public void testCalAnnualElectric() throws TariffException {
-		assertEquals(tariff.calAnnualElectric(), 132.1396484375, 2);
+		assertEquals(tariff.calAnnualElectric(), 172.18223571777344, 2);
 	}
 
 	@Test
-	// Test if method return correct data.
 	public void testCalAnnualSaving() throws TariffException {
-		assertEquals(tariff.calAnnualSaving(), 660.6982411875, 2);
+		assertEquals(tariff.calAnnualSaving(), 860.911193847562, 2);
 	}
 }
