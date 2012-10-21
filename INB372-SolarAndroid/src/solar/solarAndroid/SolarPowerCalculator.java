@@ -403,166 +403,8 @@ public class SolarPowerCalculator extends Activity {
 		((TextView)findViewById(R.id.CurrentTab)).setText("Results");
 	}
 	
-	//Panel efficiency is not a percentage but the maximum power output of the panel in watts
-	private Float getPanelEfficiency() throws InvalidInputException {
-		String panelEfficiencyText = ((EditText)findViewById(R.id.PanelEfficiency)).getText().toString();
-		if (panelEfficiencyText.length() == 0) {
-			throw new InvalidInputException("Require panel efficiency to be input.");
-		}
-		
-		Float panelEfficiency = Float.parseFloat(panelEfficiencyText);
-		if (panelEfficiency > 0) {
-			return panelEfficiency;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Panel efficiency must be positive.");
-			//return null;
-		}
-	}
-	
-	private Float getInverterEfficiency() throws InvalidInputException {
-		String inverterEfficiencyText = ((EditText)findViewById(R.id.InverterEfficiency)).getText().toString();
-		if (inverterEfficiencyText.length() == 0) {
-			throw new InvalidInputException("Require inverter efficiency to be input.");
-		}
-		
-		Float inverterEfficiency = Float.parseFloat(inverterEfficiencyText);		// surround with try/catch maybe
-		// inverter efficiency can be input either as a decimal representation of a percentage
-		// or an integer
-		if (inverterEfficiency >= 50 && inverterEfficiency <= 100) {
-			return inverterEfficiency;
-		} else if (inverterEfficiency >= 0.5 && inverterEfficiency <= 1.0) {
-			return inverterEfficiency * 100;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Inverter efficiency must be between 50% and 100%.");
-			//return null;
-		}
-	}
-	
-	private Float getTariff() throws InvalidInputException{
-		String tariffText = ((Spinner)findViewById(R.id.TariffRate)).getSelectedItem().toString();
-		if (tariffText.length() == 0) {
-			throw new InvalidInputException("Require tariff rate to be input.");
-		}
-		
-		Float tariff = Float.parseFloat(tariffText);		// surround with try/catch maybe
-		
-		// Some weird place might have really high feed-in tariff returns
-		if (tariff > 0 && tariff < 1) {	// value must have been input in dollars!
-			return tariff;
-		}
-		if (tariff >= 1 && tariff <= 500) {
-			return tariff / 100;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Feed-in tariff rate must be between 0 and 500 cents");
-			//return null;
-		}
-	}
-
-	// what was this value again?
-	/*private Integer getSunlight() throws InvalidInputException {
-		String sunlightText = ((EditText)findViewById(R.id.SunlightHours)).getText().toString();
-		if (sunlightText.length() == 0) {
-			throw new InvalidInputException("Require sunlight to be input.");
-		}
-		
-		Integer sunlight = Integer.parseInt(sunlightText);		// surround with try/catch maybe
-		
-		// Some weird place might have really high feed-in sunlight returns
-		if (sunlight > 0) {	// value must have been input in dollars!
-			return sunlight;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Feed-in sunlight rate must be greater than 0");
-			//return null;
-		}
-	}*/
-
-	private Float getConsumption() throws InvalidInputException {
-		String consumptionText = ((EditText)findViewById(R.id.PowerConsumption)).getText().toString();
-		if (consumptionText.length() == 0) {
-			throw new InvalidInputException("Require power consumption to be input.");
-		}
-		
-		Float consumption = Float.parseFloat(consumptionText);		// surround with try/catch maybe
-		
-		// Some weird place might have really high feed-in consumption returns
-		if (consumption >= 0) {	// value must have been input in dollars!
-			return consumption;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Consumption must be positive");
-			//return null;
-		}
-	}
-
-	private Float getAngle() throws InvalidInputException {
-		String angleText = ((Button)findViewById(R.id.PanelAngle)).getText().toString();
-		if (angleText.length() == 0) {
-			throw new InvalidInputException("Require angle to be input.");
-		}
-		
-		Float angle = Float.parseFloat(angleText);		// surround with try/catch maybe
-		
-		if (angle >= 0 && angle <= 90) {	// value must have been input in dollars!
-			return angle;
-		} else {
-			// not sure whether I should return false or throw an exception
-			throw new InvalidInputException("Angle must be positive");
-			//return null;
-		}
-	}
-
-	// orientation will probably end up being a N, S, E, W combination or a number of degrees between 
-	// 1 and 360 and will need to be converted to something consistent
-	private String getOrientation() throws InvalidInputException {
-		String orientationText = ((Button)findViewById(R.id.PanelOrientation)).getText().toString();
-		if (orientationText.length() == 0) {
-			throw new InvalidInputException("Require orientation to be input.");
-		}
-		
-		if (true) {		// replace with thing that filters the input and converts to consistent thing
-			return orientationText;
-		} else
-			throw new InvalidInputException("Orientation is somehow invalid.");		// fix message
-	}
-
-	// Later will probably return latitude/longitude as some sort of struct and address will just be one
-	// of the ways this information will be obtained
-	private String getAddress() throws InvalidInputException {
-		String addressText = ((TextView)findViewById(R.id.Address)).getText().toString();
-		//if (addressText.length() == 0) {
-		//	throw new InvalidInputException("Require address to be input.");
-		//}
-		
-		if (true) {		// replace with thing that filters the input and converts to consistent thing
-			return addressText;
-		} else {
-			throw new InvalidInputException("Address is somehow invalid.");		// fix message
-		}
-	}
-	
-	private Integer getPanelQuantity() throws InvalidInputException {
-		String panelQuantityText = ((EditText)findViewById(R.id.PanelQuantity)).getText().toString();
-		if (panelQuantityText.length() == 0) {
-			throw new InvalidInputException("Require quantity to be input.");
-		}
-		
-		Integer panelQuantity = Integer.parseInt(panelQuantityText); 
-		
-		if (panelQuantity > 0) {		// replace with thing that filters the input and converts to consistent thing
-			return panelQuantity;
-		} else {
-			throw new InvalidInputException("Address is somehow invalid.");		// fix message
-		}
-	}
-	
-	
-	
 	// 1 = January (method translates down to 0)
-	private double getMonthsElectricity(JSONArray electricityJSONArray, int index, int firstDayIndex, int lastDayIndex) {
+	public static double getMonthsElectricity(JSONArray electricityJSONArray, int index, int firstDayIndex, int lastDayIndex) {
 		double total = 0;
 		for (int i = firstDayIndex; i < lastDayIndex; i++) {
 			try {
@@ -641,19 +483,19 @@ public class SolarPowerCalculator extends Activity {
 	
 	private void originalSubmit(View view) throws InvalidInputException {		
     	try {
-    		Float panelEfficiency = getPanelEfficiency();
-    		Float inverterEfficiency = getInverterEfficiency();
-    		String address = getAddress();
-    		String orientation = getOrientation();
-    		Float angle = getAngle();
+    		Float panelEfficiency = InputChecking.getPanelEfficiency(((EditText)findViewById(R.id.PanelEfficiency)).getText().toString());
+    		Float inverterEfficiency = InputChecking.getInverterEfficiency(((EditText)findViewById(R.id.InverterEfficiency)).getText().toString());
+    		String address = InputChecking.getAddress(((EditText)findViewById(R.id.Address)).getText().toString());
+    		String orientation = InputChecking.getOrientation(((EditText)findViewById(R.id.PanelOrientation)).getText().toString());
+    		Float angle = InputChecking.getAngle(((EditText)findViewById(R.id.PanelAngle)).getText().toString());
     		//Integer sunlight = getSunlight();
-    		Float consumption = getConsumption();
-    		Float tariff = getTariff();
-    		Integer  panelQuantity = getPanelQuantity();
-    		String panelManufacturer = ((Spinner)findViewById(R.id.PanelManufacturer)).getSelectedItem().toString();
-    		String panelModel = ((Spinner)findViewById(R.id.PanelModel)).getSelectedItem().toString();
-    		String inverterManufacturer = ((Spinner)findViewById(R.id.InverterManufacturer)).getSelectedItem().toString();
-    		String inverterModel = ((Spinner)findViewById(R.id.InverterModel)).getSelectedItem().toString();
+    		Float consumption = InputChecking.getAngle(((EditText)findViewById(R.id.PowerConsumption)).getText().toString());
+    		Float tariff = InputChecking.getTariff(((EditText)findViewById(R.id.TariffRate)).getText().toString());
+    		Integer  panelQuantity = InputChecking.getPanelQuantity(((EditText)findViewById(R.id.PanelQuantity)).getText().toString());
+    		String panelManufacturer = InputChecking.getPanelManufacturer(((Spinner)findViewById(R.id.PanelManufacturer)).getSelectedItem().toString());
+    		String panelModel = InputChecking.getPanelModel(((Spinner)findViewById(R.id.PanelModel)).getSelectedItem().toString());
+    		String inverterManufacturer = InputChecking.getInverterManufacturer(((Spinner)findViewById(R.id.InverterManufacturer)).getSelectedItem().toString());
+    		String inverterModel = InputChecking.getInverterModel(((Spinner)findViewById(R.id.InverterModel)).getSelectedItem().toString());
 		
 			// Create a new HttpClient and Post Header
 			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
