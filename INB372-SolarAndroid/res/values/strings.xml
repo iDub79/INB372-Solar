@@ -2,7 +2,7 @@
 
     <string name="app_name">Solar Power Calculator</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Solar Power Calculator</string>
     <string name="TextView">Hello, I am a TextView</string>
     <string name="System">System</string>
     <string name="Results">Results</string>

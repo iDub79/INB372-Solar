@@ -224,14 +224,15 @@
                 android:text="Angle"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
-
+
             <Button
                 android:id="@+id/PanelAngle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:onClick="setPanelAngleOrientation"
-                android:text="27" />
+                android:text="Click to set" />
 
         </TableRow>
 
@@ -297,14 +298,15 @@
                 android:text="Orientation"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/white" />
-
+
             <Button
                 android:id="@+id/PanelOrientation"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:onClick="setPanelAngleOrientation"
-                android:text="North" />
+                android:text="Click to set" />
 
         </TableRow>
 

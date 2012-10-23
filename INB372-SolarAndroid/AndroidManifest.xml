@@ -18,7 +18,9 @@
         <uses-library android:name="android.test.runner" />
         <activity
             android:name=".SolarPowerCalculator"
-            android:label="@string/title_activity_main" >
+            android:label="@string/title_activity_main" 
+            android:screenOrientation="portrait" >
+            android:
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

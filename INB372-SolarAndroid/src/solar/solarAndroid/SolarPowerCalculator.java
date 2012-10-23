@@ -31,6 +31,7 @@ import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphView.LegendAlign;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
+import com.jjoe64.graphview.GraphViewSeries.GraphViewStyle;
 
 import solar.solarAndroid.*;
 
@@ -71,6 +72,9 @@ public class SolarPowerCalculator extends Activity {
 	
 	boolean graphViewInstantiated = false;
 	GraphView graphView;
+	
+	float actualOrientation = 0;
+	float actualAngle = 27;
 	
 	private void RequestLocation() {
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
@@ -138,13 +142,18 @@ public class SolarPowerCalculator extends Activity {
 	float m_lastMagFields[];
 	float m_lastAccels[];
 	
+	float orientation = 0;
 	String orientationText = "North";
 	float angle = 27;
 	
 	// called by panelAngle and panelOrientation methods
 	public void setPanelAngleOrientation(View view) {
 		((Button)findViewById(R.id.PanelAngle)).setText(Float.toString(angle));
+		
 		((Button)findViewById(R.id.PanelOrientation)).setText(orientationText);
+		
+		actualAngle = angle;
+		actualOrientation = orientation;
 	}
 	
 	// method that gets the angle and orientation that the phone is probably currently at
@@ -157,9 +166,11 @@ public class SolarPowerCalculator extends Activity {
 		
 		double radiansToDegrees = (double) (180.0 / Math.PI);
 		
-		double orientation = Math.round(orientationValues[0] * radiansToDegrees * 100.0) / 100.0;
-		if (orientation < 0)
-			orientation = (360.0 + orientation);
+		double Orientation = Math.round(orientationValues[0] * radiansToDegrees * 100.0) / 100.0;
+		if (Orientation < 0)
+			Orientation = (360.0 + Orientation);
+		orientation = (float)Orientation;
+		
 		angle = (float)(Math.round(Math.abs(orientationValues[1] * radiansToDegrees) * 100.0) / 100.0);
 		
 		
@@ -470,7 +481,7 @@ public class SolarPowerCalculator extends Activity {
 		//((EditText)findViewById(R.id.PanelOrientation)).setText("q");
 		
 		//GraphViewSeries generatedSeries = new GraphViewSeries("Total generated", Color.rgb(0xEA, 0xA2, 0x28), getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 0));	// the line that should be there (throwing error)
-		GraphViewSeries generatedSeries = new GraphViewSeries("Total generated", null, getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 0));
+		GraphViewSeries generatedSeries = new GraphViewSeries("Total generated", new GraphViewStyle(Color.rgb(0xEA, 0xEA, 0x28), 3), getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 0));
 		
 		GraphViewSeries excessSeries = new GraphViewSeries("Put Back to Grid", null, getMonthlyElectricityGraphViewSeriesFromDaily(electricityJSONArray, 1));
 		
@@ -486,11 +497,17 @@ public class SolarPowerCalculator extends Activity {
     		Float panelEfficiency = InputChecking.getPanelEfficiency(((EditText)findViewById(R.id.PanelEfficiency)).getText().toString());
     		Float inverterEfficiency = InputChecking.getInverterEfficiency(((EditText)findViewById(R.id.InverterEfficiency)).getText().toString());
     		String address = InputChecking.getAddress(((EditText)findViewById(R.id.Address)).getText().toString());
-    		String orientation = InputChecking.getOrientation(((EditText)findViewById(R.id.PanelOrientation)).getText().toString());
-    		Float angle = InputChecking.getAngle(((EditText)findViewById(R.id.PanelAngle)).getText().toString());
+    		Button panelOrientationButton = ((Button)findViewById(R.id.PanelOrientation));
+    		if (panelOrientationButton.getText().toString().equals("Click to set"))
+    			panelOrientationButton.setText(orientationText);
+    		String orientation = InputChecking.getOrientation(Float.toString(actualOrientation));
+    		Button panelAngleButton = ((Button)findViewById(R.id.PanelAngle));
+    		if (panelAngleButton.getText().toString().equals("Click to set"))
+    			panelAngleButton.setText(Float.toString(actualAngle));
+    		Float angle = InputChecking.getAngle(Float.toString(actualAngle));
     		//Integer sunlight = getSunlight();
     		Float consumption = InputChecking.getAngle(((EditText)findViewById(R.id.PowerConsumption)).getText().toString());
-    		Float tariff = InputChecking.getTariff(((EditText)findViewById(R.id.TariffRate)).getText().toString());
+    		Float tariff = InputChecking.getTariff(((Spinner)findViewById(R.id.TariffRate)).getSelectedItem().toString());
     		Integer  panelQuantity = InputChecking.getPanelQuantity(((EditText)findViewById(R.id.PanelQuantity)).getText().toString());
     		String panelManufacturer = InputChecking.getPanelManufacturer(((Spinner)findViewById(R.id.PanelManufacturer)).getSelectedItem().toString());
     		String panelModel = InputChecking.getPanelModel(((Spinner)findViewById(R.id.PanelModel)).getSelectedItem().toString());
@@ -499,11 +516,7 @@ public class SolarPowerCalculator extends Activity {
 		
 			// Create a new HttpClient and Post Header
 			ConnectivityManager connec =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
-			//((EditText)findViewById(R.id.PanelOrientation)).setText("a");
-			//((EditText)findViewById(R.id.PanelOrientation)).setText("a");
 			if (connec.getActiveNetworkInfo().isAvailable()) {
-				//((EditText)findViewById(R.id.PanelOrientation)).setText("b");
-				//((EditText)findViewById(R.id.PanelOrientation)).setText("b");
 			    HttpClient httpclient = new DefaultHttpClient();
 			    HttpPost httppost = new HttpPost(baseServletAddress + "solarServlet");		// 10.0.2.2 magic thing that accesses localhost from emulator
 		
@@ -579,7 +592,12 @@ public class SolarPowerCalculator extends Activity {
 		//graphView.removeAllViews();
 		//graphView.removeSeries(0);
 		//graphView.removeSeries(1);
-		
+		if (graphViewInstantiated) {
+			TableLayout layout = (TableLayout)findViewById(R.id.layout);
+			layout.removeView(graphView);
+			graphViewInstantiated = false;
+		}
+			
 		
     	originalSubmit(view);
     }
