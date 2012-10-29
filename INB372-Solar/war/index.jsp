@@ -181,11 +181,12 @@
 	<div id="addressModal" class="modal hide fade">
 	    <div class="modal-header">
 	       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	       <h3>Property Search and Panel Orientation</h3>
+	       <h3>Property Search</h3>
 	    </div>
 	    <div class="modal-body">
             <input type="text" class="input-large" id="searchTextField" placeholder="Enter address" />                             
             <div id="map_canvas"></div>
+            <!-- 
             <div class="control-group" id="grpPanelOrientation">
 	            <label class="control-label" for="ddlPanelOrientation">Panel Orientation</label>
 	            <div class="controls">
@@ -202,6 +203,7 @@
 	                </select>
 	            </div>
 	        </div>
+	        -->
 	    </div>
 	    <div class="modal-footer">
 	       <a href="#" data-dismiss="modal" class="btn btn-large btn-primary">Close</a>

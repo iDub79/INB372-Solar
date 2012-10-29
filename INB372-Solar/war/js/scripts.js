@@ -7,7 +7,7 @@ var inverterManufacturer;
 var inverterModel;
 var inverterEfficiency;
 
-var orientation;
+var orientation = "N";
 var angle;
 var consumption;
 var address;
@@ -46,7 +46,7 @@ $(function() {
 		
 		angle = $("#txtPanelAngle").val();
 		consumption = $("#txtPowerConsumption").val();
-		orientation = $("#ddlPanelOrientation").val();				
+		//orientation = $("#ddlPanelOrientation").val();				
 		address = $("#searchTextField").val();
 		latitude = parseFloat($("#txtLatitude").val());
 		longitude = parseFloat($("#txtLongitude").val());
